@@ -298,6 +298,84 @@ export interface Database {
         Args: { t: string | null };
         Returns: string;
       };
+      lead_filter_sql: {
+        Args: {
+          p_query?: string | null;
+          p_stages?: LeadStage[] | null;
+          p_industries?: number[] | null;
+          p_countries?: string[] | null;
+          p_filters?: Json | null;
+        };
+        Returns: string;
+      };
+      search_leads: {
+        Args: {
+          p_query?: string | null;
+          p_stages?: LeadStage[] | null;
+          p_industries?: number[] | null;
+          p_countries?: string[] | null;
+          p_filters?: Json | null;
+          p_sort?: string;
+          p_cursor?: Json | null;
+          p_limit?: number;
+        };
+        Returns: {
+          id: string;
+          name: string;
+          company: string | null;
+          instagram_handle: string | null;
+          whatsapp_e164: string | null;
+          industry_id: number | null;
+          industry_other: string | null;
+          country_code: string | null;
+          stage: LeadStage;
+          last_contacted_at: string | null;
+          next_follow_up_on: string | null;
+          follow_ups_sent: number;
+          missing_fields: string[];
+          created_at: string;
+          rank: number;
+          next_cursor: Json | null;
+        }[];
+      };
+      lead_stage_counts: {
+        Args: {
+          p_query?: string | null;
+          p_industries?: number[] | null;
+          p_countries?: string[] | null;
+          p_filters?: Json | null;
+        };
+        Returns: {
+          stage: LeadStage;
+          total: number;
+        }[];
+      };
+      suggest_leads: {
+        Args: {
+          p_query: string;
+          p_limit?: number;
+        };
+        Returns: {
+          id: string;
+          name: string;
+          instagram_handle: string | null;
+          stage: LeadStage;
+          score: number;
+        }[];
+      };
+      check_duplicate: {
+        Args: {
+          p_handle?: string | null;
+          p_phone?: string | null;
+          p_exclude?: string | null;
+        };
+        Returns: {
+          id: string;
+          name: string;
+          stage: LeadStage;
+          matched_on: 'instagram' | 'whatsapp' | string;
+        }[];
+      };
       [key: string]: {
         Args: Record<string, unknown>;
         Returns: unknown;
