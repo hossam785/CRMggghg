@@ -279,20 +279,8 @@ export interface Database {
         };
         Relationships: [];
       };
-      [key: string]: {
-        Row: Record<string, unknown>;
-        Insert: Record<string, unknown>;
-        Update: Record<string, unknown>;
-        Relationships: unknown[];
-      };
     };
-    Views: Record<
-      string,
-      {
-        Row: Record<string, unknown>;
-        Relationships: unknown[];
-      }
-    >;
+    Views: Record<string, never>;
     Functions: {
       normalize_search: {
         Args: { t: string | null };
@@ -376,16 +364,11 @@ export interface Database {
           matched_on: 'instagram' | 'whatsapp' | string;
         }[];
       };
-      [key: string]: {
-        Args: Record<string, unknown>;
-        Returns: unknown;
-      };
     };
     Enums: {
       lead_stage: LeadStage;
       tri_state: TriState;
-      [key: string]: unknown;
     };
-    CompositeTypes: Record<string, unknown>;
+    CompositeTypes: Record<string, never>;
   };
 }
