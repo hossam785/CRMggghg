@@ -21,7 +21,7 @@ export const leadInputSchema = z
     notes: z.string().max(5000).optional().nullable(),
     has_content: z.boolean().nullable(),
     appears_in_content: z.boolean().nullable(),
-    has_videographer: z.enum(['yes', 'no', 'unknown'] as const).default('unknown'),
+    has_videographer: z.enum(['yes', 'no', 'unknown'] as const),
     problems: z.string().trim().max(280).optional().nullable(),
   })
   .refine((v) => Boolean(v.instagram_handle || v.whatsapp_e164), {

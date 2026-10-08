@@ -133,6 +133,12 @@
     "openLead": "Open",
     "charsRemaining": "{count} chars remaining",
     "required": "This field is required",
-    "contactRequired": "At least Instagram or WhatsApp is required"
+    "contactRequired": "At least Instagram or WhatsApp is required",
+    "createLeadTitle": "Add New Lead",
+    "createLeadDesc": "Enter lead details for outreach and follow-up",
+    "saveAndAddAnother": "Save & Add Another",
+    "moreDetails": "More Details",
+    "lessDetails": "Less Details",
+    "leadSavedToast": "Saved ✓ {name}"
   }
 }

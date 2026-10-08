@@ -133,6 +133,12 @@
     "openLead": "فتح",
     "charsRemaining": "{count} حرف متبقي",
     "required": "هذا الحقل مطلوب",
-    "contactRequired": "يجب إدخال حساب إنستجرام أو رقم واتساب على الأقل"
+    "contactRequired": "يجب إدخال حساب إنستجرام أو رقم واتساب على الأقل",
+    "createLeadTitle": "إضافة عميل محتمل جديد",
+    "createLeadDesc": "أدخل بيانات العميل للتواصل وبدء المتابعة",
+    "saveAndAddAnother": "حفظ وإضافة آخر",
+    "moreDetails": "تفاصيل أكثر",
+    "lessDetails": "تفاصيل أقل",
+    "leadSavedToast": "تم الحفظ ✓ {name}"
   }
 }

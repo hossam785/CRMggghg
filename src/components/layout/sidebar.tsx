@@ -23,6 +23,7 @@ import { Kbd } from '@/components/ui/kbd';
 import { LanguageToggle } from '@/components/ui/language-toggle';
 import { ThemeToggle } from '@/components/ui/theme-toggle';
 import { signOutUser } from '@/features/auth/api';
+import { useLeadModal } from '@/features/leads/context/lead-modal-context';
 
 export interface SidebarProps {
   dueFollowUpsCount?: number;
@@ -34,7 +35,10 @@ export function Sidebar({ dueFollowUpsCount = 0, onNewLeadClick }: SidebarProps)
   const tAuth = useTranslations('auth');
   const pathname = usePathname();
   const router = useRouter();
+  const leadModal = useLeadModal();
   const [isCollapsed, setIsCollapsed] = useState(false);
+
+  const handleNewLead = onNewLeadClick ?? leadModal.openCreateLead;
 
   const navItems = [
     { href: '/', label: t('home'), icon: LayoutDashboard },
@@ -99,7 +103,7 @@ export function Sidebar({ dueFollowUpsCount = 0, onNewLeadClick }: SidebarProps)
               <Button
                 variant="primary"
                 size="icon"
-                onClick={onNewLeadClick}
+                onClick={handleNewLead}
                 className="w-full size-11 rounded-lg"
                 aria-label={t('newLead')}
               >
@@ -114,7 +118,7 @@ export function Sidebar({ dueFollowUpsCount = 0, onNewLeadClick }: SidebarProps)
         ) : (
           <Button
             variant="primary"
-            onClick={onNewLeadClick}
+            onClick={handleNewLead}
             className="w-full justify-between h-10 px-3 font-semibold shadow-xs"
           >
             <div className="flex items-center gap-2">
