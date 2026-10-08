@@ -101,7 +101,13 @@ export function filtersToRpcArgs(filters: LeadFilters): RpcSearchLeadsArgs {
   }
   if (filters.has_whatsapp) pFilters.has_whatsapp = true;
   if (filters.due) pFilters.due = true;
-  if (filters.missing) pFilters.missing = filters.missing;
+  if (filters.missing) {
+    if (filters.missing === 'any' || (Array.isArray(filters.missing) && filters.missing.includes('any'))) {
+      pFilters.missing = 'any';
+    } else {
+      pFilters.missing = filters.missing;
+    }
+  }
   if (filters.import_job_id) pFilters.import_job_id = filters.import_job_id;
   if (filters.created_from) pFilters.created_from = filters.created_from;
   if (filters.created_to) pFilters.created_to = filters.created_to;
