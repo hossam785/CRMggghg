@@ -104,5 +104,35 @@
       "mark_won": "Congratulations! Deal closed with {name}",
       "mark_lost": "Marked {name} as Lost"
     }
+  },
+  "leads": {
+    "instagram": "Instagram Account",
+    "name": "Name",
+    "company": "Company",
+    "jobTitle": "Job Title",
+    "industry": "Industry",
+    "industryOther": "Specify Industry",
+    "country": "Country",
+    "whatsapp": "WhatsApp Number",
+    "hasContent": "Has Content?",
+    "appearsInContent": "Appears in Content?",
+    "hasVideographer": "Has Videographer?",
+    "problems": "Problems & Challenges",
+    "notes": "Additional Notes",
+    "openProfile": "Open Profile",
+    "openChat": "WhatsApp Chat",
+    "duplicateWarning": "This lead already exists:",
+    "postLinkError": "This is a post link, please paste the profile link",
+    "invalidHandleError": "Invalid username (letters, numbers, dots, underscores, max 30)",
+    "invalidPhoneError": "Invalid phone number for {country}",
+    "searchCountry": "Search country…",
+    "recentCountries": "Recent countries",
+    "allCountries": "All countries",
+    "selectIndustry": "Select industry…",
+    "selectCountry": "Select country…",
+    "openLead": "Open",
+    "charsRemaining": "{count} chars remaining",
+    "required": "This field is required",
+    "contactRequired": "At least Instagram or WhatsApp is required"
   }
 }

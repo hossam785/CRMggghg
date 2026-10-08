@@ -104,5 +104,35 @@
       "mark_won": "تهانينا! تم إغلاق الصفقة بنجاح مع {name}",
       "mark_lost": "تم تحويل {name} إلى خسارة"
     }
+  },
+  "leads": {
+    "instagram": "حساب إنستجرام",
+    "name": "الاسم",
+    "company": "الشركة",
+    "jobTitle": "المنصب",
+    "industry": "النشاط",
+    "industryOther": "حدد النشاط",
+    "country": "الدولة",
+    "whatsapp": "رقم الواتساب",
+    "hasContent": "هل لديه محتوى؟",
+    "appearsInContent": "هل يظهر بالمحتوى؟",
+    "hasVideographer": "هل لديه مصور؟",
+    "problems": "المشاكل والتحديات",
+    "notes": "ملاحظات إضافية",
+    "openProfile": "فتح الملف الشخصي",
+    "openChat": "محادثة واتساب",
+    "duplicateWarning": "هذا العميل مسجل بالفعل:",
+    "postLinkError": "هذا رابط منشور، يرجى لصق رابط الملف الشخصي",
+    "invalidHandleError": "اسم المستخدم غير صالح (حروف وأرقام ونقاط فقط، بحد أقصى 30)",
+    "invalidPhoneError": "رقم الهاتف غير صالح لـ {country}",
+    "searchCountry": "ابحث عن دولة…",
+    "recentCountries": "المستخدمة مؤخراً",
+    "allCountries": "جميع الدول",
+    "selectIndustry": "اختر النشاط…",
+    "selectCountry": "اختر الدولة…",
+    "openLead": "فتح",
+    "charsRemaining": "{count} حرف متبقي",
+    "required": "هذا الحقل مطلوب",
+    "contactRequired": "يجب إدخال حساب إنستجرام أو رقم واتساب على الأقل"
   }
 }
