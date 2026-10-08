@@ -179,6 +179,13 @@
     "to": "إلى",
     "resetFilters": "إعادة تعيين",
     "applyFilters": "تطبيق الفلاتر",
-    "filterCount": "فلاتر ({count})"
+    "filterCount": "فلاتر ({count})",
+    "tableHeaders": {
+      "lead": "العميل",
+      "stage": "المرحلة",
+      "industryAndCountry": "النشاط والدولة",
+      "lastContact": "آخر تواصل",
+      "nextFollowUp": "المتابعة القادمة"
+    }
   }
 }

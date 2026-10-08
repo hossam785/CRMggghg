@@ -179,6 +179,13 @@
     "to": "To",
     "resetFilters": "Reset",
     "applyFilters": "Apply filters",
-    "filterCount": "Filters ({count})"
+    "filterCount": "Filters ({count})",
+    "tableHeaders": {
+      "lead": "Lead",
+      "stage": "Stage",
+      "industryAndCountry": "Industry & Country",
+      "lastContact": "Last Contact",
+      "nextFollowUp": "Next Follow-up"
+    }
   }
 }
