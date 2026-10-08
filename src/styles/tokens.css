@@ -1,0 +1,200 @@
+/* Scope Mini CRM Design Tokens (OKLCH) */
+/* Single Source of Truth for Design System Tokens (Light & Dark) */
+
+:root {
+  /* Surfaces & Backgrounds */
+  --bg: oklch(0.99 0 0);
+  --surface: oklch(1 0 0);
+  --surface-2: oklch(0.97 0.003 260);
+  --border: oklch(0.91 0.005 260);
+
+  /* Typography */
+  --fg: oklch(0.22 0.02 260);
+  --fg-muted: oklch(0.50 0.02 260);
+
+  /* Brand & Status Accents */
+  --primary: oklch(0.55 0.20 265);
+  --primary-fg: oklch(0.99 0 0);
+  --success: oklch(0.62 0.16 150);
+  --warning: oklch(0.78 0.15 80);
+  --danger: oklch(0.58 0.21 25);
+  --focus: oklch(0.55 0.20 265 / 0.5);
+
+  /* Stage Tokens (Light Mode: bg ~0.95 lightness, fg ~0.32 lightness for contrast >= 4.5:1) */
+  --stage-new-bg: oklch(0.95 0.01 260);
+  --stage-new-fg: oklch(0.32 0.02 260);
+
+  --stage-message_sent-bg: oklch(0.95 0.04 240);
+  --stage-message_sent-fg: oklch(0.32 0.14 240);
+
+  --stage-follow_up_1-bg: oklch(0.95 0.04 255);
+  --stage-follow_up_1-fg: oklch(0.32 0.15 255);
+
+  --stage-follow_up_2-bg: oklch(0.95 0.04 290);
+  --stage-follow_up_2-fg: oklch(0.32 0.15 290);
+
+  --stage-follow_up_3-bg: oklch(0.95 0.04 305);
+  --stage-follow_up_3-fg: oklch(0.32 0.15 305);
+
+  --stage-replied-bg: oklch(0.95 0.06 75);
+  --stage-replied-fg: oklch(0.35 0.14 75);
+
+  --stage-meeting_booked-bg: oklch(0.95 0.06 50);
+  --stage-meeting_booked-fg: oklch(0.35 0.15 50);
+
+  --stage-proposal_sent-bg: oklch(0.95 0.05 195);
+  --stage-proposal_sent-fg: oklch(0.32 0.13 195);
+
+  --stage-won-bg: oklch(0.95 0.05 150);
+  --stage-won-fg: oklch(0.32 0.14 150);
+
+  --stage-lost-bg: oklch(0.95 0.05 25);
+  --stage-lost-fg: oklch(0.35 0.18 25);
+
+  /* Radius Tokens */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-full: 9999px;
+
+  /* Elevation & Shadows */
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.08), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.10), 0 4px 6px -4px rgb(0 0 0 / 0.05);
+
+  /* Motion & Duration Tokens */
+  --dur-fast: 120ms;
+  --dur-base: 200ms;
+  --dur-slow: 300ms;
+  --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
+
+  /* Z-Index Hierarchy */
+  --z-base: 0;
+  --z-sticky: 10;
+  --z-nav: 20;
+  --z-fab: 30;
+  --z-overlay: 40;
+  --z-modal: 50;
+  --z-toast: 60;
+}
+
+/* Dark Mode Tokens (Explicit data-theme="dark") */
+[data-theme="dark"] {
+  /* Surfaces & Backgrounds */
+  --bg: oklch(0.16 0.01 260);
+  --surface: oklch(0.20 0.01 260);
+  --surface-2: oklch(0.24 0.012 260);
+  --border: oklch(0.30 0.01 260);
+
+  /* Typography */
+  --fg: oklch(0.95 0.005 260);
+  --fg-muted: oklch(0.70 0.01 260);
+
+  /* Brand & Status Accents */
+  --primary: oklch(0.68 0.17 265);
+  --primary-fg: oklch(0.16 0.01 260);
+  --success: oklch(0.72 0.15 150);
+  --warning: oklch(0.80 0.14 80);
+  --danger: oklch(0.68 0.18 25);
+  --focus: oklch(0.68 0.17 265 / 0.5);
+
+  /* Stage Tokens (Dark Mode: bg ~0.26 lightness, fg ~0.90 lightness for contrast >= 4.5:1) */
+  --stage-new-bg: oklch(0.26 0.01 260);
+  --stage-new-fg: oklch(0.90 0.01 260);
+
+  --stage-message_sent-bg: oklch(0.26 0.06 240);
+  --stage-message_sent-fg: oklch(0.90 0.06 240);
+
+  --stage-follow_up_1-bg: oklch(0.26 0.07 255);
+  --stage-follow_up_1-fg: oklch(0.90 0.07 255);
+
+  --stage-follow_up_2-bg: oklch(0.26 0.07 290);
+  --stage-follow_up_2-fg: oklch(0.90 0.07 290);
+
+  --stage-follow_up_3-bg: oklch(0.26 0.07 305);
+  --stage-follow_up_3-fg: oklch(0.90 0.07 305);
+
+  --stage-replied-bg: oklch(0.26 0.06 75);
+  --stage-replied-fg: oklch(0.90 0.07 75);
+
+  --stage-meeting_booked-bg: oklch(0.26 0.07 50);
+  --stage-meeting_booked-fg: oklch(0.90 0.07 50);
+
+  --stage-proposal_sent-bg: oklch(0.26 0.06 195);
+  --stage-proposal_sent-fg: oklch(0.90 0.06 195);
+
+  --stage-won-bg: oklch(0.26 0.06 150);
+  --stage-won-fg: oklch(0.90 0.06 150);
+
+  --stage-lost-bg: oklch(0.26 0.07 25);
+  --stage-lost-fg: oklch(0.90 0.07 25);
+
+  /* Dark Elevation */
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.40);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.40), 0 2px 4px -2px rgb(0 0 0 / 0.20);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.50), 0 4px 6px -4px rgb(0 0 0 / 0.30);
+}
+
+/* System Dark Theme Preference when theme is not explicitly set to light */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: oklch(0.16 0.01 260);
+    --surface: oklch(0.20 0.01 260);
+    --surface-2: oklch(0.24 0.012 260);
+    --border: oklch(0.30 0.01 260);
+
+    --fg: oklch(0.95 0.005 260);
+    --fg-muted: oklch(0.70 0.01 260);
+
+    --primary: oklch(0.68 0.17 265);
+    --primary-fg: oklch(0.16 0.01 260);
+    --success: oklch(0.72 0.15 150);
+    --warning: oklch(0.80 0.14 80);
+    --danger: oklch(0.68 0.18 25);
+    --focus: oklch(0.68 0.17 265 / 0.5);
+
+    --stage-new-bg: oklch(0.26 0.01 260);
+    --stage-new-fg: oklch(0.90 0.01 260);
+
+    --stage-message_sent-bg: oklch(0.26 0.06 240);
+    --stage-message_sent-fg: oklch(0.90 0.06 240);
+
+    --stage-follow_up_1-bg: oklch(0.26 0.07 255);
+    --stage-follow_up_1-fg: oklch(0.90 0.07 255);
+
+    --stage-follow_up_2-bg: oklch(0.26 0.07 290);
+    --stage-follow_up_2-fg: oklch(0.90 0.07 290);
+
+    --stage-follow_up_3-bg: oklch(0.26 0.07 305);
+    --stage-follow_up_3-fg: oklch(0.90 0.07 305);
+
+    --stage-replied-bg: oklch(0.26 0.06 75);
+    --stage-replied-fg: oklch(0.90 0.07 75);
+
+    --stage-meeting_booked-bg: oklch(0.26 0.07 50);
+    --stage-meeting_booked-fg: oklch(0.90 0.07 50);
+
+    --stage-proposal_sent-bg: oklch(0.26 0.06 195);
+    --stage-proposal_sent-fg: oklch(0.90 0.06 195);
+
+    --stage-won-bg: oklch(0.26 0.06 150);
+    --stage-won-fg: oklch(0.90 0.06 150);
+
+    --stage-lost-bg: oklch(0.26 0.07 25);
+    --stage-lost-fg: oklch(0.90 0.07 25);
+
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.40);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.40), 0 2px 4px -2px rgb(0 0 0 / 0.20);
+    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.50), 0 4px 6px -4px rgb(0 0 0 / 0.30);
+  }
+}
+
+/* Reduced Motion Override */
+@media (prefers-reduced-motion: reduce) {
+  :root,
+  [data-theme="dark"] {
+    --dur-fast: 0ms;
+    --dur-base: 0ms;
+    --dur-slow: 0ms;
+  }
+}

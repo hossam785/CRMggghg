@@ -1,0 +1,101 @@
+@import "tailwindcss";
+@import "../styles/tokens.css";
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-border: var(--border);
+  --color-fg: var(--fg);
+  --color-fg-muted: var(--fg-muted);
+  --color-primary: var(--primary);
+  --color-primary-fg: var(--primary-fg);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-danger: var(--danger);
+  --color-focus: var(--focus);
+
+  /* Pipeline Stage Color Pairs */
+  --color-stage-new-bg: var(--stage-new-bg);
+  --color-stage-new-fg: var(--stage-new-fg);
+  --color-stage-message_sent-bg: var(--stage-message_sent-bg);
+  --color-stage-message_sent-fg: var(--stage-message_sent-fg);
+  --color-stage-follow_up_1-bg: var(--stage-follow_up_1-bg);
+  --color-stage-follow_up_1-fg: var(--stage-follow_up_1-fg);
+  --color-stage-follow_up_2-bg: var(--stage-follow_up_2-bg);
+  --color-stage-follow_up_2-fg: var(--stage-follow_up_2-fg);
+  --color-stage-follow_up_3-bg: var(--stage-follow_up_3-bg);
+  --color-stage-follow_up_3-fg: var(--stage-follow_up_3-fg);
+  --color-stage-replied-bg: var(--stage-replied-bg);
+  --color-stage-replied-fg: var(--stage-replied-fg);
+  --color-stage-meeting_booked-bg: var(--stage-meeting_booked-bg);
+  --color-stage-meeting_booked-fg: var(--stage-meeting_booked-fg);
+  --color-stage-proposal_sent-bg: var(--stage-proposal_sent-bg);
+  --color-stage-proposal_sent-fg: var(--stage-proposal_sent-fg);
+  --color-stage-won-bg: var(--stage-won-bg);
+  --color-stage-won-fg: var(--stage-won-fg);
+  --color-stage-lost-bg: var(--stage-lost-bg);
+  --color-stage-lost-fg: var(--stage-lost-fg);
+
+  /* Radius */
+  --radius-sm: var(--radius-sm);
+  --radius-md: var(--radius-md);
+  --radius-lg: var(--radius-lg);
+  --radius-full: var(--radius-full);
+
+  /* Shadow */
+  --shadow-sm: var(--shadow-sm);
+  --shadow-md: var(--shadow-md);
+  --shadow-lg: var(--shadow-lg);
+
+  /* Motion */
+  --duration-fast: var(--dur-fast);
+  --duration-base: var(--dur-base);
+  --duration-slow: var(--dur-slow);
+  --ease-out-custom: var(--ease-out);
+
+  /* Fonts */
+  --font-sans: var(--font-ibm-arabic), var(--font-inter), system-ui, sans-serif;
+}
+
+@layer base {
+  * {
+    border-color: var(--border);
+  }
+
+  body {
+    background-color: var(--bg);
+    color: var(--fg);
+    font-family: var(--font-sans);
+    min-height: 100vh;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  :lang(ar) {
+    line-height: 1.65;
+  }
+
+  input,
+  textarea,
+  select,
+  button {
+    font-family: inherit;
+  }
+
+  input,
+  textarea,
+  select {
+    font-size: 1rem; /* Min 16px to prevent iOS auto-zoom */
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+  }
+}
+
+.tnum {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
+}
