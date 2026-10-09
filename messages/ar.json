@@ -95,6 +95,10 @@
     "markLost": "تسجيل كخسارة",
     "reopen": "إعادة فتح",
     "setReminder": "تعيين تذكير",
+    "clearReminder": "إلغاء التذكير",
+    "snooze": "تأجيل المتابعة",
+    "restart": "إعادة البدء",
+    "setStage": "تغيير المرحلة",
     "done": {
       "send_message": "تم نقل {name} إلى تم إرسال رسالة",
       "send_follow_up": "تم تسجيل إرسال المتابعة لـ {name}",
@@ -102,7 +106,13 @@
       "book_meeting": "تم حجز موعد لـ {name}",
       "send_proposal": "تم إرسال العرض لـ {name}",
       "mark_won": "تهانينا! تم إغلاق الصفقة بنجاح مع {name}",
-      "mark_lost": "تم تحويل {name} إلى خسارة"
+      "mark_lost": "تم تحويل {name} إلى خسارة",
+      "reopen": "تمت إعادة فتح ملف {name}",
+      "set_reminder": "تم تعيين تذكير لـ {name}",
+      "clear_reminder": "تم إلغاء التذكير لـ {name}",
+      "snooze": "تم تأجيل متابعة {name}",
+      "restart": "تمت إعادة بدء مرحلة {name}",
+      "set_stage": "تم تغيير مرحلة {name}"
     }
   },
   "leads": {

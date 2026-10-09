@@ -7,6 +7,12 @@ import { TooltipProvider } from '@/components/ui/tooltip';
 import { toAppError } from '@/lib/errors';
 import { LeadModalProvider } from '@/features/leads/context/lead-modal-context';
 import { LeadFormDialogGlobal } from '@/features/leads/components/LeadFormDialogGlobal';
+import { useGlobalUndoShortcut } from '@/features/pipeline/use-undo';
+
+function GlobalUndoListener() {
+  useGlobalUndoShortcut();
+  return null;
+}
 
 export function Providers({ children }: { children: React.ReactNode }) {
   const [queryClient] = useState(
@@ -31,6 +37,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
       <QueryClientProvider client={queryClient}>
         <TooltipProvider delayDuration={200}>
           <LeadModalProvider>
+            <GlobalUndoListener />
             {children}
             <LeadFormDialogGlobal />
           </LeadModalProvider>

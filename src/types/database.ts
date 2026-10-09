@@ -461,3 +461,7 @@ export interface Database {
     CompositeTypes: Record<string, never>;
   };
 }
+
+export type Lead = Database['public']['Tables']['leads']['Row'];
+export type LeadEvent = Database['public']['Tables']['lead_events']['Row'];
+export type Settings = Database['public']['Tables']['settings']['Row'];
