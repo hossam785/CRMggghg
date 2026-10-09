@@ -3,9 +3,26 @@
 import * as React from 'react';
 import { useTranslations, useLocale } from 'next-intl';
 import { useRouter } from 'next/navigation';
-import { MessageCircle, AlertTriangle, Calendar } from 'lucide-react';
+import { MessageCircle, AlertTriangle, Calendar, MoreHorizontal, Trash2 } from 'lucide-react';
+import { toast } from 'sonner';
 import { InstagramIcon as Instagram } from '@/components/icons/instagram';
 import { StageBadge } from '@/components/ui/stage-badge';
+import { Button } from '@/components/ui/button';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
+import { useSoftDeleteLead, useRestoreLead } from '../queries';
 import { Highlight } from './Highlight';
 import { getCountryFlag } from './fields/CountryCombobox';
 import { instagramUrl } from '@/lib/normalize/instagram';
@@ -33,7 +50,30 @@ export function LeadCard({
 }: LeadCardProps) {
   const router = useRouter();
   const t = useTranslations('leads');
+  const tCommon = useTranslations('common');
   const locale = useLocale();
+
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = React.useState(false);
+  const softDeleteMutation = useSoftDeleteLead();
+  const restoreMutation = useRestoreLead();
+
+  const handleDeleteConfirm = (e?: React.MouseEvent) => {
+    e?.stopPropagation();
+    softDeleteMutation.mutate(lead.id, {
+      onSuccess: () => {
+        setIsDeleteDialogOpen(false);
+        toast.success(t('leadDeletedToast', { name: lead.name }), {
+          duration: 6000,
+          action: {
+            label: tCommon('undo'),
+            onClick: () => {
+              restoreMutation.mutate(lead.id);
+            },
+          },
+        });
+      },
+    });
+  };
 
   const handleCardClick = () => {
     if (onClick) {
@@ -125,7 +165,36 @@ export function LeadCard({
           )}
         </div>
 
-        <StageBadge stage={lead.stage} size="sm" className="shrink-0" />
+        <div
+          className="flex items-center gap-1 shrink-0"
+          onClick={(e) => e.stopPropagation()}
+        >
+          <StageBadge stage={lead.stage} size="sm" />
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="size-7 p-0 text-[var(--fg-muted)] hover:text-[var(--fg)]"
+              >
+                <MoreHorizontal className="size-4" />
+                <span className="sr-only">{t('moreOptions')}</span>
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-40">
+              <DropdownMenuItem
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setIsDeleteDialogOpen(true);
+                }}
+                className="text-[var(--danger)] focus:text-[var(--danger)] focus:bg-[var(--danger)]/10 cursor-pointer"
+              >
+                <Trash2 className="size-4 me-2" />
+                <span>{t('deleteLead')}</span>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
       </div>
 
       {/* Middle Row: Handle & Contact links */}
@@ -178,6 +247,40 @@ export function LeadCard({
           )}
         </div>
       </div>
+
+      {/* Delete Confirmation Dialog */}
+      <Dialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
+        <DialogContent className="sm:max-w-md" onClick={(e) => e.stopPropagation()}>
+          <DialogHeader className="text-start">
+            <DialogTitle className="text-base font-bold text-[var(--fg)]">
+              {t('deleteConfirmTitle')}
+            </DialogTitle>
+            <DialogDescription className="text-sm text-[var(--fg-muted)] mt-1.5">
+              {t('deleteConfirmDesc')}
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter className="mt-4 gap-2 sm:gap-0">
+            <Button
+              type="button"
+              variant="outline"
+              onClick={(e) => {
+                e.stopPropagation();
+                setIsDeleteDialogOpen(false);
+              }}
+            >
+              {tCommon('cancel')}
+            </Button>
+            <Button
+              type="button"
+              variant="danger"
+              onClick={handleDeleteConfirm}
+              disabled={softDeleteMutation.isPending}
+            >
+              {t('deleteConfirmAction')}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

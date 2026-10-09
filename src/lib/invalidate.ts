@@ -37,7 +37,18 @@ export const invalidate = {
       qc.invalidateQueries({ queryKey: ['stage-counts'] }),
       qc.invalidateQueries({ queryKey: ['follow-ups'] }),
       qc.invalidateQueries({ queryKey: ['dashboard'] }),
+      qc.invalidateQueries({ queryKey: ['trash'] }),
       ...(id ? [qc.invalidateQueries({ queryKey: ['lead', id] })] : []),
+    ]),
+
+  afterLeadRestore: (qc: QueryClient, ids?: string[]) =>
+    Promise.all([
+      qc.invalidateQueries({ queryKey: ['leads'] }),
+      qc.invalidateQueries({ queryKey: ['stage-counts'] }),
+      qc.invalidateQueries({ queryKey: ['follow-ups'] }),
+      qc.invalidateQueries({ queryKey: ['dashboard'] }),
+      qc.invalidateQueries({ queryKey: ['trash'] }),
+      ...(ids ? ids.map((id) => qc.invalidateQueries({ queryKey: ['lead', id] })) : []),
     ]),
 
   afterImport: (qc: QueryClient) => qc.invalidateQueries(),

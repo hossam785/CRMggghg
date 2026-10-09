@@ -13,6 +13,7 @@ export const qk = {
   industries: () => ['industries'] as const,
   countries: () => ['countries'] as const,
   leadEvents: (id: string) => ['lead-events', id] as const,
+  trash: () => ['trash'] as const,
   followUps: () => ['follow-ups'] as const,
   dashboard: () => ['dashboard'] as const,
   settings: () => ['settings'] as const,

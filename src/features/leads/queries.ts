@@ -199,7 +199,33 @@ export function useRestoreLead() {
   return useMutation({
     mutationFn: (id: string) => leadsApi.restoreLead(id),
     onSuccess: (_, id) => {
-      void invalidate.afterLeadAction(queryClient, id);
+      void invalidate.afterLeadRestore(queryClient, [id]);
     },
   });
 }
+
+/**
+ * Query for retrieving soft-deleted leads in trash.
+ */
+export function useTrashLeads() {
+  return useQuery({
+    queryKey: qk.trash(),
+    queryFn: ({ signal }) => leadsApi.listTrashLeads(signal),
+    staleTime: 1000 * 30,
+  });
+}
+
+/**
+ * Mutation for bulk restoring soft-deleted leads.
+ */
+export function useBulkRestoreLeads() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (ids: string[]) => leadsApi.bulkRestoreLeads(ids),
+    onSuccess: (_, ids) => {
+      void invalidate.afterLeadRestore(queryClient, ids);
+    },
+  });
+}
+

@@ -202,6 +202,32 @@
     "notesPlaceholder": "Enter any lead notes here…",
     "problemsPlaceholder": "What problems or challenges does this lead face?…",
     "openFullPage": "Full Page ↗",
-    "saveFailed": "Save failed"
+    "saveFailed": "Save failed",
+    "moreOptions": "More options"
+  },
+  "trash": {
+    "title": "Trash",
+    "subtitle": "Leads are permanently deleted 30 days after being moved to trash",
+    "emptyTitle": "Trash is empty",
+    "emptyDesc": "There are no deleted leads at the moment.",
+    "backToLeads": "Back to leads",
+    "restore": "Restore",
+    "restoring": "Restoring…",
+    "restoreSelected": "Restore selected ({count})",
+    "restoreSuccess": "Restored {name} successfully",
+    "bulkRestoreSuccess": "Restored {count} leads successfully",
+    "restoreFailed": "Failed to restore lead",
+    "restoreDuplicateHandle": "Cannot restore: Instagram handle is already registered to another active lead",
+    "restoreDuplicatePhone": "Cannot restore: WhatsApp phone number is already registered to another active lead",
+    "daysLeft": "{count} days left",
+    "daysLeftPlural": "{count} days left",
+    "lastDay": "Last day",
+    "deletedAt": "Deleted on",
+    "selectAll": "Select all",
+    "selectedCount": "{count} selected",
+    "lead": "Lead",
+    "stage": "Stage",
+    "remainingTime": "Remaining Time",
+    "actions": "Actions"
   }
 }

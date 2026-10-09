@@ -202,6 +202,32 @@
     "notesPlaceholder": "أدخل أي ملاحظات خاصة بالعميل هنا…",
     "problemsPlaceholder": "ما هي المشاكل والتحديات التي تواجه العميل؟…",
     "openFullPage": "الصفحة كاملة ↗",
-    "saveFailed": "فشل الحفظ"
+    "saveFailed": "فشل الحفظ",
+    "moreOptions": "خيارات إضافية"
+  },
+  "trash": {
+    "title": "سلة المحذوفات",
+    "subtitle": "يتم حذف العملاء نهائياً بعد 30 يوماً من تاريخ النقل إلى السلة",
+    "emptyTitle": "سلة المحذوفات فارغة",
+    "emptyDesc": "لا توجد أي بيانات محذوفة حالياً.",
+    "backToLeads": "العودة للعملاء",
+    "restore": "استرجاع",
+    "restoring": "جارِ الاسترجاع…",
+    "restoreSelected": "استرجاع المحدد ({count})",
+    "restoreSuccess": "تم استرجاع {name} بنجاح",
+    "bulkRestoreSuccess": "تم استرجاع {count} عملاء بنجاح",
+    "restoreFailed": "تعذر استرجاع العميل",
+    "restoreDuplicateHandle": "تعذر الاسترجاع: حساب إنستجرام مسجل بالفعل لعميل نشط آخر",
+    "restoreDuplicatePhone": "تعذر الاسترجاع: رقم الواتساب مسجل بالفعل لعميل نشط آخر",
+    "daysLeft": "متبقي {count} يوم",
+    "daysLeftPlural": "متبقي {count} أيام",
+    "lastDay": "اليوم الأخير",
+    "deletedAt": "تاريخ الحذف",
+    "selectAll": "تحديد الكل",
+    "selectedCount": "تم تحديد {count}",
+    "lead": "العميل",
+    "stage": "المرحلة",
+    "remainingTime": "المدة المتبقية",
+    "actions": "إجراءات"
   }
 }

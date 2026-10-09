@@ -111,6 +111,47 @@ export const leadsApi = {
   },
 
   /**
+   * Restores multiple soft-deleted leads in bulk.
+   */
+  async bulkRestoreLeads(ids: string[]): Promise<void> {
+    if (ids.length === 0) return;
+    try {
+      const { error } = await supabase
+        .from('leads')
+        .update({ deleted_at: null })
+        .in('id', ids);
+
+      if (error) throw error;
+    } catch (err) {
+      throw toAppError(err);
+    }
+  },
+
+  /**
+   * Retrieves soft-deleted leads ordered by deleted_at descending.
+   */
+  async listTrashLeads(signal?: AbortSignal): Promise<Lead[]> {
+    try {
+      let query = supabase
+        .from('leads')
+        .select('*')
+        .not('deleted_at', 'is', null)
+        .order('deleted_at', { ascending: false })
+        .order('id', { ascending: false });
+
+      if (signal) {
+        query = query.abortSignal(signal);
+      }
+
+      const { data, error } = await query;
+      if (error) throw error;
+      return (data || []) as Lead[];
+    } catch (err) {
+      throw toAppError(err);
+    }
+  },
+
+  /**
    * Fetches an active lead by id.
    */
   async getLead(id: string, signal?: AbortSignal): Promise<Lead> {

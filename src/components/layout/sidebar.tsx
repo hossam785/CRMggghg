@@ -9,6 +9,7 @@ import {
   Users,
   Clock,
   Database,
+  Trash2,
   Settings,
   Plus,
   PanelLeftClose,
@@ -50,6 +51,7 @@ export function Sidebar({ dueFollowUpsCount = 0, onNewLeadClick }: SidebarProps)
       badge: dueFollowUpsCount > 0 ? dueFollowUpsCount : null,
     },
     { href: '/data', label: t('data'), icon: Database },
+    { href: '/trash', label: t('trash'), icon: Trash2 },
     { href: '/settings', label: t('settings'), icon: Settings },
   ];
 
