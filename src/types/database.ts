@@ -787,6 +787,13 @@ export interface Database {
         };
         Returns: Json;
       };
+      dashboard_stats: {
+        Args: {
+          p_from: string;
+          p_to: string;
+        };
+        Returns: Json;
+      };
     };
     Enums: {
       lead_stage: LeadStage;
