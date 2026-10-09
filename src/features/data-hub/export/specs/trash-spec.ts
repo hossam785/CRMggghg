@@ -1,4 +1,5 @@
 import { supabase } from '@/lib/supabase/client';
+import { isDemoMode, demoStore } from '@/lib/demo/demo-store';
 import type { ExportSpec } from '../types';
 import type { Database } from '@/types/database';
 
@@ -22,6 +23,10 @@ export function createTrashExportSpec(): ExportSpec<TrashRow> {
           { key: 'created_at', header: { ar: 'تاريخ الإضافة الأصلية', en: 'Original Created At' }, width: 20, format: 'datetime' },
         ],
         fetchPage: async (cursor) => {
+          if (isDemoMode()) {
+            const trash = demoStore.getLeadsRaw().filter((l) => !!l.deleted_at);
+            return { rows: trash as TrashRow[], nextCursor: null };
+          }
           let query = supabase
             .from('leads')
             .select('*')

@@ -1,4 +1,5 @@
 import { supabase } from '@/lib/supabase/client';
+import { isDemoMode, demoStore } from '@/lib/demo/demo-store';
 import type { ExportSpec } from '../types';
 import type { Database } from '@/types/database';
 
@@ -27,6 +28,9 @@ export function createIndustriesExportSpec(): ExportSpec<IndustryRow> {
           },
         ],
         fetchPage: async () => {
+          if (isDemoMode()) {
+            return { rows: demoStore.getIndustries() as IndustryRow[], nextCursor: null };
+          }
           const { data, error } = await supabase
             .from('industries')
             .select('*')

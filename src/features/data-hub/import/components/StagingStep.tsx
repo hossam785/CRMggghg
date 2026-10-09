@@ -6,6 +6,7 @@ import { Loader2, AlertCircle, XCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { createClient } from '@/lib/supabase/client';
+import { isDemoMode } from '@/lib/demo/demo-store';
 import type { ImportWorkerApi, Mapping, SheetData, ValidateCtx } from '../types';
 import type { Json } from '@/types/database';
 import { runStaging } from '../run-staging';
@@ -61,26 +62,30 @@ export function StagingStep({
 
         if (controller.signal.aborted) return;
 
-        // 2. Create import_jobs record in DB
-        const { data: jobData, error: jobErr } = await supabase
-          .from('import_jobs')
-          .insert({
-            source: fileName.endsWith('.csv') ? 'csv' : 'xlsx',
-            file_name: fileName,
-            sheet_name: sheetName,
-            mapping: mapping as unknown as Json,
-            options: ctx as unknown as Json,
-            total_rows: sheetData.totalRows,
-            status: 'staging',
-          })
-          .select('id')
-          .single();
+        // 2. Create import_jobs record in DB or locally
+        let jobId: string;
+        if (isDemoMode()) {
+          jobId = `demo-job-${Date.now()}`;
+        } else {
+          const { data: jobData, error: jobErr } = await supabase
+            .from('import_jobs')
+            .insert({
+              source: fileName.endsWith('.csv') ? 'csv' : 'xlsx',
+              file_name: fileName,
+              sheet_name: sheetName,
+              mapping: mapping as unknown as Json,
+              options: ctx as unknown as Json,
+              total_rows: sheetData.totalRows,
+              status: 'staging',
+            })
+            .select('id')
+            .single();
 
-        if (jobErr || !jobData) {
-          throw new Error(jobErr?.message || 'فشل إنشاء مهمة الاستيراد في قاعدة البيانات');
+          if (jobErr || !jobData) {
+            throw new Error(jobErr?.message || 'فشل إنشاء مهمة الاستيراد في قاعدة البيانات');
+          }
+          jobId = jobData.id;
         }
-
-        const jobId = jobData.id;
 
         // 3. Save to IndexedDB for resumability
         await savePendingImport(

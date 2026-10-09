@@ -2,6 +2,7 @@ import type { SupabaseClient } from '@supabase/supabase-js';
 import type { Database } from '@/types/database';
 import type { ImportWorkerApi, ImportCounts } from './types';
 import { AppError } from '@/lib/errors';
+import { isDemoMode } from '@/lib/demo/demo-store';
 
 export interface RunStagingOptions {
   workerApi: ImportWorkerApi;
@@ -25,6 +26,18 @@ export async function runStaging({
   signal,
   onProgress,
 }: RunStagingOptions): Promise<ImportCounts> {
+  if (isDemoMode()) {
+    onProgress?.(totalRows, totalRows);
+    return {
+      valid: totalRows,
+      incomplete: 0,
+      error: 0,
+      duplicate_db: 0,
+      duplicate_file: 0,
+      total: totalRows,
+    };
+  }
+
   let currentIdx = startRowIdx;
 
   while (currentIdx < totalRows) {

@@ -1,5 +1,6 @@
 import type { SupabaseClient } from '@supabase/supabase-js';
 import type { Database } from '@/types/database';
+import { isDemoMode } from '@/lib/demo/demo-store';
 
 export interface RunCommitOptions {
   jobId: string;
@@ -23,6 +24,15 @@ export async function runCommit({
   signal,
   onProgress,
 }: RunCommitOptions): Promise<CommitResult> {
+  if (isDemoMode()) {
+    onProgress?.(totalToCommit, totalToCommit);
+    return {
+      inserted: totalToCommit,
+      updated: 0,
+      total: totalToCommit,
+    };
+  }
+
   let totalInserted = 0;
   let totalUpdated = 0;
   let remaining = totalToCommit;

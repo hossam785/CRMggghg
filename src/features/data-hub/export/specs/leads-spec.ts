@@ -1,4 +1,5 @@
 import { supabase } from '@/lib/supabase/client';
+import { isDemoMode, demoStore } from '@/lib/demo/demo-store';
 import type { ExportSpec, ColumnDef } from '../types';
 import type { Database } from '@/types/database';
 
@@ -147,6 +148,58 @@ export function createLeadsExportSpec(
         name: { ar: 'العملاء', en: 'Leads' },
         columns: LEADS_COLUMNS,
         fetchPage: async (cursor) => {
+          if (isDemoMode()) {
+            if (cursor) return { rows: [], nextCursor: null };
+            const allLeads = demoStore.getLeadsRaw().filter((l) => !l.deleted_at);
+            const countries = demoStore.getCountries();
+            const industries = demoStore.getIndustries();
+
+            const rows: ExportLeadRow[] = allLeads.map((l) => {
+              const country = countries.find((c) => c.code === l.country_code);
+              const industry = industries.find((i) => i.id === l.industry_id);
+              return {
+                id: l.id,
+                name: l.name,
+                company: l.company,
+                job_title: l.job_title,
+                instagram_handle: l.instagram_handle,
+                whatsapp_e164: l.whatsapp_e164,
+                country_code: l.country_code,
+                country_name_ar: country?.name_ar || null,
+                country_name_en: country?.name_en || null,
+                industry_name_ar: industry?.label_ar || null,
+                industry_name_en: industry?.label_en || null,
+                stage: l.stage,
+                stage_changed_at: l.stage_changed_at || l.created_at,
+                first_message_at: l.first_message_at || null,
+                last_contacted_at: l.last_contacted_at || null,
+                follow_ups_sent: l.follow_ups_sent,
+                next_follow_up_on: l.next_follow_up_on,
+                reminder_note: l.reminder_note || null,
+                replied_at: l.replied_at || null,
+                meeting_booked_at: l.meeting_booked_at || null,
+                meeting_at: l.meeting_at || null,
+                proposal_sent_at: l.proposal_sent_at || null,
+                won_at: l.won_at || null,
+                lost_at: l.lost_at || null,
+                lost_reason: l.lost_reason || null,
+                notes: l.notes,
+                has_content: l.has_content,
+                appears_in_content: l.appears_in_content,
+                has_videographer: l.has_videographer || 'unknown',
+                problems: l.problems,
+                created_at: l.created_at,
+                updated_at: l.updated_at || l.created_at,
+                next_cursor: null,
+              };
+            });
+
+            return {
+              rows,
+              nextCursor: null,
+            };
+          }
+
           const { data, error } = await supabase.rpc('export_leads', {
             p_query: filterArgs.query ?? null,
             p_stages: filterArgs.stages ?? null,

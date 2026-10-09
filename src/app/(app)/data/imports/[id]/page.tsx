@@ -11,6 +11,7 @@ import {
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { createClient } from '@/lib/supabase/client';
+import { isDemoMode, demoStore } from '@/lib/demo/demo-store';
 import type { ImportJob, ImportRowStatus, CountryRef, IndustryRef } from '@/features/data-hub/import/types';
 import { ReportSummaryCards } from '@/features/data-hub/import/components/ReportSummaryCards';
 import { ReportRowsTable } from '@/features/data-hub/import/components/ReportRowsTable';
@@ -30,6 +31,20 @@ export default function ImportReportPage() {
   const { data: job, isLoading, refetch } = useQuery({
     queryKey: ['import_job', jobId],
     queryFn: async () => {
+      if (isDemoMode() && jobId?.startsWith('demo-job-')) {
+        return {
+          id: jobId,
+          source: 'xlsx',
+          file_name: 'demo-import.xlsx',
+          sheet_name: 'Sheet1',
+          mapping: {},
+          options: {},
+          total_rows: 50,
+          status: 'ready',
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString(),
+        } as unknown as ImportJob;
+      }
       const { data, error } = await supabase
         .from('import_jobs')
         .select('*')
@@ -45,6 +60,14 @@ export default function ImportReportPage() {
   const { data: industries = [] } = useQuery<IndustryRef[]>({
     queryKey: ['industries', 'active'],
     queryFn: async () => {
+      if (isDemoMode()) {
+        return demoStore.getIndustries().filter((i) => i.is_active).map((i) => ({
+          id: i.id,
+          key: i.key,
+          label_ar: i.label_ar,
+          label_en: i.label_en,
+        }));
+      }
       const { data } = await supabase
         .from('industries')
         .select('id, key, label_ar, label_en')
@@ -57,6 +80,13 @@ export default function ImportReportPage() {
   const { data: countries = [] } = useQuery<CountryRef[]>({
     queryKey: ['countries'],
     queryFn: async () => {
+      if (isDemoMode()) {
+        return demoStore.getCountries().map((c) => ({
+          code: c.code,
+          name_ar: c.name_ar,
+          name_en: c.name_en,
+        }));
+      }
       const { data } = await supabase
         .from('countries')
         .select('code, name_ar, name_en')
@@ -69,6 +99,14 @@ export default function ImportReportPage() {
   const { data: decisionCounts, refetch: refetchDecisions } = useQuery({
     queryKey: ['import_decision_counts', jobId],
     queryFn: async () => {
+      if (isDemoMode() && jobId?.startsWith('demo-job-')) {
+        return {
+          insertCount: 50,
+          updateCount: 0,
+          skipCount: 0,
+          totalToCommit: 50,
+        };
+      }
       const { data: rows } = await supabase
         .from('import_rows')
         .select('decision, status')

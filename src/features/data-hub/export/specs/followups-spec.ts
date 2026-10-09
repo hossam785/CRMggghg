@@ -1,4 +1,5 @@
 import { supabase } from '@/lib/supabase/client';
+import { isDemoMode, demoStore } from '@/lib/demo/demo-store';
 import type { ExportSpec, ColumnDef } from '../types';
 import type { Database } from '@/types/database';
 
@@ -66,6 +67,10 @@ export function createFollowUpsExportSpec(): ExportSpec<QueueRow> {
 
   // Helper to fetch bucket rows
   const fetchBucket = async (bucket: string) => {
+    if (isDemoMode()) {
+      const all = demoStore.getFollowUpQueue();
+      return (all as QueueRow[]).filter((r) => r.bucket === bucket);
+    }
     const { data, error } = await supabase.rpc('follow_up_queue', {
       p_waiting_limit: 500,
     });

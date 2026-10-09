@@ -4,6 +4,7 @@ import * as React from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { FileUp, TableProperties, RefreshCw } from 'lucide-react';
 import { createClient } from '@/lib/supabase/client';
+import { isDemoMode, demoStore } from '@/lib/demo/demo-store';
 import { useWorker } from '@/lib/workers/use-worker';
 import type { CountryRef, ImportWorkerApi, IndustryRef, Mapping, SheetData, ValidateCtx } from '../types';
 import { listSavedMappings } from '../saved-mappings';
@@ -32,6 +33,14 @@ export function ImportWizard() {
   const { data: industries = [] } = useQuery<IndustryRef[]>({
     queryKey: ['industries', 'active'],
     queryFn: async () => {
+      if (isDemoMode()) {
+        return demoStore.getIndustries().filter((i) => i.is_active).map((i) => ({
+          id: i.id,
+          key: i.key,
+          label_ar: i.label_ar,
+          label_en: i.label_en,
+        }));
+      }
       const { data } = await supabase
         .from('industries')
         .select('id, key, label_ar, label_en')
@@ -44,6 +53,13 @@ export function ImportWizard() {
   const { data: countries = [] } = useQuery<CountryRef[]>({
     queryKey: ['countries'],
     queryFn: async () => {
+      if (isDemoMode()) {
+        return demoStore.getCountries().map((c) => ({
+          code: c.code,
+          name_ar: c.name_ar,
+          name_en: c.name_en,
+        }));
+      }
       const { data } = await supabase
         .from('countries')
         .select('code, name_ar, name_en')
