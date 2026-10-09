@@ -20,6 +20,21 @@ export type LeadStage =
 
 export type TriState = 'yes' | 'no' | 'unknown';
 
+export type LeadEventType =
+  | 'created'
+  | 'message_sent'
+  | 'follow_up_sent'
+  | 'reply_received'
+  | 'meeting_booked'
+  | 'proposal_sent'
+  | 'won'
+  | 'lost'
+  | 'stage_set'
+  | 'reopened'
+  | 'reminder_set'
+  | 'snoozed'
+  | 'restarted';
+
 export type LostReason =
   | 'not_interested'
   | 'no_reply'
@@ -279,6 +294,52 @@ export interface Database {
         };
         Relationships: [];
       };
+      lead_events: {
+        Row: {
+          id: number;
+          owner_id: string;
+          lead_id: string;
+          type: LeadEventType;
+          from_stage: LeadStage | null;
+          to_stage: LeadStage | null;
+          prev_state: Json | null;
+          meta: Json;
+          occurred_at: string;
+          undone_at: string | null;
+        };
+        Insert: {
+          id?: number;
+          owner_id?: string;
+          lead_id: string;
+          type: LeadEventType;
+          from_stage?: LeadStage | null;
+          to_stage?: LeadStage | null;
+          prev_state?: Json | null;
+          meta?: Json;
+          occurred_at?: string;
+          undone_at?: string | null;
+        };
+        Update: {
+          id?: number;
+          owner_id?: string;
+          lead_id?: string;
+          type?: LeadEventType;
+          from_stage?: LeadStage | null;
+          to_stage?: LeadStage | null;
+          prev_state?: Json | null;
+          meta?: Json;
+          occurred_at?: string;
+          undone_at?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'lead_events_lead_id_fkey';
+            columns: ['lead_id'];
+            referencedRelation: 'leads';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
     };
     Views: Record<string, never>;
     Functions: {
@@ -364,10 +425,38 @@ export interface Database {
           matched_on: 'instagram' | 'whatsapp' | string;
         }[];
       };
+      assert_stage: {
+        Args: {
+          p_current: LeadStage;
+          p_allowed: LeadStage[];
+        };
+        Returns: void;
+      };
+      lead_action: {
+        Args: {
+          p_lead_id: string;
+          p_action: string;
+          p_payload?: Json;
+          p_expected_stage?: LeadStage | null;
+        };
+        Returns: {
+          lead: Database['public']['Tables']['leads']['Row'];
+          event_id: number;
+        };
+      };
+      undo_lead_event: {
+        Args: {
+          p_event_id: number;
+        };
+        Returns: {
+          lead: Database['public']['Tables']['leads']['Row'];
+        };
+      };
     };
     Enums: {
       lead_stage: LeadStage;
       tri_state: TriState;
+      lead_event_type: LeadEventType;
     };
     CompositeTypes: Record<string, never>;
   };
