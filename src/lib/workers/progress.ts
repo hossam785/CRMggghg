@@ -64,3 +64,17 @@ export function createThrottledProgress(
 export function wrapProgressCallback(onProgress: ProgressCallback): ProgressCallback {
   return Comlink.proxy(onProgress);
 }
+
+export function throttleProgress(
+  onProgress: (done: number, total: number) => void,
+  minIntervalMs: number = 100
+): (done: number, total: number) => void {
+  let lastTime = 0;
+  return (done: number, total: number) => {
+    const now = Date.now();
+    if (done === 0 || done >= total || now - lastTime >= minIntervalMs) {
+      lastTime = now;
+      onProgress(done, total);
+    }
+  };
+}

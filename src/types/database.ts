@@ -42,6 +42,26 @@ export type LostReason =
   | 'timing'
   | 'other';
 
+export type ImportStatus =
+  | 'parsing'
+  | 'staging'
+  | 'validating'
+  | 'review'
+  | 'committing'
+  | 'done'
+  | 'cancelled'
+  | 'failed'
+  | 'rolled_back';
+
+export type ImportRowStatus =
+  | 'valid'
+  | 'incomplete'
+  | 'error'
+  | 'duplicate_db'
+  | 'duplicate_file';
+
+export type ImportDecision = 'import' | 'skip' | 'update';
+
 export interface Database {
   public: {
     Tables: {
@@ -340,6 +360,190 @@ export interface Database {
           },
         ];
       };
+      import_jobs: {
+        Row: {
+          id: string;
+          owner_id: string;
+          source: 'xlsx' | 'xls' | 'csv' | 'ods' | 'google_sheet' | 'backup' | 'tsv_paste';
+          file_name: string | null;
+          sheet_name: string | null;
+          mapping: Json;
+          options: Json;
+          status: ImportStatus;
+          total_rows: number;
+          staged_rows: number;
+          committed_rows: number;
+          counts: Record<string, number>;
+          error: string | null;
+          created_at: string;
+          finished_at: string | null;
+        };
+        Insert: {
+          id?: string;
+          owner_id?: string;
+          source: 'xlsx' | 'xls' | 'csv' | 'ods' | 'google_sheet' | 'backup' | 'tsv_paste';
+          file_name?: string | null;
+          sheet_name?: string | null;
+          mapping?: Json;
+          options?: Json;
+          status?: ImportStatus;
+          total_rows?: number;
+          staged_rows?: number;
+          committed_rows?: number;
+          counts?: Record<string, number>;
+          error?: string | null;
+          created_at?: string;
+          finished_at?: string | null;
+        };
+        Update: {
+          id?: string;
+          owner_id?: string;
+          source?: 'xlsx' | 'xls' | 'csv' | 'ods' | 'google_sheet' | 'backup' | 'tsv_paste';
+          file_name?: string | null;
+          sheet_name?: string | null;
+          mapping?: Json;
+          options?: Json;
+          status?: ImportStatus;
+          total_rows?: number;
+          staged_rows?: number;
+          committed_rows?: number;
+          counts?: Record<string, number>;
+          error?: string | null;
+          created_at?: string;
+          finished_at?: string | null;
+        };
+        Relationships: [];
+      };
+      import_rows: {
+        Row: {
+          job_id: string;
+          row_no: number;
+          owner_id: string;
+          kind: 'lead' | 'event' | 'industry' | 'settings';
+          raw: Json;
+          data: Json;
+          status: ImportRowStatus;
+          issues: { field: string; code: string }[];
+          match_lead_id: string | null;
+          decision: ImportDecision | null;
+          raw_before: Json | null;
+          committed_at: string | null;
+          result_lead_id: string | null;
+        };
+        Insert: {
+          job_id: string;
+          row_no: number;
+          owner_id?: string;
+          kind?: 'lead' | 'event' | 'industry' | 'settings';
+          raw: Json;
+          data: Json;
+          status: ImportRowStatus;
+          issues?: { field: string; code: string }[];
+          match_lead_id?: string | null;
+          decision?: ImportDecision | null;
+          raw_before?: Json | null;
+          committed_at?: string | null;
+          result_lead_id?: string | null;
+        };
+        Update: {
+          job_id?: string;
+          row_no?: number;
+          owner_id?: string;
+          kind?: 'lead' | 'event' | 'industry' | 'settings';
+          raw?: Json;
+          data?: Json;
+          status?: ImportRowStatus;
+          issues?: { field: string; code: string }[];
+          match_lead_id?: string | null;
+          decision?: ImportDecision | null;
+          raw_before?: Json | null;
+          committed_at?: string | null;
+          result_lead_id?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'import_rows_job_id_fkey';
+            columns: ['job_id'];
+            referencedRelation: 'import_jobs';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
+      backups: {
+        Row: {
+          id: string;
+          owner_id: string;
+          kind: 'scheduled' | 'manual' | 'pre_restore' | 'pre_import';
+          status: 'pending' | 'running' | 'ready' | 'failed';
+          format: 'xlsx' | 'csv_zip' | 'json';
+          storage_path: string | null;
+          size_bytes: number | null;
+          row_counts: Record<string, number>;
+          checksum: string | null;
+          downloaded_at: string | null;
+          last_notified_at: string | null;
+          error: string | null;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          owner_id?: string;
+          kind: 'scheduled' | 'manual' | 'pre_restore' | 'pre_import';
+          status?: 'pending' | 'running' | 'ready' | 'failed';
+          format: 'xlsx' | 'csv_zip' | 'json';
+          storage_path?: string | null;
+          size_bytes?: number | null;
+          row_counts?: Record<string, number>;
+          checksum?: string | null;
+          downloaded_at?: string | null;
+          last_notified_at?: string | null;
+          error?: string | null;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          owner_id?: string;
+          kind?: 'scheduled' | 'manual' | 'pre_restore' | 'pre_import';
+          status?: 'pending' | 'running' | 'ready' | 'failed';
+          format?: 'xlsx' | 'csv_zip' | 'json';
+          storage_path?: string | null;
+          size_bytes?: number | null;
+          row_counts?: Record<string, number>;
+          checksum?: string | null;
+          downloaded_at?: string | null;
+          last_notified_at?: string | null;
+          error?: string | null;
+          created_at?: string;
+        };
+        Relationships: [];
+      };
+      push_subscriptions: {
+        Row: {
+          id: number;
+          owner_id: string;
+          endpoint: string;
+          keys: Json;
+          user_agent: string | null;
+          created_at: string;
+        };
+        Insert: {
+          id?: never;
+          owner_id?: string;
+          endpoint: string;
+          keys: Json;
+          user_agent?: string | null;
+          created_at?: string;
+        };
+        Update: {
+          id?: never;
+          owner_id?: string;
+          endpoint?: string;
+          keys?: Json;
+          user_agent?: string | null;
+          created_at?: string;
+        };
+        Relationships: [];
+      };
     };
     Views: Record<string, never>;
     Functions: {
@@ -519,11 +723,77 @@ export interface Database {
           next_cursor: string | null;
         }[];
       };
+      stage_import_rows: {
+        Args: {
+          p_job: string;
+          p_rows: Json;
+        };
+        Returns: number;
+      };
+      finalize_import_staging: {
+        Args: {
+          p_job: string;
+        };
+        Returns: Json;
+      };
+      update_import_row: {
+        Args: {
+          p_job: string;
+          p_row_no: number;
+          p_data: Json;
+          p_status: string;
+          p_issues?: Json;
+        };
+        Returns: Database['public']['Tables']['import_rows']['Row'];
+      };
+      set_import_decisions: {
+        Args: {
+          p_job: string;
+          p_status: string;
+          p_decision: string;
+        };
+        Returns: number;
+      };
+      commit_import: {
+        Args: {
+          p_job: string;
+          p_batch?: number;
+        };
+        Returns: {
+          inserted: number;
+          updated: number;
+          remaining: number;
+        };
+      };
+      rollback_import: {
+        Args: {
+          p_job: string;
+        };
+        Returns: {
+          deleted: number;
+          restored: number;
+        };
+      };
+      mark_backup_downloaded: {
+        Args: {
+          p_id: string;
+        };
+        Returns: void;
+      };
+      restore_commit: {
+        Args: {
+          p_job: string;
+          p_mode?: string;
+        };
+        Returns: Json;
+      };
     };
     Enums: {
       lead_stage: LeadStage;
       tri_state: TriState;
       lead_event_type: LeadEventType;
+      import_status: ImportStatus;
+      import_row_status: ImportRowStatus;
     };
     CompositeTypes: Record<string, never>;
   };
@@ -532,6 +802,10 @@ export interface Database {
 export type Lead = Database['public']['Tables']['leads']['Row'];
 export type LeadEvent = Database['public']['Tables']['lead_events']['Row'];
 export type Settings = Database['public']['Tables']['settings']['Row'];
+export type ImportJob = Database['public']['Tables']['import_jobs']['Row'];
+export type ImportRow = Database['public']['Tables']['import_rows']['Row'];
+export type Backup = Database['public']['Tables']['backups']['Row'];
+export type PushSubscriptionRecord = Database['public']['Tables']['push_subscriptions']['Row'];
 
 export type FollowUpBucket =
   | 'due_fu1'

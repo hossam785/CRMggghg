@@ -40,6 +40,7 @@ const eslintConfig = defineConfig([
     "next-env.d.ts",
     ".tmp/**",
     "supabase/.temp/**",
+    "supabase/functions/**",
   ]),
 ]);
 

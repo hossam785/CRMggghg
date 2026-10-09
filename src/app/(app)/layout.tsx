@@ -3,6 +3,7 @@ import { Sidebar } from '@/components/layout/sidebar';
 import { BottomNav } from '@/components/layout/bottom-nav';
 import { AppHeader } from '@/components/layout/app-header';
 import { Fab } from '@/components/layout/fab';
+import { BackupBanner } from '@/features/data-hub/backups/components/BackupBanner';
 
 export default function AppLayout({
   children,
@@ -17,6 +18,9 @@ export default function AppLayout({
 
         {/* Main Content Area */}
         <div className="flex flex-1 flex-col overflow-hidden">
+          {/* In-app Backup Notification Banner */}
+          <BackupBanner />
+
           {/* Mobile Top Header */}
           <AppHeader />
 
