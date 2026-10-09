@@ -17,6 +17,7 @@ import { StageBadge } from '@/components/ui/stage-badge';
 import { InstagramIcon as Instagram } from '@/components/icons/instagram';
 import { getCountryFlag } from '@/features/leads/components/fields/CountryCombobox';
 import { useTrashLeads, useBulkRestoreLeads, useRestoreLead } from '@/features/leads/queries';
+import { ExportButton, createTrashExportSpec } from '@/features/data-hub/export';
 import type { Lead } from '@/features/leads/schema';
 import { cn } from '@/lib/utils';
 
@@ -25,6 +26,7 @@ export default function TrashPage() {
   const tCommon = useTranslations('common');
   const locale = useLocale();
 
+  const trashExportSpec = React.useMemo(() => createTrashExportSpec(), []);
   const { data: leads = [], isLoading, isError, refetch } = useTrashLeads();
   const restoreMutation = useRestoreLead();
   const bulkRestoreMutation = useBulkRestoreLeads();
@@ -155,9 +157,12 @@ export default function TrashPage() {
           </p>
         </div>
 
-        {/* Bulk Action Controls */}
-        {selectedIds.size > 0 && (
-          <div className="flex items-center gap-2 animate-in fade-in-0 duration-150">
+        <div className="flex items-center gap-2">
+          <ExportButton spec={trashExportSpec} />
+
+          {/* Bulk Action Controls */}
+          {selectedIds.size > 0 && (
+            <div className="flex items-center gap-2 animate-in fade-in-0 duration-150">
             <Button
               type="button"
               variant="outline"
@@ -184,6 +189,7 @@ export default function TrashPage() {
             </Button>
           </div>
         )}
+        </div>
       </div>
 
       {/* Loading Skeleton */}

@@ -17,6 +17,7 @@ import {
   useCountries,
 } from '@/features/leads/queries';
 import { useLeadModal } from '@/features/leads/context/lead-modal-context';
+import { ExportButton, createLeadsExportSpec } from '@/features/data-hub/export';
 import type { LeadSuggestion } from '@/features/leads/api';
 
 export default function LeadsPage() {
@@ -24,6 +25,17 @@ export default function LeadsPage() {
   const t = useTranslations('leads');
   const { openCreateLead } = useLeadModal();
   const { filters, rawState, setFilters, resetFilters } = useLeadFilters();
+
+  const leadsExportSpec = React.useMemo(
+    () =>
+      createLeadsExportSpec({
+        query: rawState.q,
+        stages: filters.stages,
+        industries: filters.industries,
+        countries: filters.countries,
+      }),
+    [rawState.q, filters.stages, filters.industries, filters.countries]
+  );
 
   // Queries
   const {
@@ -79,15 +91,18 @@ export default function LeadsPage() {
       <LeadsToolbar
         isFetching={isFetching}
         actionsSlot={
-          <Button
-            type="button"
-            size="sm"
-            onClick={openCreateLead}
-            className="hidden sm:inline-flex items-center gap-1.5 h-10 px-3.5"
-          >
-            <Plus className="size-4" />
-            <span>{t('createLeadTitle')}</span>
-          </Button>
+          <div className="flex items-center gap-2">
+            <ExportButton spec={leadsExportSpec} />
+            <Button
+              type="button"
+              size="sm"
+              onClick={openCreateLead}
+              className="hidden sm:inline-flex items-center gap-1.5 h-10 px-3.5"
+            >
+              <Plus className="size-4" />
+              <span>{t('createLeadTitle')}</span>
+            </Button>
+          </div>
         }
       />
 

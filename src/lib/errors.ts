@@ -15,6 +15,7 @@ export const APP_ERROR_CODES = [
   'IMPORT_TOO_LARGE',
   'IMPORT_UNREADABLE',
   'BACKUP_INVALID',
+  'CANCELLED',
   'UNKNOWN',
 ] as const;
 

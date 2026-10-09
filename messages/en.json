@@ -64,6 +64,7 @@
     "IMPORT_TOO_LARGE": "File exceeds limit (50MB / 200,000 rows)",
     "IMPORT_UNREADABLE": "Cannot read file, ensure it is a valid Excel or CSV",
     "BACKUP_INVALID": "Backup file is invalid or corrupted",
+    "CANCELLED": "Operation cancelled",
     "UNKNOWN": "An unexpected error occurred, please try again"
   },
   "a11y": {
@@ -428,6 +429,36 @@
     "dataHubDesc": "Export, import Excel spreadsheets, and manage backups",
     "trash": "Trash",
     "trashDesc": "Restore or review soft-deleted leads"
+  },
+  "data": {
+    "title": "Data Hub",
+    "export": "Export",
+    "exportTitle": "Export Data",
+    "exportDesc": "Download data in Excel or CSV format",
+    "format": "File Format",
+    "formatXlsx": "Excel (.xlsx) - Styled with links and colors",
+    "formatCsv": "CSV (.csv) - Fast plain text",
+    "columns": "Included Columns",
+    "selectAll": "Select All",
+    "deselectAll": "Deselect All",
+    "headerLanguage": "Header Language",
+    "startExport": "Start Export",
+    "exporting": "Exporting…",
+    "preparing": "Preparing file… {processed} / {total}",
+    "downloading": "Downloading…",
+    "exportSuccess": "File exported and downloaded successfully",
+    "exportCancelled": "Export cancelled",
+    "exportFailed": "Failed to export data",
+    "downloadTemplate": "Download Import Excel Template",
+    "downloadTemplateDesc": "Ready template with columns and dropdown validations for bulk import",
+    "generatingTemplate": "Generating template…",
+    "templateSuccess": "Template downloaded successfully",
+    "quickExportsTitle": "Direct Data Export",
+    "quickExportsDesc": "Export various system records to Excel or CSV with one click",
+    "allLeads": "All Leads",
+    "followUpQueue": "Follow-up Queue",
+    "businessIndustries": "Industries",
+    "trashRecords": "Trash Records"
   }
 }
 

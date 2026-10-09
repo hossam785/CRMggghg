@@ -473,6 +473,52 @@ export interface Database {
           meeting_at: string | null;
         }[];
       };
+      export_leads: {
+        Args: {
+          p_query?: string | null;
+          p_stages?: LeadStage[] | null;
+          p_industries?: number[] | null;
+          p_countries?: string[] | null;
+          p_filters?: Json | null;
+          p_cursor?: string | null;
+          p_limit?: number;
+        };
+        Returns: {
+          id: string;
+          name: string;
+          company: string | null;
+          job_title: string | null;
+          instagram_handle: string | null;
+          whatsapp_e164: string | null;
+          country_code: string | null;
+          country_name_ar: string | null;
+          country_name_en: string | null;
+          industry_name_ar: string | null;
+          industry_name_en: string | null;
+          stage: LeadStage;
+          stage_changed_at: string;
+          first_message_at: string | null;
+          last_contacted_at: string | null;
+          follow_ups_sent: number;
+          next_follow_up_on: string | null;
+          reminder_note: string | null;
+          replied_at: string | null;
+          meeting_booked_at: string | null;
+          meeting_at: string | null;
+          proposal_sent_at: string | null;
+          won_at: string | null;
+          lost_at: string | null;
+          lost_reason: LostReason | null;
+          notes: string | null;
+          has_content: boolean | null;
+          appears_in_content: boolean | null;
+          has_videographer: TriState;
+          problems: string | null;
+          created_at: string;
+          updated_at: string;
+          next_cursor: string | null;
+        }[];
+      };
     };
     Enums: {
       lead_stage: LeadStage;

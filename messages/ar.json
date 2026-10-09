@@ -64,6 +64,7 @@
     "IMPORT_TOO_LARGE": "الملف أكبر من الحد المسموح (50MB / 200,000 صف)",
     "IMPORT_UNREADABLE": "تعذر قراءة الملف، تأكد من سلامة ملف Excel أو CSV",
     "BACKUP_INVALID": "ملف النسخة الاحتياطية غير صالح أو تالف",
+    "CANCELLED": "تم إلغاء العملية",
     "UNKNOWN": "حدث خطأ غير متوقع، يرجى المحاولة مرة أخرى"
   },
   "a11y": {
@@ -428,6 +429,36 @@
     "dataHubDesc": "تصدير واستيراد ملفات Excel والنسخ الاحتياطي",
     "trash": "سلة المحذوفات",
     "trashDesc": "استرجاع أو مراجعة العملاء المحذوفين"
+  },
+  "data": {
+    "title": "مركز البيانات",
+    "export": "تصدير",
+    "exportTitle": "تصدير البيانات",
+    "exportDesc": "تنزيل البيانات بصيغة Excel أو CSV",
+    "format": "صيغة الملف",
+    "formatXlsx": "Excel (.xlsx) - منسق بالألوان والروابط",
+    "formatCsv": "CSV (.csv) - نصي سريع",
+    "columns": "الأعمدة المضمنة",
+    "selectAll": "تحديد الكل",
+    "deselectAll": "إلغاء التحديد",
+    "headerLanguage": "لغة العناوين",
+    "startExport": "بدء التصدير",
+    "exporting": "جارِ التصدير…",
+    "preparing": "جارِ تحضير الملف… {processed} / {total}",
+    "downloading": "جارِ التنزيل…",
+    "exportSuccess": "تم تصدير وتنزيل الملف بنجاح",
+    "exportCancelled": "تم إلغاء التصدير",
+    "exportFailed": "حدث خطأ أثناء التصدير",
+    "downloadTemplate": "تحميل نموذج Excel للاستيراد",
+    "downloadTemplateDesc": "ملف جاهز بالأعمدة والقوائم المنسدلة لإدخال واستيراد العملاء",
+    "generatingTemplate": "جارِ إنشاء النموذج…",
+    "templateSuccess": "تم تنزيل النموذج بنجاح",
+    "quickExportsTitle": "تصدير البيانات المباشر",
+    "quickExportsDesc": "تصدير سجلات النظام المختلفة بصيغة Excel أو CSV بضغطة واحدة",
+    "allLeads": "جميع العملاء",
+    "followUpQueue": "طابور المتابعات",
+    "businessIndustries": "أنشطة الأعمال",
+    "trashRecords": "سلة المحذوفات"
   }
 }
 

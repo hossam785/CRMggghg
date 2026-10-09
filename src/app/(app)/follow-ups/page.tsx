@@ -15,10 +15,12 @@ import { useFollowUpQueue } from '@/features/follow-ups/queries';
 import { FollowUpSection } from '@/features/follow-ups/components/FollowUpSection';
 import { InboxZero } from '@/features/follow-ups/components/InboxZero';
 import { Progress } from '@/components/ui/progress';
+import { ExportButton, createFollowUpsExportSpec } from '@/features/data-hub/export';
 
 export default function FollowUpsPage() {
   const t = useTranslations('followUps');
   const { grouped, isLoading, isError, refetch } = useFollowUpQueue();
+  const followUpsExportSpec = React.useMemo(() => createFollowUpsExportSpec(), []);
 
   const {
     due_fu1,
@@ -96,12 +98,15 @@ export default function FollowUpsPage() {
             </p>
           </div>
 
-          {doneCount > 0 && maxTotal > 0 && (
-            <div className="inline-flex items-center gap-1.5 text-xs text-[var(--fg-muted)] bg-[var(--surface-2)] px-2.5 py-1 rounded-full border border-[var(--border)]">
-              <CheckCircle2 className="size-3.5 text-emerald-600" />
-              <span>{t('doneCount', { done: doneCount, total: maxTotal })}</span>
-            </div>
-          )}
+          <div className="flex items-center gap-2">
+            <ExportButton spec={followUpsExportSpec} />
+            {doneCount > 0 && maxTotal > 0 && (
+              <div className="inline-flex items-center gap-1.5 text-xs text-[var(--fg-muted)] bg-[var(--surface-2)] px-2.5 py-1 rounded-full border border-[var(--border)]">
+                <CheckCircle2 className="size-3.5 text-emerald-600" />
+                <span>{t('doneCount', { done: doneCount, total: maxTotal })}</span>
+              </div>
+            )}
+          </div>
         </div>
 
         {/* Visual Progress Bar */}

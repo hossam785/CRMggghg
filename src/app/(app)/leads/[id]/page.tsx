@@ -15,6 +15,7 @@ import { NotesCard } from '@/features/leads/components/detail/NotesCard';
 import { NextFollowUpCard } from '@/features/leads/components/detail/NextFollowUpCard';
 import { Timeline } from '@/features/pipeline/components/Timeline';
 import { useLead } from '@/features/leads/queries';
+import { ExportButton, createLeadDetailExportSpec } from '@/features/data-hub/export';
 
 export default function LeadDetailPage() {
   const params = useParams<{ id: string }>();
@@ -23,6 +24,10 @@ export default function LeadDetailPage() {
   const locale = useLocale();
 
   const { data: lead, isLoading, isError } = useLead(id || '');
+  const leadExportSpec = React.useMemo(
+    () => (lead ? createLeadDetailExportSpec(lead) : null),
+    [lead]
+  );
 
   const BackIcon = locale === 'ar' ? ArrowRight : ArrowLeft;
 
@@ -81,6 +86,7 @@ export default function LeadDetailPage() {
           <BackIcon className="size-4" />
           <span>العودة للقائمة</span>
         </Button>
+        {leadExportSpec && <ExportButton spec={leadExportSpec} />}
       </div>
 
       {/* 1. Header with Name, Copy buttons, links, stage badge, delete */}

@@ -33,12 +33,14 @@ import {
   useDeleteIndustry,
 } from '../queries';
 import { type Industry } from '../api';
+import { ExportButton, createIndustriesExportSpec } from '@/features/data-hub/export';
 import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
 
 export function IndustriesManager() {
   const t = useTranslations('settings');
   const { data: industries = [], isLoading } = useAllIndustries();
+  const industriesExportSpec = React.useMemo(() => createIndustriesExportSpec(), []);
 
   const createMutation = useCreateIndustry();
   const updateMutation = useUpdateIndustry();
@@ -178,15 +180,18 @@ export function IndustriesManager() {
           <p className="text-sm text-muted-foreground mt-0.5">{t('industriesDesc')}</p>
         </div>
 
-        <Button
-          type="button"
-          size="sm"
-          onClick={() => setIsAdding(!isAdding)}
-          className="gap-1.5 self-start sm:self-auto"
-        >
-          <Plus className="size-4" />
-          <span>{t('addIndustry')}</span>
-        </Button>
+        <div className="flex items-center gap-2 self-start sm:self-auto">
+          <ExportButton spec={industriesExportSpec} />
+          <Button
+            type="button"
+            size="sm"
+            onClick={() => setIsAdding(!isAdding)}
+            className="gap-1.5"
+          >
+            <Plus className="size-4" />
+            <span>{t('addIndustry')}</span>
+          </Button>
+        </div>
       </div>
 
       {/* Add New Industry Inline Form */}
