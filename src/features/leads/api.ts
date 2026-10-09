@@ -2,6 +2,7 @@ import { supabase } from '@/lib/supabase/client';
 import { toAppError } from '@/lib/errors';
 import type { LeadStage, Database } from '@/types/database';
 import type { Lead, LeadInput, LeadListRow, LeadSort, LeadUpdate } from './schema';
+import { isDemoMode, demoStore } from '@/lib/demo/demo-store';
 
 export type Industry = Database['public']['Tables']['industries']['Row'];
 export type Country = Database['public']['Tables']['countries']['Row'];
@@ -31,6 +32,9 @@ export const leadsApi = {
    * Inserts a new lead into the database.
    */
   async createLead(input: LeadInput): Promise<Lead> {
+    if (isDemoMode()) {
+      return demoStore.createLead(input);
+    }
     try {
       const { data, error } = await supabase
         .from('leads')
@@ -63,6 +67,9 @@ export const leadsApi = {
    * Updates fields of an existing lead.
    */
   async updateLead(id: string, patch: LeadUpdate): Promise<Lead> {
+    if (isDemoMode()) {
+      return demoStore.updateLead(id, patch as Partial<Lead>);
+    }
     try {
       const { data, error } = await supabase
         .from('leads')
@@ -82,6 +89,10 @@ export const leadsApi = {
    * Soft-deletes a lead.
    */
   async softDeleteLead(id: string): Promise<void> {
+    if (isDemoMode()) {
+      demoStore.softDeleteLead(id);
+      return;
+    }
     try {
       const { error } = await supabase
         .from('leads')
@@ -98,6 +109,10 @@ export const leadsApi = {
    * Restores a soft-deleted lead.
    */
   async restoreLead(id: string): Promise<void> {
+    if (isDemoMode()) {
+      demoStore.restoreLead(id);
+      return;
+    }
     try {
       const { error } = await supabase
         .from('leads')
@@ -115,6 +130,10 @@ export const leadsApi = {
    */
   async bulkRestoreLeads(ids: string[]): Promise<void> {
     if (ids.length === 0) return;
+    if (isDemoMode()) {
+      ids.forEach((id) => demoStore.restoreLead(id));
+      return;
+    }
     try {
       const { error } = await supabase
         .from('leads')
@@ -131,6 +150,9 @@ export const leadsApi = {
    * Retrieves soft-deleted leads ordered by deleted_at descending.
    */
   async listTrashLeads(signal?: AbortSignal): Promise<Lead[]> {
+    if (isDemoMode()) {
+      return demoStore.listTrashLeads();
+    }
     try {
       let query = supabase
         .from('leads')
@@ -155,6 +177,11 @@ export const leadsApi = {
    * Fetches an active lead by id.
    */
   async getLead(id: string, signal?: AbortSignal): Promise<Lead> {
+    if (isDemoMode()) {
+      const l = demoStore.getLead(id);
+      if (!l) throw new Error('Lead not found');
+      return l;
+    }
     try {
       let query = supabase
         .from('leads')
@@ -190,6 +217,9 @@ export const leadsApi = {
     },
     signal?: AbortSignal
   ): Promise<LeadListRow[]> {
+    if (isDemoMode()) {
+      return demoStore.searchLeads(args);
+    }
     try {
       let rpcCall = supabase.rpc('search_leads', {
         p_query: args.p_query ?? null,
@@ -226,6 +256,9 @@ export const leadsApi = {
     },
     signal?: AbortSignal
   ): Promise<StageCount[]> {
+    if (isDemoMode()) {
+      return demoStore.getStageCounts();
+    }
     try {
       let rpcCall = supabase.rpc('lead_stage_counts', {
         p_query: args.p_query ?? null,
@@ -253,6 +286,9 @@ export const leadsApi = {
     args: { p_query: string; p_limit?: number },
     signal?: AbortSignal
   ): Promise<LeadSuggestion[]> {
+    if (isDemoMode()) {
+      return [];
+    }
     try {
       let rpcCall = supabase.rpc('suggest_leads', {
         p_query: args.p_query,
@@ -278,6 +314,9 @@ export const leadsApi = {
     args: { p_handle?: string | null; p_phone?: string | null; p_exclude?: string | null },
     signal?: AbortSignal
   ): Promise<DuplicateMatch[]> {
+    if (isDemoMode()) {
+      return [];
+    }
     try {
       let rpcCall = supabase.rpc('check_duplicate', {
         p_handle: args.p_handle ?? null,
@@ -301,6 +340,9 @@ export const leadsApi = {
    * Retrieves active industries ordered by sort_order.
    */
   async listIndustries(signal?: AbortSignal): Promise<Industry[]> {
+    if (isDemoMode()) {
+      return demoStore.getIndustries();
+    }
     try {
       let query = supabase
         .from('industries')
@@ -324,6 +366,9 @@ export const leadsApi = {
    * Retrieves all reference countries.
    */
   async listCountries(signal?: AbortSignal): Promise<Country[]> {
+    if (isDemoMode()) {
+      return demoStore.getCountries();
+    }
     try {
       let query = supabase
         .from('countries')

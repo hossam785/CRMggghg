@@ -7,6 +7,7 @@ import { CalendarClock, CheckCircle2, ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { createClient } from '@/lib/supabase/client';
 import type { FollowUpQueueRow } from '@/types/database';
+import { isDemoMode, demoStore } from '@/lib/demo/demo-store';
 
 export function DueTodayCard() {
   const supabase = createClient();
@@ -14,6 +15,9 @@ export function DueTodayCard() {
   const { data: queue = [] } = useQuery<FollowUpQueueRow[]>({
     queryKey: ['follow_up_queue'],
     queryFn: async () => {
+      if (isDemoMode()) {
+        return demoStore.getFollowUpQueue();
+      }
       const { data, error } = await supabase.rpc('follow_up_queue');
       if (error) throw error;
       return (data || []) as FollowUpQueueRow[];

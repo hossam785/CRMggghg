@@ -3,6 +3,7 @@ import { toAppError } from '@/lib/errors';
 import type { Lead } from '@/features/leads/schema';
 import type { Database, LeadStage } from '@/types/database';
 import type { LeadAction } from './stages';
+import { isDemoMode, demoStore } from '@/lib/demo/demo-store';
 
 export type LeadEventRow = Database['public']['Tables']['lead_events']['Row'];
 
@@ -16,6 +17,13 @@ export const pipelineApi = {
     payload?: Record<string, unknown>;
     expectedStage?: LeadStage | null;
   }): Promise<{ lead: Lead; event_id: number }> {
+    if (isDemoMode()) {
+      return demoStore.leadAction({
+        leadId: args.leadId,
+        action: args.action,
+        payload: args.payload,
+      });
+    }
     try {
       const { data, error } = await supabase.rpc('lead_action', {
         p_lead_id: args.leadId,

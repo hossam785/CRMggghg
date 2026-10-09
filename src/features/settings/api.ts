@@ -17,11 +17,16 @@ export const DEFAULT_SETTINGS: SettingsRow = {
   updated_at: '2026-10-09T00:00:00.000Z',
 };
 
+import { isDemoMode, demoStore } from '@/lib/demo/demo-store';
+
 export const settingsApi = {
   /**
    * Fetches the user settings record. Falls back to default configuration if not yet created.
    */
   async getSettings(signal?: AbortSignal): Promise<SettingsRow> {
+    if (isDemoMode()) {
+      return demoStore.getSettings();
+    }
     try {
       let query = supabase.from('settings').select('*');
       if (signal) {
@@ -41,6 +46,9 @@ export const settingsApi = {
    * Updates user settings.
    */
   async updateSettings(patch: Partial<SettingsRow>): Promise<SettingsRow> {
+    if (isDemoMode()) {
+      return demoStore.updateSettings(patch);
+    }
     try {
       const { data, error } = await supabase
         .from('settings')
@@ -60,6 +68,9 @@ export const industriesApi = {
    * Fetches all user industries (both active and inactive) ordered by sort_order.
    */
   async listAllIndustries(signal?: AbortSignal): Promise<Industry[]> {
+    if (isDemoMode()) {
+      return demoStore.getIndustries();
+    }
     try {
       let query = supabase
         .from('industries')

@@ -1,6 +1,7 @@
 import { supabase } from '@/lib/supabase/client';
 import { toAppError } from '@/lib/errors';
 import { type FollowUpQueueRow } from '@/types/database';
+import { isDemoMode, demoStore } from '@/lib/demo/demo-store';
 
 export const followUpsApi = {
   /**
@@ -10,6 +11,9 @@ export const followUpsApi = {
     waitingLimit: number = 100,
     signal?: AbortSignal
   ): Promise<FollowUpQueueRow[]> {
+    if (isDemoMode()) {
+      return demoStore.getFollowUpQueue();
+    }
     try {
       let query = supabase.rpc('follow_up_queue', {
         p_waiting_limit: waitingLimit,

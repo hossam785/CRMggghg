@@ -17,6 +17,8 @@ import { PipelineBar } from './PipelineBar';
 import { FirstRunOnboardingCard } from './FirstRunOnboardingCard';
 import { createDashboardExportSpec } from '../export-spec';
 
+import { isDemoMode, demoStore } from '@/lib/demo/demo-store';
+
 export function DashboardView() {
   const searchParams = useSearchParams();
   const rangeParam = (searchParams.get('range') as DashboardRange) || '30d';
@@ -29,6 +31,9 @@ export function DashboardView() {
   const { data: stats, isLoading, error, refetch, isFetching } = useQuery<RawDashboardStats>({
     queryKey: ['dashboard_stats', currentRange, dateRange.from, dateRange.to],
     queryFn: async () => {
+      if (isDemoMode()) {
+        return demoStore.getDashboardStats(dateRange.from, dateRange.to);
+      }
       const { data, error: rpcErr } = await supabase.rpc('dashboard_stats', {
         p_from: dateRange.from,
         p_to: dateRange.to,
