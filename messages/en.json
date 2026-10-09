@@ -322,6 +322,44 @@
       "snoozed": "Follow-up snoozed by {days} days",
       "restarted": "Follow-up cycle restarted"
     }
+  },
+  "followUps": {
+    "title": "Follow-ups",
+    "todayProgress": "You have {count} follow-ups today",
+    "todayProgressZero": "All follow-ups for today are done!",
+    "doneCount": "Completed {done} of {total}",
+    "inboxZeroTitle": "Inbox Zero! All caught up",
+    "inboxZeroDesc": "There are no follow-ups due at the moment. Great job!",
+    "nextDueAt": "Next follow-up due on: {date}",
+    "noUpcoming": "No upcoming follow-ups scheduled",
+    "sections": {
+      "due": "Due Today & Overdue",
+      "dueFu1": "Follow-up 1",
+      "dueFu2": "Follow-up 2",
+      "dueFu3": "Follow-up 3",
+      "reminders": "Today's Reminders",
+      "meetingsToday": "Meetings Today",
+      "exhausted": "Exhausted (No reply after 3 FU)",
+      "waiting": "Waiting (Scheduled later)"
+    },
+    "actions": {
+      "openDm": "Open DM",
+      "markDone": "Mark Sent",
+      "done": "Done",
+      "clearReminder": "Clear Reminder",
+      "meetingAction": "Update Meeting Status",
+      "lostNoReply": "Lost (No reply)",
+      "retryIn30Days": "Retry in 30 days",
+      "replyReceived": "Reply Received",
+      "snooze": "Snooze",
+      "viewAllWaiting": "View all in leads list ({count})"
+    },
+    "badges": {
+      "overdueDays": "{count} day overdue",
+      "overdueDaysPlural": "{count} days overdue",
+      "today": "Today",
+      "daysSinceLastContact": "Last contact {days}d ago"
+    }
   }
 }
 

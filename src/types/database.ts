@@ -452,6 +452,27 @@ export interface Database {
           lead: Database['public']['Tables']['leads']['Row'];
         };
       };
+      follow_up_queue: {
+        Args: {
+          p_waiting_limit?: number;
+        };
+        Returns: {
+          bucket: string;
+          bucket_total: number;
+          days_overdue: number;
+          id: string;
+          name: string;
+          instagram_handle: string | null;
+          whatsapp_e164: string | null;
+          industry_id: number | null;
+          country_code: string | null;
+          stage: LeadStage;
+          last_contacted_at: string | null;
+          next_follow_up_on: string | null;
+          reminder_note: string | null;
+          meeting_at: string | null;
+        }[];
+      };
     };
     Enums: {
       lead_stage: LeadStage;
@@ -465,3 +486,14 @@ export interface Database {
 export type Lead = Database['public']['Tables']['leads']['Row'];
 export type LeadEvent = Database['public']['Tables']['lead_events']['Row'];
 export type Settings = Database['public']['Tables']['settings']['Row'];
+
+export type FollowUpBucket =
+  | 'due_fu1'
+  | 'due_fu2'
+  | 'due_fu3'
+  | 'reminder'
+  | 'meeting_today'
+  | 'exhausted'
+  | 'waiting';
+
+export type FollowUpQueueRow = Database['public']['Functions']['follow_up_queue']['Returns'][number];

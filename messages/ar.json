@@ -322,6 +322,44 @@
       "snoozed": "تم تأجيل المتابعة بمقدار {days} يوم",
       "restarted": "تمت إعادة بدء دورة المتابعة"
     }
+  },
+  "followUps": {
+    "title": "المتابعات",
+    "todayProgress": "لديك {count} متابعات اليوم",
+    "todayProgressZero": "جميع متابعات اليوم منجزة!",
+    "doneCount": "تم إنجاز {done} من {total}",
+    "inboxZeroTitle": "رائع! أنهيت جميع متابعاتك",
+    "inboxZeroDesc": "لا توجد أي متابعات مستحقة في الوقت الحالي. عمل ممتاز!",
+    "nextDueAt": "المتابعة القادمة مستحقة في: {date}",
+    "noUpcoming": "لا توجد أي متابعات قادمة مجدولة حالياً",
+    "sections": {
+      "due": "مستحقة اليوم والمتأخرة",
+      "dueFu1": "متابعة أولى (Follow-up 1)",
+      "dueFu2": "متابعة ثانية (Follow-up 2)",
+      "dueFu3": "متابعة ثالثة (Follow-up 3)",
+      "reminders": "تذكيرات اليوم",
+      "meetingsToday": "مواعيد اليوم",
+      "exhausted": "اكتملت المتابعات الثلاث (لم يرد)",
+      "waiting": "في الانتظار (مجدولة لاحقاً)"
+    },
+    "actions": {
+      "openDm": "فتح الرسائل",
+      "markDone": "تم الإرسال",
+      "done": "تم",
+      "clearReminder": "إنهاء التذكير",
+      "meetingAction": "تحديث حالة الموعد",
+      "lostNoReply": "خسارة (لم يرد)",
+      "retryIn30Days": "إعادة المحاولة بعد شهر",
+      "replyReceived": "تسجيل رد",
+      "snooze": "تأجيل المتابعة",
+      "viewAllWaiting": "عرض الكل في قائمة العملاء ({count})"
+    },
+    "badges": {
+      "overdueDays": "متأخر {count} يوم",
+      "overdueDaysPlural": "متأخر {count} أيام",
+      "today": "اليوم",
+      "daysSinceLastContact": "آخر تواصل منذ {days} يوم"
+    }
   }
 }
 
