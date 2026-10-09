@@ -1,4 +1,4 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import { Suspense } from 'react';
 import { headers } from 'next/headers';
 import { getLocale, getMessages } from 'next-intl/server';
@@ -10,9 +10,26 @@ import { Toaster } from '@/components/ui/sonner';
 import { AuthListener } from '@/features/auth/components/auth-listener';
 import './globals.css';
 
+export const viewport: Viewport = {
+  themeColor: '#0f172a',
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+};
+
 export const metadata: Metadata = {
   title: 'Scope CRM',
   description: 'Scope Mini CRM',
+  applicationName: 'Scope CRM',
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'default',
+    title: 'Scope CRM',
+  },
+  formatDetection: {
+    telephone: false,
+  },
   robots: {
     index: false,
     follow: false,
