@@ -7,6 +7,7 @@ import { useTranslations } from 'next-intl';
 import { toast } from 'sonner';
 import { ChevronDown, ChevronUp, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
@@ -25,6 +26,7 @@ import { IndustrySelect } from './fields/IndustrySelect';
 import { TriStateToggle } from './fields/TriStateToggle';
 import { leadInputSchema, type LeadInput } from '../schema';
 import { useCreateLead } from '../queries';
+import { pipelineApi } from '@/features/pipeline/api';
 import { AppError } from '@/lib/errors';
 import { cn } from '@/lib/utils';
 
@@ -62,6 +64,7 @@ export function LeadFormDialog({ open, onOpenChange }: LeadFormDialogProps) {
 
   const [showMoreDetails, setShowMoreDetails] = React.useState(false);
   const [isDuplicate, setIsDuplicate] = React.useState(false);
+  const [alreadyMessaged, setAlreadyMessaged] = React.useState(false);
 
   const defaultCountry = React.useMemo(() => getInitialCountry(), []);
   const initialDraft = React.useMemo(() => getInitialDraft(), []);
@@ -124,6 +127,29 @@ export function LeadFormDialog({ open, onOpenChange }: LeadFormDialogProps) {
   const handleSave = async (data: LeadInput, addAnother = false) => {
     try {
       const created = await createLeadMutation.mutateAsync(data);
+
+      if (alreadyMessaged) {
+        try {
+          await pipelineApi.leadAction({
+            leadId: created.id,
+            action: 'send_message',
+            expectedStage: 'new',
+          });
+        } catch {
+          toast.error(t('alreadyMessagedFailed'), {
+            action: {
+              label: tCommon('retry'),
+              onClick: () => {
+                void pipelineApi.leadAction({
+                  leadId: created.id,
+                  action: 'send_message',
+                  expectedStage: 'new',
+                });
+              },
+            },
+          });
+        }
+      }
 
       // Save last used country
       if (data.country_code) {
@@ -295,6 +321,21 @@ export function LeadFormDialog({ open, onOpenChange }: LeadFormDialogProps) {
               {t('contactRequired')}
             </p>
           )}
+
+          {/* Already Messaged Checkbox (Layer 1, remembered across Save & Add Another) */}
+          <div className="flex items-center gap-2 pt-1 pb-1">
+            <Checkbox
+              id="already-messaged-checkbox"
+              checked={alreadyMessaged}
+              onCheckedChange={(checked) => setAlreadyMessaged(Boolean(checked))}
+            />
+            <Label
+              htmlFor="already-messaged-checkbox"
+              className="text-xs font-medium text-[var(--fg)] cursor-pointer select-none"
+            >
+              {t('alreadyMessaged')}
+            </Label>
+          </div>
 
           {/* Toggle for Layer 2: More Details */}
           <div className="pt-1">

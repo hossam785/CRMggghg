@@ -195,8 +195,11 @@
       "stage": "المرحلة",
       "industryAndCountry": "النشاط والدولة",
       "lastContact": "آخر تواصل",
-      "nextFollowUp": "المتابعة القادمة"
+      "nextFollowUp": "المتابعة القادمة",
+      "quickAction": "إجراء سريع"
     },
+    "alreadyMessaged": "تم إرسال رسالة بالفعل لهذا العميل",
+    "alreadyMessagedFailed": "تم إنشاء العميل ولكن تعذر تحديث المرحلة تلقائياً",
     "copied": "تم النسخ ✓",
     "copyInstagram": "نسخ الحساب",
     "copyPhone": "نسخ رقم الواتساب",

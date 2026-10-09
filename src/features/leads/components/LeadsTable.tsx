@@ -81,6 +81,7 @@ export function LeadsTable({
         <div className="w-48 shrink-0">{t('tableHeaders.industryAndCountry')}</div>
         <div className="w-32 shrink-0">{t('tableHeaders.lastContact')}</div>
         <div className="w-32 shrink-0">{t('tableHeaders.nextFollowUp')}</div>
+        <div className="w-32 shrink-0 text-center">{t('tableHeaders.quickAction')}</div>
         <div className="w-10 shrink-0" />
       </div>
 

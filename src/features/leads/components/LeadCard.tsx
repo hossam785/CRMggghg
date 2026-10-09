@@ -3,7 +3,7 @@
 import * as React from 'react';
 import { useTranslations, useLocale } from 'next-intl';
 import { useRouter } from 'next/navigation';
-import { MessageCircle, AlertTriangle, Calendar, MoreHorizontal, Trash2 } from 'lucide-react';
+import { MessageCircle, AlertTriangle, MoreHorizontal, Trash2 } from 'lucide-react';
 import { toast } from 'sonner';
 import { InstagramIcon as Instagram } from '@/components/icons/instagram';
 import { StageBadge } from '@/components/ui/stage-badge';
@@ -23,6 +23,7 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import { useSoftDeleteLead, useRestoreLead } from '../queries';
+import { PrimaryActionButton } from '@/features/pipeline/components/PrimaryActionButton';
 import { Highlight } from './Highlight';
 import { getCountryFlag } from './fields/CountryCombobox';
 import { instagramUrl } from '@/lib/normalize/instagram';
@@ -120,6 +121,52 @@ export function LeadCard({
     const rtf = new Intl.RelativeTimeFormat(locale === 'ar' ? 'ar-EG' : 'en-US', { numeric: 'auto' });
     return { contactRelative: rtf.format(-diffDays, 'day'), contactFull: full };
   }, [lead.last_contacted_at, locale]);
+
+  // Next follow-up info with overdue indicator
+  const nextFollowUpInfo = React.useMemo(() => {
+    if (!lead.next_follow_up_on) return null;
+    try {
+      const parts = lead.next_follow_up_on.split('-').map(Number);
+      const target = new Date(parts[0] || 2026, (parts[1] || 1) - 1, parts[2] || 1);
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      target.setHours(0, 0, 0, 0);
+
+      const diffDays = Math.round((target.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
+
+      if (diffDays === 0) {
+        return { text: locale === 'ar' ? 'اليوم' : 'Today', isOverdue: false, isToday: true };
+      }
+      if (diffDays === 1) {
+        return { text: locale === 'ar' ? 'غداً' : 'Tomorrow', isOverdue: false, isToday: false };
+      }
+      if (diffDays === 2) {
+        return { text: locale === 'ar' ? 'بعد يومين' : 'in 2 days', isOverdue: false, isToday: false };
+      }
+      if (diffDays > 2) {
+        return {
+          text: locale === 'ar' ? `خلال ${diffDays} أيام` : `in ${diffDays} days`,
+          isOverdue: false,
+          isToday: false,
+        };
+      }
+      const overdueDays = Math.abs(diffDays);
+      return {
+        text:
+          locale === 'ar'
+            ? overdueDays === 1
+              ? 'متأخر يوم'
+              : overdueDays === 2
+              ? 'متأخر يومين'
+              : `متأخر ${overdueDays} أيام`
+            : `Overdue ${overdueDays}d`,
+        isOverdue: true,
+        isToday: false,
+      };
+    } catch {
+      return { text: lead.next_follow_up_on, isOverdue: false, isToday: false };
+    }
+  }, [lead.next_follow_up_on, locale]);
 
   return (
     <div
@@ -228,23 +275,37 @@ export function LeadCard({
         )}
       </div>
 
-      {/* Bottom Meta: Industry, Country, Last Contact & Next Follow-up */}
-      <div className="flex items-center justify-between text-xs text-[var(--fg-muted)] pt-2.5 mt-2.5 border-t border-[var(--border)]">
-        <div className="flex items-center gap-1.5 truncate me-2">
-          {lead.country_code && (
-            <span title={countryName}>{getCountryFlag(lead.country_code)}</span>
-          )}
-          {industryLabel && <span className="truncate">{industryLabel}</span>}
+      {/* Bottom Meta & Quick Action */}
+      <div className="flex items-center justify-between gap-2 pt-2.5 mt-2.5 border-t border-[var(--border)]">
+        <div className="flex flex-col min-w-0 text-xs text-[var(--fg-muted)]">
+          <div className="flex items-center gap-1.5 truncate">
+            {lead.country_code && (
+              <span title={countryName}>{getCountryFlag(lead.country_code)}</span>
+            )}
+            {industryLabel && <span className="truncate">{industryLabel}</span>}
+          </div>
+          <div className="flex items-center gap-1.5 text-[11px] text-[var(--fg-muted)] mt-0.5" title={contactFull}>
+            <span>{contactRelative}</span>
+            {nextFollowUpInfo && (
+              <>
+                <span>•</span>
+                <span
+                  className={cn(
+                    nextFollowUpInfo.isOverdue && 'text-[var(--danger)] font-semibold',
+                    nextFollowUpInfo.isToday && 'text-[var(--primary)] font-semibold',
+                    !nextFollowUpInfo.isOverdue && !nextFollowUpInfo.isToday && 'text-[var(--fg-muted)]'
+                  )}
+                  title={lead.next_follow_up_on || undefined}
+                >
+                  {nextFollowUpInfo.text}
+                </span>
+              </>
+            )}
+          </div>
         </div>
 
-        <div className="flex items-center gap-2 shrink-0 text-end" title={contactFull}>
-          <span>{contactRelative}</span>
-          {lead.next_follow_up_on && (
-            <span className="inline-flex items-center gap-1 text-[11px] text-[var(--primary)] font-mono bg-[var(--primary)]/10 px-1.5 py-0.2 rounded-xs">
-              <Calendar className="size-2.5" />
-              <span>{lead.next_follow_up_on}</span>
-            </span>
-          )}
+        <div onClick={(e) => e.stopPropagation()} className="shrink-0">
+          <PrimaryActionButton lead={lead} size="sm" className="h-7 text-xs px-2.5" />
         </div>
       </div>
 

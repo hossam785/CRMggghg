@@ -195,8 +195,11 @@
       "stage": "Stage",
       "industryAndCountry": "Industry & Country",
       "lastContact": "Last Contact",
-      "nextFollowUp": "Next Follow-up"
+      "nextFollowUp": "Next Follow-up",
+      "quickAction": "Action"
     },
+    "alreadyMessaged": "Already messaged this lead",
+    "alreadyMessagedFailed": "Lead created, but failed to automatically update stage",
     "copied": "Copied ✓",
     "copyInstagram": "Copy handle",
     "copyPhone": "Copy WhatsApp number",
