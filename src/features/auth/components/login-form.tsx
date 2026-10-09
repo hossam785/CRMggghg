@@ -1,16 +1,17 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useTranslations } from 'next-intl';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { Eye, EyeOff, Loader2, KeyRound } from 'lucide-react';
+import { Eye, EyeOff, Loader2, KeyRound, ShieldCheck } from 'lucide-react';
 import { toast } from 'sonner';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Checkbox } from '@/components/ui/checkbox';
 import {
   Dialog,
   DialogContent,
@@ -28,6 +29,9 @@ import {
   type ForgotPasswordFormData,
 } from '../schemas';
 
+const DEFAULT_EMAIL = 'admin@scopecrm.com';
+const DEFAULT_PASSWORD = 'Admin@123456';
+
 export function LoginForm() {
   const t = useTranslations('auth');
   const tErrors = useTranslations('errors');
@@ -39,18 +43,34 @@ export function LoginForm() {
   const [isForgotPasswordOpen, setIsForgotPasswordOpen] = useState(false);
   const [isSendingReset, setIsSendingReset] = useState(false);
   const [formError, setFormError] = useState<string | null>(null);
+  const [rememberMe, setRememberMe] = useState(true);
 
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors, isSubmitting },
   } = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
-      email: '',
-      password: '',
+      email: DEFAULT_EMAIL,
+      password: DEFAULT_PASSWORD,
+      rememberMe: true,
     },
   });
+
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem('scope_remember_login');
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (parsed?.email) setValue('email', parsed.email);
+        if (parsed?.password) setValue('password', parsed.password);
+      }
+    } catch {
+      // ignore
+    }
+  }, [setValue]);
 
   const {
     register: registerForgot,
@@ -67,7 +87,7 @@ export function LoginForm() {
   const onSubmit = async (data: LoginFormData) => {
     setFormError(null);
     try {
-      await signInWithEmailPassword(data);
+      await signInWithEmailPassword({ ...data, rememberMe });
       const rawNext = searchParams.get('next');
       const target = safeNext(rawNext);
       router.push(target);
@@ -171,6 +191,24 @@ export function LoginForm() {
               {tErrors('VALIDATION')}
             </p>
           )}
+        </div>
+
+        <div className="flex items-center justify-between pt-1">
+          <label
+            htmlFor="login-remember"
+            className="flex items-center gap-2 cursor-pointer select-none text-xs font-medium text-muted-foreground hover:text-foreground transition-colors"
+          >
+            <Checkbox
+              id="login-remember"
+              checked={rememberMe}
+              onCheckedChange={(checked) => setRememberMe(Boolean(checked))}
+            />
+            <span>{t('rememberMe')}</span>
+          </label>
+          <span className="text-[11px] text-primary/80 font-medium inline-flex items-center gap-1">
+            <ShieldCheck className="size-3.5" />
+            <span>{t('defaultCredentialsNotice')}</span>
+          </span>
         </div>
 
         <Button

@@ -47,7 +47,9 @@
     "newPassword": "New Password",
     "confirmPassword": "Confirm Password",
     "signOut": "Sign Out",
-    "invalidCredentials": "Invalid credentials"
+    "invalidCredentials": "Invalid credentials",
+    "rememberMe": "Remember me",
+    "defaultCredentialsNotice": "Default credentials pre-filled"
   },
   "errors": {
     "LEAD_NOT_FOUND": "Lead not found or has been deleted",

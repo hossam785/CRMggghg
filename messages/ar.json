@@ -47,7 +47,9 @@
     "newPassword": "كلمة المرور الجديدة",
     "confirmPassword": "تأكيد كلمة المرور",
     "signOut": "تسجيل الخروج",
-    "invalidCredentials": "بيانات الدخول غير صحيحة"
+    "invalidCredentials": "بيانات الدخول غير صحيحة",
+    "rememberMe": "تذكر تسجيل الدخول",
+    "defaultCredentialsNotice": "الحساب الافتراضي محدد مسبقاً"
   },
   "errors": {
     "LEAD_NOT_FOUND": "العميل غير موجود أو تم حذفه",

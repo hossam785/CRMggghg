@@ -16,7 +16,7 @@ function isPublicPath(pathname: string): boolean {
   if (PUBLIC_EXACT_PATHS.includes(pathname)) {
     return true;
   }
-  if (pathname.startsWith('/auth/callback') || pathname.startsWith('/icons/')) {
+  if (pathname.startsWith('/auth/callback') || pathname.startsWith('/icons/') || pathname.startsWith('/api/auth/')) {
     return true;
   }
   return false;
@@ -59,9 +59,28 @@ export async function proxy(req: NextRequest) {
     }
   );
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  // Check dev session cookie first
+  let user: { id: string; email?: string } | null = null;
+  const devSessionCookie = req.cookies.get('sb-dev-session');
+  if (devSessionCookie?.value) {
+    try {
+      user = JSON.parse(devSessionCookie.value);
+    } catch {
+      user = null;
+    }
+  }
+
+  // Fallback to Supabase auth
+  if (!user) {
+    try {
+      const {
+        data: { user: supabaseUser },
+      } = await supabase.auth.getUser();
+      user = supabaseUser;
+    } catch {
+      user = null;
+    }
+  }
 
   const pathname = req.nextUrl.pathname;
   const isPublic = isPublicPath(pathname);
