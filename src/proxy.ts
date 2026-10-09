@@ -82,14 +82,26 @@ export async function proxy(req: NextRequest) {
   }
 
   // 4) Set Content-Security-Policy header
+  const isDev = process.env.NODE_ENV !== 'production';
   const supabaseHost = new URL(env.NEXT_PUBLIC_SUPABASE_URL).hostname;
+
+  // In development, Next.js Turbopack and React error overlays require 'unsafe-eval'
+  // for reconstructing callstacks and source maps. In production, strict nonce is enforced.
+  const scriptSrc = isDev
+    ? `'self' 'unsafe-eval' 'unsafe-inline' 'nonce-${nonce}'`
+    : `'self' 'nonce-${nonce}' 'strict-dynamic' 'unsafe-inline'`;
+
+  const connectSrc = isDev
+    ? `'self' ws: wss: http: https: https://${supabaseHost} wss://${supabaseHost} https://*.ingest.sentry.io https://*.supabase.co wss://*.supabase.co`
+    : `'self' https://${supabaseHost} wss://${supabaseHost} https://*.ingest.sentry.io https://*.supabase.co wss://*.supabase.co`;
+
   const cspHeader = `
     default-src 'self';
-    script-src 'self' 'nonce-${nonce}' 'strict-dynamic' 'unsafe-inline';
+    script-src ${scriptSrc};
     style-src 'self' 'unsafe-inline';
     img-src 'self' data: blob: https:;
     font-src 'self' data:;
-    connect-src 'self' https://${supabaseHost} wss://${supabaseHost} https://*.ingest.sentry.io https://*.supabase.co wss://*.supabase.co;
+    connect-src ${connectSrc};
     worker-src 'self' blob:;
     frame-ancestors 'none';
     base-uri 'self';
