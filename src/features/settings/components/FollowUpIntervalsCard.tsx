@@ -7,30 +7,27 @@ import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { SaveIndicator, type SaveState } from '@/components/ui/save-indicator';
 import { useSettings, useUpdateSettings } from '../queries';
+import type { SettingsRow } from '../api';
 
 export function FollowUpIntervalsCard() {
+  const { data: settings } = useSettings();
+  const key = settings?.owner_id ? `${settings.owner_id}-${settings.updated_at}` : 'loading';
+
+  return <FollowUpIntervalsForm key={key} initialSettings={settings} />;
+}
+
+function FollowUpIntervalsForm({ initialSettings }: { initialSettings?: SettingsRow }) {
   const t = useTranslations('settings');
   const locale = useLocale();
-  const { data: settings } = useSettings();
   const updateSettingsMutation = useUpdateSettings();
 
   const [saveState, setSaveState] = React.useState<SaveState>('idle');
 
-  // Form states with local buffering
-  const [fu1, setFu1] = React.useState(settings?.fu1_after_days ?? 2);
-  const [fu2, setFu2] = React.useState(settings?.fu2_after_days ?? 3);
-  const [fu3, setFu3] = React.useState(settings?.fu3_after_days ?? 4);
-  const [giveUp, setGiveUp] = React.useState(settings?.give_up_after_days ?? 5);
-
-  // Sync from loaded settings during render
-  const [prevSettings, setPrevSettings] = React.useState(settings);
-  if (settings && settings !== prevSettings) {
-    setPrevSettings(settings);
-    setFu1(settings.fu1_after_days);
-    setFu2(settings.fu2_after_days);
-    setFu3(settings.fu3_after_days);
-    setGiveUp(settings.give_up_after_days);
-  }
+  // Form states initialized cleanly from loaded settings
+  const [fu1, setFu1] = React.useState(initialSettings?.fu1_after_days ?? 2);
+  const [fu2, setFu2] = React.useState(initialSettings?.fu2_after_days ?? 3);
+  const [fu3, setFu3] = React.useState(initialSettings?.fu3_after_days ?? 4);
+  const [giveUp, setGiveUp] = React.useState(initialSettings?.give_up_after_days ?? 5);
 
   const commitField = (key: 'fu1_after_days' | 'fu2_after_days' | 'fu3_after_days' | 'give_up_after_days', val: number) => {
     setSaveState('saving');

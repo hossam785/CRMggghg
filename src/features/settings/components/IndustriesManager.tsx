@@ -37,9 +37,12 @@ import { ExportButton, createIndustriesExportSpec } from '@/features/data-hub/ex
 import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
 
+const EMPTY_INDUSTRIES: Industry[] = [];
+
 export function IndustriesManager() {
   const t = useTranslations('settings');
-  const { data: industries = [], isLoading } = useAllIndustries();
+  const { data: industriesData, isLoading } = useAllIndustries();
+  const industries = industriesData ?? EMPTY_INDUSTRIES;
   const industriesExportSpec = React.useMemo(() => createIndustriesExportSpec(), []);
 
   const createMutation = useCreateIndustry();
@@ -58,12 +61,8 @@ export function IndustriesManager() {
   const [isDeleting, setIsDeleting] = React.useState(false);
 
   // Local drag/reorder state
-  const [items, setItems] = React.useState<Industry[]>(industries);
-  const [prevIndustries, setPrevIndustries] = React.useState(industries);
-  if (industries !== prevIndustries) {
-    setPrevIndustries(industries);
-    setItems(industries);
-  }
+  const [localItems, setLocalItems] = React.useState<Industry[] | null>(null);
+  const items = localItems ?? industries;
 
   // Handle reordering up/down
   const moveItem = (index: number, direction: 'up' | 'down') => {
@@ -81,10 +80,16 @@ export function IndustriesManager() {
       sort_order: (idx + 1) * 10,
     }));
 
-    setItems(newItems.map((item, idx) => ({ ...item, sort_order: (idx + 1) * 10 })));
+    const reordered = newItems.map((item, idx) => ({ ...item, sort_order: (idx + 1) * 10 }));
+    setLocalItems(reordered);
     reorderMutation.mutate(updated, {
       onSuccess: () => {
+        setLocalItems(null);
         toast.success(t('reorderedSuccess'));
+      },
+      onError: () => {
+        setLocalItems(null);
+        toast.error('فشل حفظ الترتيب');
       },
     });
   };
