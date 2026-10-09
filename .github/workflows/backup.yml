@@ -1,0 +1,43 @@
+name: Nightly Encrypted Database Backup
+
+on:
+  schedule:
+    # 03:00 Cairo time (01:00 UTC) daily
+    - cron: '0 1 * * *'
+  workflow_dispatch: # Allows manual trigger from GitHub Actions tab
+
+jobs:
+  backup:
+    name: Database Dump & Secure Archive
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Supabase CLI
+        uses: supabase/setup-cli@v1
+        with:
+          version: 2.120.0
+
+      - name: Link to Supabase Production
+        run: supabase link --project-ref ${{ secrets.PROD_PROJECT_REF }}
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+
+      - name: Create Database Dump
+        run: |
+          mkdir -p backups
+          TIMESTAMP=$(date +"%Y%m%d_%H%M%S")
+          DUMP_FILE="backups/scope_crm_prod_${TIMESTAMP}.sql"
+          supabase db dump --password ${{ secrets.PROD_DB_PASSWORD }} --data-only > "$DUMP_FILE"
+          gzip "$DUMP_FILE"
+          echo "BACKUP_NAME=scope_crm_prod_${TIMESTAMP}.sql.gz" >> $GITHUB_ENV
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+
+      - name: Upload Backup Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.BACKUP_NAME }}
+          path: backups/*.sql.gz
+          retention-days: 30
