@@ -186,6 +186,22 @@
       "industryAndCountry": "Industry & Country",
       "lastContact": "Last Contact",
       "nextFollowUp": "Next Follow-up"
-    }
+    },
+    "copied": "Copied ✓",
+    "copyInstagram": "Copy handle",
+    "copyPhone": "Copy WhatsApp number",
+    "deleteLead": "Delete Lead",
+    "deleteConfirmTitle": "Are you sure you want to delete this lead?",
+    "deleteConfirmDesc": "The lead will be moved to trash and can be restored within 30 days.",
+    "deleteConfirmAction": "Confirm Delete",
+    "leadDeletedToast": "Moved {name} to trash",
+    "nextFollowUpCardTitle": "Next Follow-up",
+    "noFollowUpScheduled": "No follow-up currently scheduled",
+    "qualificationTitle": "Qualification Details",
+    "notesTitle": "Notes",
+    "notesPlaceholder": "Enter any lead notes here…",
+    "problemsPlaceholder": "What problems or challenges does this lead face?…",
+    "openFullPage": "Full Page ↗",
+    "saveFailed": "Save failed"
   }
 }

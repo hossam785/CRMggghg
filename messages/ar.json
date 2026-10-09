@@ -186,6 +186,22 @@
       "industryAndCountry": "النشاط والدولة",
       "lastContact": "آخر تواصل",
       "nextFollowUp": "المتابعة القادمة"
-    }
+    },
+    "copied": "تم النسخ ✓",
+    "copyInstagram": "نسخ الحساب",
+    "copyPhone": "نسخ رقم الواتساب",
+    "deleteLead": "حذف العميل",
+    "deleteConfirmTitle": "هل أنت متأكد من حذف هذا العميل؟",
+    "deleteConfirmDesc": "سيتم نقل العميل إلى سلة المحذوفات، ويمكنك استرجاعه خلال 30 يوماً.",
+    "deleteConfirmAction": "تأكيد الحذف",
+    "leadDeletedToast": "تم نقل {name} إلى سلة المحذوفات",
+    "nextFollowUpCardTitle": "المتابعة القادمة",
+    "noFollowUpScheduled": "لا توجد متابعة مجدولة حالياً",
+    "qualificationTitle": "بيانات التأهيل",
+    "notesTitle": "الملاحظات",
+    "notesPlaceholder": "أدخل أي ملاحظات خاصة بالعميل هنا…",
+    "problemsPlaceholder": "ما هي المشاكل والتحديات التي تواجه العميل؟…",
+    "openFullPage": "الصفحة كاملة ↗",
+    "saveFailed": "فشل الحفظ"
   }
 }
