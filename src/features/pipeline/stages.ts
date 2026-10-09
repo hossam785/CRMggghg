@@ -216,6 +216,22 @@ export const ACTIONS: Record<LeadAction, ActionMeta> = {
   },
 };
 
+export const ACTION_I18N_KEYS: Record<LeadAction, string> = {
+  send_message: 'actions.sendMessage',
+  send_follow_up: 'actions.sendFollowUp',
+  reply_received: 'actions.replyReceived',
+  book_meeting: 'actions.bookMeeting',
+  send_proposal: 'actions.sendProposal',
+  mark_won: 'actions.markWon',
+  mark_lost: 'actions.markLost',
+  reopen: 'actions.reopen',
+  set_reminder: 'actions.setReminder',
+  clear_reminder: 'actions.clearReminder',
+  snooze: 'actions.snooze',
+  restart: 'actions.restart',
+  set_stage: 'actions.setStage',
+};
+
 /**
  * Transition allowances mirrored from `supabase/migrations/0005_pipeline.sql`.
  */

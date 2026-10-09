@@ -8,10 +8,12 @@ import { ArrowRight, ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { LeadHeader } from '@/features/leads/components/detail/LeadHeader';
+import { ActionBar } from '@/features/pipeline/components/ActionBar';
 import { LeadFields } from '@/features/leads/components/detail/LeadFields';
 import { QualificationCard } from '@/features/leads/components/detail/QualificationCard';
 import { NotesCard } from '@/features/leads/components/detail/NotesCard';
 import { NextFollowUpCard } from '@/features/leads/components/detail/NextFollowUpCard';
+import { Timeline } from '@/features/pipeline/components/Timeline';
 import { useLead } from '@/features/leads/queries';
 
 export default function LeadDetailPage() {
@@ -84,6 +86,9 @@ export default function LeadDetailPage() {
       {/* 1. Header with Name, Copy buttons, links, stage badge, delete */}
       <LeadHeader lead={lead} onDeleted={() => router.push('/leads')} />
 
+      {/* Pipeline Action Bar */}
+      <ActionBar lead={lead} />
+
       {/* 2. Next Follow-up Card */}
       <NextFollowUpCard lead={lead} />
 
@@ -95,6 +100,9 @@ export default function LeadDetailPage() {
 
       {/* 5. Notes */}
       <NotesCard lead={lead} />
+
+      {/* 6. Activity & Stage History Timeline */}
+      <Timeline leadId={lead.id} />
     </div>
   );
 }

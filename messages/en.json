@@ -239,5 +239,86 @@
     "stage": "Stage",
     "remainingTime": "Remaining Time",
     "actions": "Actions"
+  },
+  "dialogs": {
+    "meeting": {
+      "title": "Schedule Meeting",
+      "description": "Enter the meeting date and time, or skip to book without a scheduled date.",
+      "meetingDate": "Meeting Date",
+      "meetingTime": "Meeting Time",
+      "submit": "Save Meeting",
+      "skip": "Skip without date"
+    },
+    "lostReason": {
+      "title": "Lost Reason",
+      "description": "Select the reason this deal was lost to record it immediately.",
+      "reasons": {
+        "not_interested": "Not interested",
+        "no_reply": "No reply",
+        "budget": "Budget mismatch",
+        "timing": "Bad timing",
+        "other": "Other reason"
+      },
+      "skip": "Skip without reason"
+    },
+    "reminder": {
+      "title": "Set Follow-up Reminder",
+      "description": "Choose a reminder date with an optional short note.",
+      "date": "Reminder Date",
+      "note": "Reminder Note (optional)",
+      "notePlaceholder": "Brief note on why to follow up…",
+      "charsLeft": "{count} chars left",
+      "presets": {
+        "tomorrow": "Tomorrow",
+        "in3Days": "In 3 days",
+        "nextWeek": "Next week",
+        "custom": "Custom date"
+      },
+      "submit": "Set Reminder"
+    },
+    "snooze": {
+      "title": "Snooze Follow-up",
+      "description": "Postpone the next follow-up by a specific number of days.",
+      "plus1Day": "+1 day (Tomorrow)",
+      "plus3Days": "+3 days",
+      "plus7Days": "+7 days",
+      "custom": "Custom days…",
+      "daysCount": "Number of days",
+      "submit": "Snooze"
+    },
+    "stageOverride": {
+      "title": "Change Stage Manually",
+      "description": "Select the stage you want to move this lead to directly.",
+      "currentStage": "Current Stage"
+    }
+  },
+  "shortcuts": {
+    "primaryAction": "Primary action (E)",
+    "replyReceived": "Reply received (R)",
+    "markLost": "Mark as lost (L)"
+  },
+  "timeline": {
+    "title": "Activity & Stage History",
+    "empty": "No activity recorded for this lead yet",
+    "undone": "Undone",
+    "undo": "Undo",
+    "events": {
+      "created": "Lead created",
+      "message_sent": "First message sent",
+      "follow_up_sent": "Follow-up #{count} sent",
+      "reply_received": "Reply received from lead",
+      "meeting_booked": "Meeting booked",
+      "meeting_booked_at": "Meeting booked for {meetingAt}",
+      "proposal_sent": "Proposal sent",
+      "won": "Deal closed as won",
+      "lost": "Deal marked as lost",
+      "lost_with_reason": "Deal marked as lost ({reason})",
+      "stage_set": "Stage changed from {from} to {to}",
+      "reopened": "Lead reopened",
+      "reminder_set": "Reminder set for {date}",
+      "snoozed": "Follow-up snoozed by {days} days",
+      "restarted": "Follow-up cycle restarted"
+    }
   }
 }
+
