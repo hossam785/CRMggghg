@@ -1,8 +1,10 @@
 import type { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
-import { ThemeToggle } from '@/components/ui/theme-toggle';
-import { LanguageToggle } from '@/components/ui/language-toggle';
-import { Label } from '@/components/ui/label';
+import { GeneralSettingsCard } from '@/features/settings/components/GeneralSettingsCard';
+import { FollowUpIntervalsCard } from '@/features/settings/components/FollowUpIntervalsCard';
+import { IndustriesManager } from '@/features/settings/components/IndustriesManager';
+import { AccountCard } from '@/features/settings/components/AccountCard';
+import { QuickLinksCard } from '@/features/settings/components/QuickLinksCard';
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations('nav');
@@ -12,49 +14,35 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function SettingsPage() {
-  const t = await getTranslations('nav');
-  const tA11y = await getTranslations('a11y');
+  const t = await getTranslations('settings');
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
+    <div className="space-y-8 max-w-5xl mx-auto pb-12">
+      {/* Page Title */}
+      <div>
         <h1 className="text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
-          {t('settings')}
+          {t('title')}
         </h1>
+        <p className="text-sm text-muted-foreground mt-1">
+          {t('generalDesc')}
+        </p>
       </div>
 
-      <div className="grid gap-6 sm:grid-cols-2">
-        {/* Appearance & Theme Card */}
-        <div className="rounded-xl border border-border bg-card p-5 space-y-4">
-          <div>
-            <h2 className="text-base font-semibold text-foreground">
-              {tA11y('themeToggle')}
-            </h2>
-            <p className="text-xs text-muted-foreground mt-0.5">
-              تبديل المظهر بين الفاتح والداكن
-            </p>
-          </div>
-          <div className="flex items-center justify-between pt-2">
-            <Label className="text-sm font-medium">المظهر الحالي</Label>
-            <ThemeToggle />
-          </div>
-        </div>
+      <div className="space-y-6">
+        {/* General Preferences: Language, Theme, Timezone, Default Country */}
+        <GeneralSettingsCard />
 
-        {/* Language Card */}
-        <div className="rounded-xl border border-border bg-card p-5 space-y-4">
-          <div>
-            <h2 className="text-base font-semibold text-foreground">
-              {tA11y('languageToggle')}
-            </h2>
-            <p className="text-xs text-muted-foreground mt-0.5">
-              تغيير لغة واجهة النظام
-            </p>
-          </div>
-          <div className="flex items-center justify-between pt-2">
-            <Label className="text-sm font-medium">اللغة</Label>
-            <LanguageToggle />
-          </div>
-        </div>
+        {/* Outreach & Follow-up Intervals */}
+        <FollowUpIntervalsCard />
+
+        {/* Industries Management (Reorder, Rename, Hide, Add, Safe Delete) */}
+        <IndustriesManager />
+
+        {/* Account & Security: Change Password, Sign out */}
+        <AccountCard />
+
+        {/* Quick Links: Data Hub & Trash */}
+        <QuickLinksCard />
       </div>
     </div>
   );
