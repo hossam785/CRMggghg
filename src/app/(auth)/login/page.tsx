@@ -6,11 +6,6 @@ import {
   Layers,
   Sparkles,
   ShieldCheck,
-  CheckCircle2,
-  ArrowUpRight,
-  Send,
-  Building2,
-  UserCheck,
 } from 'lucide-react';
 
 import { LoginForm } from '@/features/auth/components/login-form';

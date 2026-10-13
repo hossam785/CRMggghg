@@ -14,7 +14,6 @@ import {
   ArrowRight,
   ArrowLeft,
   Zap,
-  ShieldCheck,
   AlertCircle,
 } from 'lucide-react';
 import { useLocale } from 'next-intl';
@@ -39,8 +38,47 @@ export function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
+  const urlErrorMessage = React.useMemo(() => {
+    const errorParam = searchParams.get('error');
+    const reasonParam = searchParams.get('reason');
+    const key = errorParam || reasonParam;
+    if (!key) return null;
+
+    try {
+      // @ts-expect-error dynamic key lookup in next-intl
+      const translated = t(`callbackErrors.${key}`);
+      if (translated && !translated.startsWith('auth.callbackErrors')) {
+        return translated;
+      }
+    } catch {
+      // ignore fallback
+    }
+
+    if (key === 'multi_tab_signout') {
+      return isRtl
+        ? 'تم تسجيل الخروج من نافذة أخرى للحفاظ على أمان بياناتك.'
+        : 'You were signed out from another tab to keep your session secure.';
+    }
+    if (key === 'session_expired') {
+      return isRtl
+        ? 'انتهت صلاحية جلستك السابقة لدواعي الأمان، يرجى تسجيل الدخول مجدداً.'
+        : 'Your session has expired for security reasons. Please sign in again.';
+    }
+    if (key === 'auth_callback_failed' || key === 'code_exchange_failed') {
+      return isRtl
+        ? 'انتهت صلاحية جلسة التحقق أو تم استخدام الرابط مسبقاً.'
+        : 'Verification link has expired or has already been used.';
+    }
+    if (key === 'access_denied') {
+      return isRtl
+        ? 'تم إلغاء عملية تسجيل الدخول أو رفض الصلاحية.'
+        : 'Sign in was cancelled or access was denied.';
+    }
+    return null;
+  }, [searchParams, t, isRtl]);
+
   const [showPassword, setShowPassword] = React.useState(false);
-  const [formError, setFormError] = React.useState<string | null>(null);
+  const [formError, setFormError] = React.useState<string | null>(urlErrorMessage);
   const [rememberMe, setRememberMe] = React.useState(true);
   const [isDemoSubmitting, setIsDemoSubmitting] = React.useState(false);
 
@@ -71,51 +109,6 @@ export function LoginForm() {
       // ignore storage error
     }
   }, [setValue]);
-
-  // Handle URL errors and redirect reasons (Pillar 2: Smart Error Handling)
-  React.useEffect(() => {
-    const errorParam = searchParams.get('error');
-    const reasonParam = searchParams.get('reason');
-    const key = errorParam || reasonParam;
-
-    if (key) {
-      try {
-        const translated = t(`callbackErrors.${key}` as any);
-        if (translated && !translated.startsWith('auth.callbackErrors')) {
-          setFormError(translated);
-          return;
-        }
-      } catch {
-        // ignore fallback
-      }
-
-      if (key === 'multi_tab_signout') {
-        setFormError(
-          isRtl
-            ? 'تم تسجيل الخروج من نافذة أخرى للحفاظ على أمان بياناتك.'
-            : 'You were signed out from another tab to keep your session secure.'
-        );
-      } else if (key === 'session_expired') {
-        setFormError(
-          isRtl
-            ? 'انتهت صلاحية جلستك السابقة لدواعي الأمان، يرجى تسجيل الدخول مجدداً.'
-            : 'Your session has expired for security reasons. Please sign in again.'
-        );
-      } else if (key === 'auth_callback_failed' || key === 'code_exchange_failed') {
-        setFormError(
-          isRtl
-            ? 'انتهت صلاحية جلسة التحقق أو تم استخدام الرابط مسبقاً.'
-            : 'Verification link has expired or has already been used.'
-        );
-      } else if (key === 'access_denied') {
-        setFormError(
-          isRtl
-            ? 'تم إلغاء عملية تسجيل الدخول أو رفض الصلاحية.'
-            : 'Sign in was cancelled or access was denied.'
-        );
-      }
-    }
-  }, [searchParams, t, isRtl]);
 
   const onSubmit = async (data: LoginFormData) => {
     setFormError(null);

@@ -27,36 +27,32 @@ export default function AuthCallbackPage() {
   const target = safeNext(rawNext ?? '/');
   const initialError = searchParams.get('error') || searchParams.get('error_description');
 
-  const [status, setStatus] = React.useState<'verifying' | 'success' | 'error'>(
-    initialError ? 'error' : 'verifying'
-  );
-  const [errorMessage, setErrorMessage] = React.useState<string>(
-    initialError
-      ? isRtl
+  const initialFailedMessage = React.useMemo(() => {
+    if (initialError) {
+      return isRtl
         ? 'تم إلغاء عملية التحقق أو رفض الصلاحية من خادم المصادقة.'
-        : 'Authentication request was cancelled or denied by the provider.'
-      : ''
+        : 'Authentication request was cancelled or denied by the provider.';
+    }
+    if (!code) {
+      return isRtl
+        ? 'رمز التحقق مفقود من الرابط، يرجى التأكد من سلامة الرابط وإعادة المحاولة.'
+        : 'Verification code is missing from this link. Please check and retry.';
+    }
+    return '';
+  }, [initialError, code, isRtl]);
+
+  const [status, setStatus] = React.useState<'verifying' | 'success' | 'error'>(
+    initialFailedMessage ? 'error' : 'verifying'
   );
-  const [progress, setProgress] = React.useState(25);
+  const [errorMessage, setErrorMessage] = React.useState<string>(initialFailedMessage);
+  const [progress, setProgress] = React.useState(50);
 
   React.useEffect(() => {
-    if (initialError) {
-      setStatus('error');
-      return;
-    }
-
-    if (!code) {
-      setStatus('error');
-      setErrorMessage(
-        isRtl
-          ? 'رمز التحقق مفقود من الرابط، يرجى التأكد من سلامة الرابط وإعادة المحاولة.'
-          : 'Verification code is missing from this link. Please check and retry.'
-      );
+    if (initialError || !code) {
       return;
     }
 
     let isMounted = true;
-    setProgress(50);
 
     const performExchange = async () => {
       try {

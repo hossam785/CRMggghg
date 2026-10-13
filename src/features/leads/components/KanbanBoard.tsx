@@ -4,7 +4,6 @@ import * as React from 'react';
 import { useTranslations, useLocale } from 'next-intl';
 import { useRouter } from 'next/navigation';
 import {
-  Calendar,
   Clock,
   MoreHorizontal,
   Plus,
@@ -133,8 +132,6 @@ export function getLeadPriority(lead: LeadListRow): 'high' | 'medium' | 'normal'
 export function KanbanBoard({
   leads,
   industries = [],
-  countries = [],
-  searchQuery = '',
   selectedStages = [],
   priorityFilter = 'all',
   platformFilter = 'all',

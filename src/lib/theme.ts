@@ -3,17 +3,20 @@ export type Theme = 'dark' | 'light' | 'system';
 export const THEME_COOKIE_NAME = 'theme';
 export const THEME_COOKIE_MAX_AGE = 31536000; // 1 year in seconds
 
-export function parseTheme(_value?: string | null): Theme {
+export function parseTheme(value?: string | null): Theme {
+  void value;
   // System is permanently dark mode
   return 'dark';
 }
 
-export function resolveTheme(_theme?: Theme): 'dark' {
+export function resolveTheme(theme?: Theme): 'dark' {
+  void theme;
   // System is permanently dark mode
   return 'dark';
 }
 
-export function setTheme(_theme?: Theme): void {
+export function setTheme(theme?: Theme): void {
+  void theme;
   if (typeof document === 'undefined') return;
 
   // Persist dark preference in cookie

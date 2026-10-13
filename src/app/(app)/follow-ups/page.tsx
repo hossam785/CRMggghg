@@ -36,10 +36,14 @@ export default function FollowUpsPage() {
   } = grouped;
 
   // Track maximum due count seen this session for progress calculation
-  const [sessionPeak, setSessionPeak] = React.useState(0);
-  React.useEffect(() => {
-    setSessionPeak((prev) => (totalDue > prev ? totalDue : prev));
-  }, [totalDue]);
+  const [sessionPeak, setSessionPeak] = React.useState(totalDue);
+  const [prevTotalDue, setPrevTotalDue] = React.useState(totalDue);
+  if (totalDue !== prevTotalDue) {
+    setPrevTotalDue(totalDue);
+    if (totalDue > sessionPeak) {
+      setSessionPeak(totalDue);
+    }
+  }
 
   // Update document.title with (N) prefix
   React.useEffect(() => {
