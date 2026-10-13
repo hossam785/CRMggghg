@@ -96,8 +96,8 @@ export function LeadsCardList({
       </div>
 
       {isFetchingNextPage && (
-        <div className="flex items-center justify-center py-6 text-xs text-[var(--fg-muted)] gap-2">
-          <Loader2 className="size-4 animate-spin text-[var(--primary)]" />
+        <div className="flex items-center justify-center py-6 text-xs text-muted-foreground gap-2">
+          <Loader2 className="size-4 animate-spin text-primary" />
           <span>جاري تحميل المزيد…</span>
         </div>
       )}

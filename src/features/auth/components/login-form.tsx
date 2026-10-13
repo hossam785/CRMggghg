@@ -1,33 +1,32 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import * as React from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useTranslations } from 'next-intl';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { Eye, EyeOff, Loader2, KeyRound, ShieldCheck } from 'lucide-react';
-import { toast } from 'sonner';
+import {
+  Mail,
+  Lock,
+  Eye,
+  EyeOff,
+  Loader2,
+  ArrowRight,
+  ArrowLeft,
+  Zap,
+  ShieldCheck,
+  AlertCircle,
+} from 'lucide-react';
+import { useLocale } from 'next-intl';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-} from '@/components/ui/dialog';
 import { safeNext } from '@/lib/safe-next';
 import { AppError } from '@/lib/errors';
-import { signInWithEmailPassword, requestPasswordReset } from '../api';
-import {
-  loginSchema,
-  forgotPasswordSchema,
-  type LoginFormData,
-  type ForgotPasswordFormData,
-} from '../schemas';
+import { signInWithEmailPassword } from '../api';
+import { loginSchema, type LoginFormData } from '../schemas';
 
 const DEFAULT_EMAIL = 'admin@scopecrm.com';
 const DEFAULT_PASSWORD = 'Admin@123456';
@@ -35,15 +34,15 @@ const DEFAULT_PASSWORD = 'Admin@123456';
 export function LoginForm() {
   const t = useTranslations('auth');
   const tErrors = useTranslations('errors');
-  const tCommon = useTranslations('common');
+  const locale = useLocale();
+  const isRtl = locale === 'ar';
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const [showPassword, setShowPassword] = useState(false);
-  const [isForgotPasswordOpen, setIsForgotPasswordOpen] = useState(false);
-  const [isSendingReset, setIsSendingReset] = useState(false);
-  const [formError, setFormError] = useState<string | null>(null);
-  const [rememberMe, setRememberMe] = useState(true);
+  const [showPassword, setShowPassword] = React.useState(false);
+  const [formError, setFormError] = React.useState<string | null>(null);
+  const [rememberMe, setRememberMe] = React.useState(true);
+  const [isDemoSubmitting, setIsDemoSubmitting] = React.useState(false);
 
   const {
     register,
@@ -59,7 +58,8 @@ export function LoginForm() {
     },
   });
 
-  useEffect(() => {
+  // Restore saved credentials if available
+  React.useEffect(() => {
     try {
       const saved = localStorage.getItem('scope_remember_login');
       if (saved) {
@@ -68,21 +68,54 @@ export function LoginForm() {
         if (parsed?.password) setValue('password', parsed.password);
       }
     } catch {
-      // ignore
+      // ignore storage error
     }
   }, [setValue]);
 
-  const {
-    register: registerForgot,
-    handleSubmit: handleForgotSubmit,
-    reset: resetForgotForm,
-    formState: { errors: forgotErrors },
-  } = useForm<ForgotPasswordFormData>({
-    resolver: zodResolver(forgotPasswordSchema),
-    defaultValues: {
-      email: '',
-    },
-  });
+  // Handle URL errors and redirect reasons (Pillar 2: Smart Error Handling)
+  React.useEffect(() => {
+    const errorParam = searchParams.get('error');
+    const reasonParam = searchParams.get('reason');
+    const key = errorParam || reasonParam;
+
+    if (key) {
+      try {
+        const translated = t(`callbackErrors.${key}` as any);
+        if (translated && !translated.startsWith('auth.callbackErrors')) {
+          setFormError(translated);
+          return;
+        }
+      } catch {
+        // ignore fallback
+      }
+
+      if (key === 'multi_tab_signout') {
+        setFormError(
+          isRtl
+            ? 'تم تسجيل الخروج من نافذة أخرى للحفاظ على أمان بياناتك.'
+            : 'You were signed out from another tab to keep your session secure.'
+        );
+      } else if (key === 'session_expired') {
+        setFormError(
+          isRtl
+            ? 'انتهت صلاحية جلستك السابقة لدواعي الأمان، يرجى تسجيل الدخول مجدداً.'
+            : 'Your session has expired for security reasons. Please sign in again.'
+        );
+      } else if (key === 'auth_callback_failed' || key === 'code_exchange_failed') {
+        setFormError(
+          isRtl
+            ? 'انتهت صلاحية جلسة التحقق أو تم استخدام الرابط مسبقاً.'
+            : 'Verification link has expired or has already been used.'
+        );
+      } else if (key === 'access_denied') {
+        setFormError(
+          isRtl
+            ? 'تم إلغاء عملية تسجيل الدخول أو رفض الصلاحية.'
+            : 'Sign in was cancelled or access was denied.'
+        );
+      }
+    }
+  }, [searchParams, t, isRtl]);
 
   const onSubmit = async (data: LoginFormData) => {
     setFormError(null);
@@ -103,81 +136,149 @@ export function LoginForm() {
     }
   };
 
-  const onForgotPasswordSubmit = async (data: ForgotPasswordFormData) => {
-    setIsSendingReset(true);
+  // Instant 1-click Demo Login
+  const handleQuickDemoLogin = async () => {
+    setFormError(null);
+    setIsDemoSubmitting(true);
+    setValue('email', DEFAULT_EMAIL);
+    setValue('password', DEFAULT_PASSWORD);
+
     try {
-      await requestPasswordReset(data.email);
-      toast.success(tCommon('saved'));
-      setIsForgotPasswordOpen(false);
-      resetForgotForm();
-    } catch (err: unknown) {
-      if (err instanceof AppError && err.code === 'RATE_LIMITED') {
-        toast.error(tErrors('RATE_LIMITED'));
-      } else {
-        toast.error(tErrors('UNKNOWN'));
-      }
-    } finally {
-      setIsSendingReset(false);
+      await signInWithEmailPassword({
+        email: DEFAULT_EMAIL,
+        password: DEFAULT_PASSWORD,
+        rememberMe: true,
+      });
+      const rawNext = searchParams.get('next');
+      const target = safeNext(rawNext);
+      router.push(target);
+      router.refresh();
+    } catch {
+      setFormError(t('invalidCredentials'));
+      setIsDemoSubmitting(false);
     }
   };
 
+  const isPending = isSubmitting || isDemoSubmitting;
+  const ArrowIcon = isRtl ? ArrowLeft : ArrowRight;
+
   return (
-    <>
+    <div className="space-y-5">
+      {/* 1-Click Quick Demo Access Pill (Relate Card + Ghost Outline Pill Button) */}
+      <div className="rounded-2xl border border-stone-divider bg-surface-card p-3.5 shadow-xs transition-all hover:border-royal-signal/40">
+        <div className="flex items-center justify-between gap-3">
+          <div className="flex items-center gap-2.5 min-w-0">
+            <div className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-lavender-wash text-royal-signal shadow-xs">
+              <Zap className="size-4 fill-royal-signal/20 text-royal-signal" />
+            </div>
+            <div className="min-w-0">
+              <p className="text-xs font-bold text-midnight-ink">
+                {t('quickDemoLogin')}
+              </p>
+              <p className="text-[11px] text-ash-helper truncate">
+                {t('quickDemoDesc')}
+              </p>
+            </div>
+          </div>
+
+          {/* Relate Ghost Outline Pill Button */}
+          <button
+            type="button"
+            disabled={isPending}
+            onClick={handleQuickDemoLogin}
+            className="shrink-0 inline-flex items-center gap-1.5 rounded-full border border-royal-signal bg-surface-card hover:bg-lavender-wash text-royal-signal px-3.5 py-1.5 text-xs font-semibold shadow-none transition-all active:scale-[0.98] disabled:opacity-50 cursor-pointer"
+          >
+            {isDemoSubmitting ? (
+              <Loader2 className="size-3.5 animate-spin" />
+            ) : (
+              <>
+                <span>دخول فوري</span>
+                <ArrowIcon className="size-3" />
+              </>
+            )}
+          </button>
+        </div>
+      </div>
+
+      {/* Divider */}
+      <div className="relative flex items-center justify-center">
+        <div className="w-full border-t border-stone-divider" />
+        <span className="absolute bg-snow-canvas px-3 text-[11px] font-medium text-ash-helper uppercase tracking-wider">
+          {isRtl ? 'أو بالحساب الشخصي' : 'Or with your account'}
+        </span>
+      </div>
+
+      {/* Main Login Form */}
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         {formError && (
           <div
             role="alert"
-            className="rounded-lg border border-red-500/20 bg-red-500/10 p-3 text-sm font-medium text-red-600 dark:text-red-400"
+            className="flex items-start gap-2.5 rounded-xl border border-coral-lost/30 bg-coral-lost/10 p-3 text-xs font-medium text-coral-lost animate-in fade-in zoom-in-95 duration-200"
           >
-            {formError}
+            <AlertCircle className="size-4 shrink-0 mt-0.5" />
+            <span className="flex-1 leading-relaxed">{formError}</span>
+            <button
+              type="button"
+              onClick={() => setFormError(null)}
+              className="text-coral-lost/70 hover:text-coral-lost text-xs font-bold px-1 transition-colors cursor-pointer"
+              aria-label="Dismiss error"
+            >
+              ×
+            </button>
           </div>
         )}
 
+        {/* Email Field */}
         <div className="space-y-1.5">
-          <Label htmlFor="login-email">{t('email')}</Label>
-          <Input
-            id="login-email"
-            type="email"
-            autoComplete="username"
-            placeholder={t('emailPlaceholder')}
-            disabled={isSubmitting}
-            aria-invalid={!!errors.email}
-            {...register('email')}
-          />
+          <Label htmlFor="login-email" className="text-xs font-semibold text-graphite-body">
+            {t('email')}
+          </Label>
+          <div className="relative">
+            <div className="pointer-events-none absolute inset-y-0 start-0 flex items-center ps-3.5 text-ash-helper">
+              <Mail className="size-4" />
+            </div>
+            <Input
+              id="login-email"
+              type="email"
+              autoComplete="username"
+              placeholder={t('emailPlaceholder')}
+              disabled={isPending}
+              className="ps-10 h-11 text-sm bg-surface-card border-stone-divider text-graphite-body placeholder:text-ash-helper focus-visible:border-royal-signal focus-visible:ring-azure-focus/30 transition-all rounded-xl"
+              invalid={!!errors.email}
+              {...register('email')}
+            />
+          </div>
           {errors.email && (
-            <p className="text-xs text-red-600 dark:text-red-400">
+            <p className="text-[11px] font-medium text-coral-lost">
               {tErrors('VALIDATION')}
             </p>
           )}
         </div>
 
+        {/* Password Field */}
         <div className="space-y-1.5">
-          <div className="flex items-center justify-between">
-            <Label htmlFor="login-password">{t('password')}</Label>
-            <button
-              type="button"
-              onClick={() => setIsForgotPasswordOpen(true)}
-              className="text-xs text-muted-foreground transition-colors hover:text-foreground"
-            >
-              {t('forgotPassword')}
-            </button>
-          </div>
+          <Label htmlFor="login-password" className="text-xs font-semibold text-graphite-body">
+            {t('password')}
+          </Label>
           <div className="relative">
+            <div className="pointer-events-none absolute inset-y-0 start-0 flex items-center ps-3.5 text-ash-helper">
+              <Lock className="size-4" />
+            </div>
             <Input
               id="login-password"
               type={showPassword ? 'text' : 'password'}
               autoComplete="current-password"
               placeholder={t('passwordPlaceholder')}
-              disabled={isSubmitting}
-              className="pe-10"
-              aria-invalid={!!errors.password}
+              disabled={isPending}
+              className="ps-10 pe-10 h-11 text-sm bg-surface-card border-stone-divider text-graphite-body placeholder:text-ash-helper focus-visible:border-royal-signal focus-visible:ring-azure-focus/30 transition-all rounded-xl font-mono"
+              invalid={!!errors.password}
               {...register('password')}
             />
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
               aria-label={showPassword ? 'Hide password' : 'Show password'}
-              className="absolute inset-y-0 end-0 flex items-center pe-3 text-muted-foreground hover:text-foreground"
+              className="absolute inset-y-0 end-0 flex items-center pe-3.5 text-ash-helper hover:text-midnight-ink transition-colors cursor-pointer"
             >
               {showPassword ? (
                 <EyeOff className="size-4" />
@@ -187,16 +288,17 @@ export function LoginForm() {
             </button>
           </div>
           {errors.password && (
-            <p className="text-xs text-red-600 dark:text-red-400">
+            <p className="text-[11px] font-medium text-coral-lost">
               {tErrors('VALIDATION')}
             </p>
           )}
         </div>
 
+        {/* Remember Me & Security Notice */}
         <div className="flex items-center justify-between pt-1">
           <label
             htmlFor="login-remember"
-            className="flex items-center gap-2 cursor-pointer select-none text-xs font-medium text-muted-foreground hover:text-foreground transition-colors"
+            className="flex items-center gap-2 cursor-pointer select-none text-xs font-medium text-slate-caption hover:text-midnight-ink transition-colors"
           >
             <Checkbox
               id="login-remember"
@@ -205,16 +307,20 @@ export function LoginForm() {
             />
             <span>{t('rememberMe')}</span>
           </label>
-          <span className="text-[11px] text-primary/80 font-medium inline-flex items-center gap-1">
-            <ShieldCheck className="size-3.5" />
-            <span>{t('defaultCredentialsNotice')}</span>
+
+          <span className="text-[11px] text-ash-helper font-medium inline-flex items-center gap-1.5">
+            <span className="size-2 rounded-full bg-mint-win inline-block" />
+            <span>{t('securityBadge')}</span>
           </span>
         </div>
 
+        {/* Submit Button (Relate Pill Button in Royal Signal) */}
         <Button
           type="submit"
-          className="w-full gap-2 font-medium"
-          disabled={isSubmitting}
+          size="lg"
+          variant="primary"
+          className="w-full h-11 rounded-full text-sm font-semibold bg-royal-signal text-white hover:bg-royal-signal/90 hover:shadow-md transition-all active:scale-[0.99] gap-2 cursor-pointer shadow-xs"
+          disabled={isPending}
         >
           {isSubmitting ? (
             <>
@@ -222,60 +328,13 @@ export function LoginForm() {
               <span>{t('signingIn')}</span>
             </>
           ) : (
-            <span>{t('signIn')}</span>
+            <>
+              <span>{t('signIn')}</span>
+              <ArrowIcon className="size-4 transition-transform group-hover:translate-x-1 rtl:group-hover:-translate-x-1" />
+            </>
           )}
         </Button>
       </form>
-
-      {/* Forgot Password Dialog */}
-      <Dialog open={isForgotPasswordOpen} onOpenChange={setIsForgotPasswordOpen}>
-        <DialogContent className="max-w-md">
-          <DialogHeader>
-            <div className="mb-2 flex size-10 items-center justify-center rounded-full bg-primary/10 text-primary">
-              <KeyRound className="size-5" />
-            </div>
-            <DialogTitle>{t('forgotPassword')}</DialogTitle>
-            <DialogDescription>{t('resetPassword')}</DialogDescription>
-          </DialogHeader>
-
-          <form
-            onSubmit={handleForgotSubmit(onForgotPasswordSubmit)}
-            className="mt-4 space-y-4"
-          >
-            <div className="space-y-1.5">
-              <Label htmlFor="forgot-email">{t('email')}</Label>
-              <Input
-                id="forgot-email"
-                type="email"
-                autoComplete="email"
-                placeholder={t('emailPlaceholder')}
-                disabled={isSendingReset}
-                {...registerForgot('email')}
-              />
-              {forgotErrors.email && (
-                <p className="text-xs text-red-600 dark:text-red-400">
-                  {tErrors('VALIDATION')}
-                </p>
-              )}
-            </div>
-
-            <div className="flex justify-end gap-2 pt-2">
-              <Button
-                type="button"
-                variant="outline"
-                disabled={isSendingReset}
-                onClick={() => setIsForgotPasswordOpen(false)}
-              >
-                {tCommon('cancel')}
-              </Button>
-              <Button type="submit" disabled={isSendingReset} className="gap-2">
-                {isSendingReset && <Loader2 className="size-4 animate-spin" />}
-                <span>{t('resetPassword')}</span>
-              </Button>
-            </div>
-          </form>
-        </DialogContent>
-      </Dialog>
-    </>
+    </div>
   );
 }

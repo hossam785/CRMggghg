@@ -152,7 +152,10 @@ export function ExportButton<Row = Record<string, unknown>>({
           <Button
             variant={variant}
             size={size}
-            className={cn('gap-1.5', className)}
+            className={cn(
+              'rounded-full gap-1.5 font-semibold border-border bg-card hover:bg-muted/40 text-foreground shadow-2xs transition-all',
+              className
+            )}
             disabled={isExporting}
           >
             {isExporting ? (
@@ -164,29 +167,31 @@ export function ExportButton<Row = Record<string, unknown>>({
           </Button>
         </PopoverTrigger>
 
-        <PopoverContent className="w-80 p-4 space-y-4" align="end">
-          <div>
-            <h3 className="text-sm font-bold text-foreground flex items-center gap-1.5">
-              <FileSpreadsheet className="size-4 text-primary" />
-              {t('exportTitle')}
+        <PopoverContent className="w-84 p-5 space-y-4 rounded-2xl border border-border bg-card shadow-xl" align="end">
+          <div className="border-b border-border pb-3">
+            <h3 className="text-sm font-extrabold text-foreground flex items-center gap-2">
+              <div className="size-6 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+                <FileSpreadsheet className="size-3.5" />
+              </div>
+              <span>{t('exportTitle')}</span>
             </h3>
-            <p className="text-xs text-muted-foreground mt-0.5">
+            <p className="text-xs text-muted-foreground mt-1">
               {t('exportDesc')}
             </p>
           </div>
 
           {/* Format selection */}
           <div className="space-y-1.5">
-            <Label className="text-xs font-semibold">{t('format')}</Label>
-            <div className="grid grid-cols-2 gap-1.5">
+            <Label className="text-xs font-bold text-foreground">{t('format')}</Label>
+            <div className="grid grid-cols-2 gap-2">
               <button
                 type="button"
                 onClick={() => setFormat('xlsx')}
                 className={cn(
-                  'flex items-center justify-center p-2 rounded-lg border text-xs font-semibold transition-colors',
+                  'flex items-center justify-center p-2 rounded-full border text-xs font-semibold transition-all',
                   format === 'xlsx'
                     ? 'border-primary bg-primary/10 text-primary'
-                    : 'border-border bg-background hover:bg-muted/40 text-muted-foreground'
+                    : 'border-border bg-card hover:bg-muted/40 text-muted-foreground hover:text-foreground'
                 )}
               >
                 Excel (.xlsx)
@@ -195,10 +200,10 @@ export function ExportButton<Row = Record<string, unknown>>({
                 type="button"
                 onClick={() => setFormat('csv')}
                 className={cn(
-                  'flex items-center justify-center p-2 rounded-lg border text-xs font-semibold transition-colors',
+                  'flex items-center justify-center p-2 rounded-full border text-xs font-semibold transition-all',
                   format === 'csv'
                     ? 'border-primary bg-primary/10 text-primary'
-                    : 'border-border bg-background hover:bg-muted/40 text-muted-foreground'
+                    : 'border-border bg-card hover:bg-muted/40 text-muted-foreground hover:text-foreground'
                 )}
               >
                 CSV (.csv)
@@ -207,20 +212,20 @@ export function ExportButton<Row = Record<string, unknown>>({
           </div>
 
           {/* Header language toggle */}
-          <div className="flex items-center justify-between border-t border-border/40 pt-3">
-            <Label className="text-xs font-semibold flex items-center gap-1.5">
+          <div className="flex items-center justify-between border-t border-border pt-3">
+            <Label className="text-xs font-bold text-foreground flex items-center gap-1.5">
               <Globe className="size-3.5 text-muted-foreground" />
-              {t('headerLanguage')}
+              <span>{t('headerLanguage')}</span>
             </Label>
-            <div className="inline-flex rounded-md border border-border p-0.5 bg-muted/40">
+            <div className="inline-flex rounded-full border border-border p-0.5 bg-muted/40">
               <button
                 type="button"
                 onClick={() => setHeaderLocale('ar')}
                 className={cn(
-                  'px-2 py-1 text-[11px] font-semibold rounded transition-colors',
+                  'px-2.5 py-1 text-[11px] font-semibold rounded-full transition-all',
                   headerLocale === 'ar'
-                    ? 'bg-background text-foreground shadow-xs'
-                    : 'text-muted-foreground'
+                    ? 'bg-card text-foreground shadow-2xs'
+                    : 'text-muted-foreground hover:text-foreground'
                 )}
               >
                 العربية
@@ -229,10 +234,10 @@ export function ExportButton<Row = Record<string, unknown>>({
                 type="button"
                 onClick={() => setHeaderLocale('en')}
                 className={cn(
-                  'px-2 py-1 text-[11px] font-semibold rounded transition-colors',
+                  'px-2.5 py-1 text-[11px] font-semibold rounded-full transition-all',
                   headerLocale === 'en'
-                    ? 'bg-background text-foreground shadow-xs'
-                    : 'text-muted-foreground'
+                    ? 'bg-card text-foreground shadow-2xs'
+                    : 'text-muted-foreground hover:text-foreground'
                 )}
               >
                 English
@@ -241,14 +246,14 @@ export function ExportButton<Row = Record<string, unknown>>({
           </div>
 
           {/* Columns selection */}
-          <div className="space-y-2 border-t border-border/40 pt-3">
+          <div className="space-y-2 border-t border-border pt-3">
             <div className="flex items-center justify-between">
-              <Label className="text-xs font-semibold">{t('columns')}</Label>
+              <Label className="text-xs font-bold text-foreground">{t('columns')}</Label>
               <div className="flex items-center gap-2 text-[11px]">
                 <button
                   type="button"
                   onClick={handleSelectAll}
-                  className="text-primary hover:underline"
+                  className="text-primary font-semibold hover:underline"
                 >
                   {t('selectAll')}
                 </button>
@@ -263,19 +268,19 @@ export function ExportButton<Row = Record<string, unknown>>({
               </div>
             </div>
 
-            <div className="max-h-40 overflow-y-auto space-y-1.5 rounded-lg border border-border/60 bg-muted/20 p-2">
+            <div className="max-h-40 overflow-y-auto space-y-1.5 rounded-xl border border-border bg-muted/20 p-2.5">
               {allColumns.map((col) => {
                 const isChecked = selectedColKeys.includes(col.key);
                 return (
                   <label
                     key={col.key}
-                    className="flex items-center gap-2 text-xs cursor-pointer select-none hover:bg-background/80 p-1 rounded"
+                    className="flex items-center gap-2 text-xs cursor-pointer select-none hover:bg-muted/40 p-1 rounded-lg transition-colors"
                   >
                     <Checkbox
                       checked={isChecked}
                       onCheckedChange={() => handleToggleCol(col.key)}
                     />
-                    <span className="truncate">{col.header[headerLocale]}</span>
+                    <span className="truncate text-foreground">{col.header[headerLocale]}</span>
                   </label>
                 );
               })}
@@ -285,10 +290,10 @@ export function ExportButton<Row = Record<string, unknown>>({
           {/* Submit action */}
           <Button
             type="button"
-            className="w-full gap-1.5"
+            className="w-full gap-2 rounded-full bg-primary hover:bg-primary/90 text-primary-foreground font-bold shadow-2xs"
             onClick={handleStartExport}
           >
-            <Download className="size-3.5" />
+            <Download className="size-4" />
             <span>{t('startExport')}</span>
           </Button>
         </PopoverContent>
@@ -296,7 +301,7 @@ export function ExportButton<Row = Record<string, unknown>>({
 
       {/* Export progress modal */}
       <Dialog open={isExporting} onOpenChange={(val) => !val && handleCancelExport()}>
-        <DialogContent className="sm:max-w-md">
+        <DialogContent className="sm:max-w-md rounded-2xl border border-border bg-card p-6 shadow-xl">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2 text-sm font-bold">
               <Loader2 className="size-4 animate-spin text-primary" />

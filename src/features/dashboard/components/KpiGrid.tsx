@@ -43,7 +43,11 @@ export function KpiGrid({ stats }: KpiGridProps) {
       <KpiCard
         title="إجمالي العملاء"
         value={stats.total_leads}
-        hint={`+${stats.new_leads.cur.toLocaleString('ar-EG')} في الفترة المحددة`}
+        hint={
+          stats.total_leads > 0
+            ? `+${stats.new_leads.cur.toLocaleString('ar-EG')} عميل جديد في الفترة المحددة`
+            : 'لا يوجد عملاء مسجلين في النظام بعد'
+        }
         delta={newLeadsDelta}
         icon={<Users className="size-4" />}
         href="/leads"
@@ -53,7 +57,11 @@ export function KpiGrid({ stats }: KpiGridProps) {
       <KpiCard
         title="عملاء جدد (New)"
         value={stats.new_leads.cur}
-        hint={`${stats.not_contacted.toLocaleString('ar-EG')} لم يتم التواصل معهم بعد`}
+        hint={
+          stats.not_contacted > 0
+            ? `${stats.not_contacted.toLocaleString('ar-EG')} لم يتم التواصل معهم بعد`
+            : 'تم التواصل مع جميع العملاء الجدد'
+        }
         delta={newLeadsDelta}
         icon={<UserPlus className="size-4" />}
         href="/leads?stage=new"
@@ -63,7 +71,11 @@ export function KpiGrid({ stats }: KpiGridProps) {
       <KpiCard
         title="الرسائل المرسلة"
         value={totalOutreachCur}
-        hint={`${stats.cur.first_messages.toLocaleString('ar-EG')} أولى · ${stats.cur.follow_ups.toLocaleString('ar-EG')} متابعة`}
+        hint={
+          totalOutreachCur > 0
+            ? `${stats.cur.first_messages.toLocaleString('ar-EG')} أولى · ${stats.cur.follow_ups.toLocaleString('ar-EG')} متابعة`
+            : 'لا توجد رسائل مرسلة في هذه الفترة'
+        }
         delta={outreachDelta}
         icon={<Send className="size-4" />}
       />
@@ -72,7 +84,11 @@ export function KpiGrid({ stats }: KpiGridProps) {
       <KpiCard
         title="الردود ومعدل التفاعل"
         value={stats.cur.replied}
-        hint={`معدل الرد: ${replyRate}% من إجمالي الرسائل`}
+        hint={
+          totalOutreachCur > 0
+            ? `معدل الرد: ${replyRate}% من إجمالي الرسائل`
+            : 'في انتظار بدء إرسال الرسائل'
+        }
         delta={repliesDelta}
         icon={<MessageSquareText className="size-4" />}
         href="/leads?stage=replied"
@@ -82,7 +98,11 @@ export function KpiGrid({ stats }: KpiGridProps) {
       <KpiCard
         title="اجتماعات محجوزة"
         value={stats.cur.meetings}
-        hint="تم الاتفاق على موعد اجتماع مع العميل"
+        hint={
+          stats.cur.meetings > 0
+            ? 'تم الاتفاق على موعد اجتماع مع العميل'
+            : 'لا توجد اجتماعات محجوزة في هذه الفترة'
+        }
         delta={meetingsDelta}
         icon={<Calendar className="size-4" />}
         href="/leads?stage=meeting_booked"
@@ -92,7 +112,13 @@ export function KpiGrid({ stats }: KpiGridProps) {
       <KpiCard
         title="صفقات ناجحة (Won)"
         value={stats.cur.won}
-        hint={`نسبة النجاح من الاجتماعات: ${convRate}%`}
+        hint={
+          stats.cur.meetings > 0
+            ? `نسبة النجاح من الاجتماعات: ${convRate}%`
+            : stats.cur.won > 0
+            ? `${stats.cur.won} صفقة ناجحة بدون اجتماع`
+            : 'لا توجد صفقات مغلقة في هذه الفترة'
+        }
         delta={wonDelta}
         icon={<Trophy className="size-4" />}
         href="/leads?stage=won"

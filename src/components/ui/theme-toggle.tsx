@@ -1,23 +1,25 @@
 'use client';
 
-import { useTheme } from '@/hooks/use-theme';
 import { Button } from '@/components/ui/button';
-import { Moon, Sun } from 'lucide-react';
-import { useTranslations } from 'next-intl';
+import { Moon } from 'lucide-react';
+import { toast } from 'sonner';
 
 export function ThemeToggle() {
-  const { theme, toggleTheme } = useTheme();
-  const t = useTranslations('a11y');
+  const handleClick = () => {
+    toast.info('الوضع الداكن مفعّل افتراضياً لكامل المنظومة');
+  };
 
   return (
     <Button
       variant="ghost"
       size="icon"
-      onClick={toggleTheme}
-      aria-label={t('themeToggle')}
-      className="size-8"
+      onClick={handleClick}
+      aria-label="الوضع الداكن مفعّل"
+      title="الوضع الداكن مفعّل (الافتراضي الثابت)"
+      className="size-8 text-primary hover:bg-primary/10 transition-colors"
     >
-      {theme === 'dark' ? <Sun className="size-4" /> : <Moon className="size-4" />}
+      <Moon className="size-4 stroke-[2]" />
     </Button>
   );
 }
+

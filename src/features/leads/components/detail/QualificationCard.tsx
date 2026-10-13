@@ -56,13 +56,15 @@ export function QualificationCard({ lead, className }: QualificationCardProps) {
   return (
     <div
       className={cn(
-        'p-5 sm:p-6 rounded-[var(--radius-xl)] bg-[var(--surface)] border border-[var(--border)] shadow-xs space-y-5',
+        'p-5 sm:p-6 rounded-2xl bg-card border border-border shadow-2xs space-y-5',
         className
       )}
     >
-      <div className="flex items-center justify-between border-b border-[var(--border)] pb-3">
-        <h2 className="flex items-center gap-2 text-base font-bold text-[var(--fg)]">
-          <Sparkles className="size-4 text-[var(--primary)]" />
+      <div className="flex items-center justify-between border-b border-border pb-3.5">
+        <h2 className="flex items-center gap-2.5 text-base font-extrabold tracking-tight text-foreground">
+          <div className="size-8 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+            <Sparkles className="size-4" />
+          </div>
           <span>{t('qualificationTitle')}</span>
         </h2>
       </div>
@@ -129,18 +131,18 @@ export function QualificationCard({ lead, className }: QualificationCardProps) {
         </div>
 
         {/* Problems & Challenges Textarea */}
-        <div className="space-y-1.5 pt-2 border-t border-[var(--border)]">
+        <div className="space-y-1.5 pt-4 border-t border-border">
           <div className="flex items-center justify-between">
-            <Label htmlFor="lead-problems" className="text-xs font-semibold">
+            <Label htmlFor="lead-problems" className="text-xs font-bold text-foreground">
               {t('problems')}
             </Label>
             <div className="flex items-center gap-2">
               <span
                 className={cn(
-                  'text-[11px] font-mono',
+                  'text-[11px] font-mono px-2 py-0.5 rounded-full bg-muted/40',
                   remainingChars < 20
-                    ? 'text-[var(--danger)] font-bold'
-                    : 'text-[var(--fg-muted)]'
+                    ? 'text-destructive font-bold'
+                    : 'text-muted-foreground'
                 )}
               >
                 {t('charsRemaining', { count: remainingChars })}
@@ -159,7 +161,7 @@ export function QualificationCard({ lead, className }: QualificationCardProps) {
             onChange={(e) => problemsAutosave.setValue(e.target.value || null)}
             onBlur={problemsAutosave.flush}
             placeholder={t('problemsPlaceholder')}
-            className="text-sm resize-none"
+            className="text-sm resize-none rounded-xl border-border bg-muted/40 focus-visible:ring-2 focus-visible:ring-primary/40"
           />
         </div>
       </div>

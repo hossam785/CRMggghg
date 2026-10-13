@@ -83,11 +83,11 @@ export function LeadFields({ lead, className }: LeadFieldsProps) {
   return (
     <div
       className={cn(
-        'p-5 sm:p-6 rounded-[var(--radius-xl)] bg-[var(--surface)] border border-[var(--border)] shadow-xs space-y-5',
+        'p-5 sm:p-6 rounded-2xl bg-card border border-border shadow-2xs space-y-5',
         className
       )}
     >
-      <h2 className="text-base font-bold text-[var(--fg)] border-b border-[var(--border)] pb-3">
+      <h2 className="text-base font-extrabold tracking-tight text-foreground border-b border-border pb-3.5">
         البيانات الأساسية
       </h2>
 
@@ -95,8 +95,8 @@ export function LeadFields({ lead, className }: LeadFieldsProps) {
         {/* Name */}
         <div className="space-y-1.5">
           <div className="flex items-center justify-between">
-            <Label htmlFor="lead-name" className="text-xs font-semibold">
-              {t('name')} <span className="text-[var(--danger)]">*</span>
+            <Label htmlFor="lead-name" className="text-xs font-bold text-foreground">
+              {t('name')} <span className="text-destructive">*</span>
             </Label>
             <SaveIndicator
               state={nameAutosave.saveState}
@@ -108,10 +108,10 @@ export function LeadFields({ lead, className }: LeadFieldsProps) {
             value={nameAutosave.value}
             onChange={(e) => nameAutosave.setValue(e.target.value)}
             onBlur={nameAutosave.flush}
-            className="h-10 text-sm"
+            className="h-10 text-sm rounded-xl border-border bg-muted/40 text-foreground focus-visible:ring-2 focus-visible:ring-primary/40"
           />
           {nameAutosave.errorMessage && (
-            <p className="text-xs text-[var(--danger)]">{nameAutosave.errorMessage}</p>
+            <p className="text-xs text-destructive font-medium">{nameAutosave.errorMessage}</p>
           )}
         </div>
 
@@ -119,7 +119,7 @@ export function LeadFields({ lead, className }: LeadFieldsProps) {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="space-y-1.5">
             <div className="flex items-center justify-between">
-              <Label htmlFor="lead-company" className="text-xs font-semibold">
+              <Label htmlFor="lead-company" className="text-xs font-bold text-foreground">
                 {t('company')}
               </Label>
               <SaveIndicator
@@ -132,13 +132,13 @@ export function LeadFields({ lead, className }: LeadFieldsProps) {
               value={companyAutosave.value || ''}
               onChange={(e) => companyAutosave.setValue(e.target.value || null)}
               onBlur={companyAutosave.flush}
-              className="h-10 text-sm"
+              className="h-10 text-sm rounded-xl border-border bg-muted/40 text-foreground focus-visible:ring-2 focus-visible:ring-primary/40"
             />
           </div>
 
           <div className="space-y-1.5">
             <div className="flex items-center justify-between">
-              <Label htmlFor="lead-job-title" className="text-xs font-semibold">
+              <Label htmlFor="lead-job-title" className="text-xs font-bold text-foreground">
                 {t('jobTitle')}
               </Label>
               <SaveIndicator
@@ -151,7 +151,7 @@ export function LeadFields({ lead, className }: LeadFieldsProps) {
               value={jobTitleAutosave.value || ''}
               onChange={(e) => jobTitleAutosave.setValue(e.target.value || null)}
               onBlur={jobTitleAutosave.flush}
-              className="h-10 text-sm"
+              className="h-10 text-sm rounded-xl border-border bg-muted/40 text-foreground focus-visible:ring-2 focus-visible:ring-primary/40"
             />
           </div>
         </div>
@@ -160,7 +160,7 @@ export function LeadFields({ lead, className }: LeadFieldsProps) {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="space-y-1.5">
             <div className="flex items-center justify-between">
-              <Label htmlFor="lead-instagram" className="text-xs font-semibold">
+              <Label htmlFor="lead-instagram" className="text-xs font-bold text-foreground">
                 {t('instagram')}
               </Label>
               <SaveIndicator
@@ -183,7 +183,7 @@ export function LeadFields({ lead, className }: LeadFieldsProps) {
 
           <div className="space-y-1.5">
             <div className="flex items-center justify-between">
-              <Label htmlFor="lead-whatsapp" className="text-xs font-semibold">
+              <Label htmlFor="lead-whatsapp" className="text-xs font-bold text-foreground">
                 {t('whatsapp')}
               </Label>
               <SaveIndicator
@@ -209,7 +209,7 @@ export function LeadFields({ lead, className }: LeadFieldsProps) {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="space-y-1.5">
             <div className="flex items-center justify-between">
-              <Label className="text-xs font-semibold">{t('industry')}</Label>
+              <Label className="text-xs font-bold text-foreground">{t('industry')}</Label>
               <SaveIndicator
                 state={
                   industryAutosave.saveState !== 'idle'
@@ -234,7 +234,7 @@ export function LeadFields({ lead, className }: LeadFieldsProps) {
 
           <div className="space-y-1.5">
             <div className="flex items-center justify-between">
-              <Label className="text-xs font-semibold">{t('country')}</Label>
+              <Label className="text-xs font-bold text-foreground">{t('country')}</Label>
               <SaveIndicator
                 state={countryAutosave.saveState}
                 onRetry={countryAutosave.retry}

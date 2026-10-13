@@ -51,7 +51,7 @@ export function StageOverrideMenu({ open, onOpenChange, lead }: StageOverrideMen
       <ResponsiveDialogContent className="sm:max-w-md">
         <ResponsiveDialogHeader>
           <div className="flex items-center gap-2">
-            <div className="flex size-9 items-center justify-center rounded-full bg-[var(--surface-2)] text-[var(--fg)]">
+            <div className="flex size-9 items-center justify-center rounded-full bg-muted/40 text-foreground">
               <SlidersHorizontal className="size-5" />
             </div>
             <div>
@@ -72,17 +72,17 @@ export function StageOverrideMenu({ open, onOpenChange, lead }: StageOverrideMen
                 type="button"
                 disabled={leadAction.isPending}
                 onClick={() => handleSelectStage(stageMeta.key)}
-                className={`w-full flex items-center justify-between p-2.5 rounded-[var(--radius-md)] border text-start transition-all ${
+                className={`w-full flex items-center justify-between p-2.5 rounded-xl border text-start transition-all ${
                   isCurrent
-                    ? 'border-[var(--primary)] bg-[var(--primary)]/5 font-semibold'
-                    : 'border-[var(--border)] bg-[var(--surface)] hover:bg-[var(--surface-2)]'
+                    ? 'border-primary bg-primary/10 font-semibold'
+                    : 'border-border bg-card hover:bg-muted/40'
                 }`}
               >
                 <div className="flex items-center gap-2.5">
                   <StageBadge stage={stageMeta.key} size="sm" />
                 </div>
                 {isCurrent && (
-                  <div className="flex items-center gap-1.5 text-xs text-[var(--primary)] font-medium">
+                  <div className="flex items-center gap-1.5 text-xs text-primary font-medium">
                     <span>{t('dialogs.stageOverride.currentStage')}</span>
                     <Check className="size-4" />
                   </div>

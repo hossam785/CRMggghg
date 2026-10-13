@@ -15,6 +15,7 @@ interface KpiCardProps {
   className?: string;
 }
 
+
 export function KpiCard({
   title,
   value,
@@ -27,7 +28,9 @@ export function KpiCard({
   const content = (
     <div
       className={`relative rounded-2xl border border-border bg-card p-5 shadow-xs transition-all duration-200 ${
-        href ? 'hover:border-primary/40 hover:shadow-sm cursor-pointer group' : ''
+        href
+          ? 'hover:border-primary/40 hover:shadow-md hover:-translate-y-0.5 cursor-pointer group'
+          : ''
       } ${className}`}
     >
       <div className="flex items-start justify-between gap-3 mb-3">
@@ -36,29 +39,29 @@ export function KpiCard({
         </span>
         <div className="flex items-center gap-1.5">
           {icon && (
-            <div className="size-8 rounded-xl bg-muted/60 text-muted-foreground flex items-center justify-center shrink-0">
+            <div className="size-8 rounded-xl bg-primary/10 text-primary flex items-center justify-center shrink-0 shadow-xs">
               {icon}
             </div>
           )}
           {href && (
-            <ArrowUpRight className="size-4 text-muted-foreground/40 group-hover:text-primary transition-colors rtl:-scale-x-100" />
+            <ArrowUpRight className="size-4 text-muted-foreground/50 group-hover:text-primary group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all rtl:group-hover:-translate-x-0.5 rtl:-scale-x-100" />
           )}
         </div>
       </div>
 
       <div className="flex items-baseline gap-2.5 mb-2">
-        <span className="text-2xl sm:text-3xl font-black text-foreground tabular-nums tracking-tight">
+        <span className="text-2xl sm:text-3xl font-bold text-foreground tabular-nums tracking-tight">
           {typeof value === 'number' ? value.toLocaleString('ar-EG') : value}
         </span>
 
         {delta && (
           <span
-            className={`inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded-md text-[11px] font-bold tabular-nums ${
+            className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-semibold tabular-nums border ${
               delta.direction === 'up'
-                ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400'
+                ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20'
                 : delta.direction === 'down'
-                ? 'bg-rose-500/10 text-rose-600 dark:text-rose-400'
-                : 'bg-muted text-muted-foreground'
+                ? 'bg-rose-500/10 text-rose-400 border-rose-500/20'
+                : 'bg-muted/40 text-muted-foreground border-border/40'
             }`}
           >
             {delta.direction === 'up' && <TrendingUp className="size-3" />}
@@ -79,3 +82,4 @@ export function KpiCard({
 
   return content;
 }
+

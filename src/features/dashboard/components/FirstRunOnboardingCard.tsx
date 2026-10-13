@@ -45,18 +45,18 @@ export function FirstRunOnboardingCard({ totalLeads }: FirstRunOnboardingCardPro
   ];
 
   return (
-    <div className="rounded-3xl border border-primary/30 bg-gradient-to-br from-primary/5 via-card to-card p-6 shadow-sm space-y-5">
+    <div className="rounded-2xl border border-border bg-card p-6 shadow-xs space-y-5 relative overflow-hidden">
       <div className="flex items-start justify-between gap-4">
-        <div className="flex items-center gap-3">
-          <div className="size-10 rounded-2xl bg-primary text-primary-foreground flex items-center justify-center shrink-0 shadow-sm">
+        <div className="flex items-center gap-3.5">
+          <div className="size-10 rounded-2xl bg-primary/10 text-primary flex items-center justify-center shrink-0 shadow-xs">
             <Sparkles className="size-5" />
           </div>
           <div>
-            <h2 className="text-base font-black text-foreground">
-              مرحبًا بك في Scope Mini CRM 🎉
+            <h2 className="text-base font-semibold text-foreground tracking-tight">
+              مرحبًا بك في Scope CRM 🎉
             </h2>
             <p className="text-xs text-muted-foreground mt-0.5">
-              نظامك جاهز تمامًا. ابدأ بإحدى هذه الخطوات الثلاث لتفعيل متابعاتك:
+              نظامك جاهز تمامًا. ابدأ بإحدى هذه الخطوات الثلاث لتفعيل خط المبيعات والمتابعة:
             </p>
           </div>
         </div>
@@ -64,7 +64,7 @@ export function FirstRunOnboardingCard({ totalLeads }: FirstRunOnboardingCardPro
         <button
           type="button"
           onClick={() => setIsDismissed(true)}
-          className="text-muted-foreground hover:text-foreground p-1 rounded-lg hover:bg-muted"
+          className="text-muted-foreground hover:text-foreground p-1 rounded-full hover:bg-muted/40 transition-colors cursor-pointer"
           title="إخفاء مؤقت"
         >
           <X className="size-4" />
@@ -77,24 +77,29 @@ export function FirstRunOnboardingCard({ totalLeads }: FirstRunOnboardingCardPro
           return (
             <div
               key={s.num}
-              className="rounded-2xl border border-border bg-background p-4 flex flex-col justify-between space-y-4 hover:border-primary/40 transition-colors shadow-xs"
+              className="rounded-2xl border border-border bg-muted/20 p-4.5 flex flex-col justify-between space-y-4 hover:border-primary/40 hover:bg-muted/40 transition-all shadow-xs"
             >
-              <div className="space-y-2">
+              <div className="space-y-2.5">
                 <div className="flex items-center justify-between">
-                  <span className="size-7 rounded-xl bg-primary/10 text-primary font-black text-xs flex items-center justify-center">
+                  <span className="size-7 rounded-full bg-primary/10 text-primary font-bold text-xs flex items-center justify-center">
                     {s.num}
                   </span>
                   <Icon className="size-4 text-muted-foreground" />
                 </div>
                 <div>
-                  <h3 className="text-xs font-bold text-foreground">{s.title}</h3>
+                  <h3 className="text-xs font-semibold text-foreground">{s.title}</h3>
                   <p className="text-[11px] text-muted-foreground mt-1 leading-relaxed">
                     {s.desc}
                   </p>
                 </div>
               </div>
 
-              <Button asChild size="sm" variant="outline" className="w-full text-xs font-bold h-8 justify-between">
+              <Button
+                asChild
+                size="sm"
+                variant="outline"
+                className="w-full text-xs font-semibold h-8 justify-between rounded-full border-border hover:border-primary text-foreground hover:text-primary bg-card"
+              >
                 <Link href={s.href}>
                   <span>{s.actionLabel}</span>
                   <ArrowLeft className="size-3.5 rtl:rotate-180" />

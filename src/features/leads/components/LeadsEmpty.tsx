@@ -54,17 +54,17 @@ export function LeadsEmpty({
     return (
       <div
         className={cn(
-          'flex flex-col items-center justify-center p-8 sm:p-12 text-center rounded-[var(--radius-lg)] border border-[var(--danger)]/20 bg-[var(--danger)]/5 my-6',
+          'flex flex-col items-center justify-center p-8 sm:p-12 text-center rounded-xl border border-destructive/20 bg-destructive/5 my-6',
           className
         )}
       >
-        <div className="flex size-12 items-center justify-center rounded-full bg-[var(--danger)]/10 text-[var(--danger)] mb-4">
+        <div className="flex size-12 items-center justify-center rounded-full bg-destructive/10 text-destructive mb-4">
           <AlertCircle className="size-6" />
         </div>
-        <h3 className="text-base font-semibold text-[var(--fg)] mb-1">
+        <h3 className="text-base font-semibold text-foreground mb-1">
           {errorMessage || 'حدث خطأ أثناء تحميل البيانات'}
         </h3>
-        <p className="text-sm text-[var(--fg-muted)] max-w-sm mb-5">
+        <p className="text-sm text-muted-foreground max-w-sm mb-5">
           يرجى التحقق من اتصالك بالإنترنت والمحاولة مرة أخرى.
         </p>
         {onRetry && (
@@ -82,17 +82,17 @@ export function LeadsEmpty({
     return (
       <div
         className={cn(
-          'flex flex-col items-center justify-center p-8 sm:p-16 text-center rounded-[var(--radius-lg)] border border-dashed border-[var(--border)] bg-[var(--surface)] my-6',
+          'flex flex-col items-center justify-center p-8 sm:p-16 text-center rounded-xl border border-dashed border-border bg-card my-6',
           className
         )}
       >
-        <div className="flex size-14 items-center justify-center rounded-2xl bg-[var(--primary)]/10 text-[var(--primary)] mb-4 shadow-xs">
+        <div className="flex size-14 items-center justify-center rounded-2xl bg-primary/10 text-primary mb-4 shadow-xs">
           <Users className="size-7" />
         </div>
-        <h3 className="text-lg font-bold text-[var(--fg)] mb-1">
+        <h3 className="text-lg font-bold text-foreground mb-1">
           {t('noLeads')}
         </h3>
-        <p className="text-sm text-[var(--fg-muted)] max-w-sm mb-6">
+        <p className="text-sm text-muted-foreground max-w-sm mb-6">
           {t('addFirstLead')}
         </p>
         {onAddLead && (
@@ -109,27 +109,27 @@ export function LeadsEmpty({
   return (
     <div
       className={cn(
-        'flex flex-col items-center justify-center p-8 sm:p-14 text-center rounded-[var(--radius-lg)] border border-[var(--border)] bg-[var(--surface)] my-6 space-y-4',
+        'flex flex-col items-center justify-center p-8 sm:p-14 text-center rounded-xl border border-border bg-card my-6 space-y-4',
         className
       )}
     >
-      <div className="flex size-12 items-center justify-center rounded-full bg-[var(--surface-2)] text-[var(--fg-muted)]">
+      <div className="flex size-12 items-center justify-center rounded-full bg-muted text-muted-foreground">
         <SearchX className="size-6" />
       </div>
 
       <div className="space-y-1">
-        <h3 className="text-base font-semibold text-[var(--fg)]">
+        <h3 className="text-base font-semibold text-foreground">
           {searchQuery ? t('noResults', { query: searchQuery }) : 'لا توجد نتائج تطابق الفلاتر المحددة'}
         </h3>
-        <p className="text-xs sm:text-sm text-[var(--fg-muted)] max-w-sm">
+        <p className="text-xs sm:text-sm text-muted-foreground max-w-sm">
           جرب البحث بكلمات مختلفة أو إزالة بعض الفلاتر لعرض نتائج أكثر.
         </p>
       </div>
 
       {/* Fuzzy Suggestions: "Did you mean…?" */}
       {suggestions.length > 0 && (
-        <div className="p-3 rounded-[var(--radius-md)] bg-[var(--surface-2)] border border-[var(--border)] max-w-md w-full text-start">
-          <div className="flex items-center gap-1.5 text-xs font-semibold text-[var(--primary)] mb-2">
+        <div className="p-3 rounded-lg bg-muted border border-border max-w-md w-full text-start">
+          <div className="flex items-center gap-1.5 text-xs font-semibold text-primary mb-2">
             <Sparkles className="size-3.5" />
             <span>{t('didYouMean')}</span>
           </div>
@@ -139,11 +139,11 @@ export function LeadsEmpty({
                 key={sug.id}
                 type="button"
                 onClick={() => onSelectSuggestion?.(sug)}
-                className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-[var(--surface)] text-[var(--fg)] border border-[var(--border)] hover:border-[var(--primary)] hover:text-[var(--primary)] transition-colors"
+                className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-card text-foreground border border-border hover:border-primary hover:text-primary transition-colors"
               >
                 <span>{sug.name}</span>
                 {sug.instagram_handle && (
-                  <span className="text-[10px] text-[var(--fg-muted)] font-mono">
+                  <span className="text-[10px] text-muted-foreground font-mono">
                     (@{sug.instagram_handle})
                   </span>
                 )}

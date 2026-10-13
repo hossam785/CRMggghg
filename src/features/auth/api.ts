@@ -1,6 +1,7 @@
 import { supabase } from '@/lib/supabase/client';
 import { env } from '@/lib/env';
 import { toAppError } from '@/lib/errors';
+import { broadcastAuthEvent } from '@/lib/auth-broadcast';
 import type { LoginFormData } from './schemas';
 
 export async function signInWithEmailPassword(data: LoginFormData) {
@@ -49,6 +50,7 @@ export async function signInWithEmailPassword(data: LoginFormData) {
       throw new Error('فشل تسجيل الدخول في بيئة التطوير');
     }
 
+    broadcastAuthEvent({ type: 'SIGNED_IN' });
     return {
       user: {
         id: '00000000-0000-0000-0000-000000000001',
@@ -67,22 +69,8 @@ export async function signInWithEmailPassword(data: LoginFormData) {
     throw toAppError(error);
   }
 
+  broadcastAuthEvent({ type: 'SIGNED_IN' });
   return authData;
-}
-
-export async function requestPasswordReset(email: string) {
-  const origin = typeof window !== 'undefined' ? window.location.origin : '';
-  const redirectTo = `${origin}/auth/callback?next=/reset-password`;
-
-  const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
-    redirectTo,
-  });
-
-  if (error) {
-    throw toAppError(error);
-  }
-
-  return data;
 }
 
 export async function updatePassword(newPassword: string) {
@@ -104,4 +92,5 @@ export async function signOutUser() {
   } catch {
     // Graceful ignore if Supabase is offline
   }
+  broadcastAuthEvent({ type: 'SIGNED_OUT' });
 }

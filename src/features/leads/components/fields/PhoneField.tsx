@@ -108,7 +108,7 @@ export function PhoneField({
 
   return (
     <div className={cn('flex flex-col gap-1.5', className)}>
-      <Label htmlFor={id} className="text-sm font-medium text-[var(--color-fg-primary)]">
+      <Label htmlFor={id} className="text-sm font-medium text-foreground">
         {t('whatsapp')}
       </Label>
 
@@ -124,7 +124,7 @@ export function PhoneField({
           dir="ltr"
           className={cn(
             'text-start text-base sm:text-sm font-mono',
-            displayError ? 'border-[var(--color-error)] focus-visible:ring-[var(--color-error)]' : ''
+            displayError ? 'border-destructive focus-visible:ring-destructive' : ''
           )}
           aria-invalid={Boolean(displayError)}
           aria-describedby={displayError ? `${id}-error` : undefined}
@@ -135,7 +135,7 @@ export function PhoneField({
       {currentE164 && !displayError && (
         <div className="flex flex-wrap items-center gap-2 mt-0.5">
           {formattedPreview && (
-            <span className="text-xs text-[var(--color-fg-muted)] font-mono">
+            <span className="text-xs text-muted-foreground font-mono">
               <bdi dir="ltr">{formattedPreview}</bdi>
             </span>
           )}
@@ -143,7 +143,7 @@ export function PhoneField({
             href={waUrl(currentE164)}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-[var(--radius-full)] text-xs font-mono bg-[var(--color-success-subtle)] text-[var(--color-success)] hover:underline border border-[var(--color-border-subtle)] transition-colors"
+            className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-mono bg-emerald-500/10 text-emerald-400 hover:underline border border-emerald-500/20 transition-colors"
           >
             <MessageCircle className="size-3 shrink-0" aria-hidden="true" />
             <span>WhatsApp ↗</span>
@@ -157,7 +157,7 @@ export function PhoneField({
         <p
           id={`${id}-error`}
           role="alert"
-          className="text-xs text-[var(--color-error)] font-medium mt-0.5 animate-in fade-in-50"
+          className="text-xs text-destructive font-medium mt-0.5 animate-in fade-in-50"
         >
           {displayError}
         </p>

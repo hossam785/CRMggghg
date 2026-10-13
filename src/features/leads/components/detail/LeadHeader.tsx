@@ -106,14 +106,14 @@ export function LeadHeader({ lead, onDeleted, className }: LeadHeaderProps) {
     <>
       <div
         className={cn(
-          'flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 p-5 sm:p-6 rounded-[var(--radius-xl)] bg-[var(--surface)] border border-[var(--border)] shadow-xs',
+          'flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 p-5 sm:p-6 rounded-2xl bg-card border border-border shadow-2xs',
           className
         )}
       >
         {/* Left Side: Name and Contact Action Chips */}
         <div className="space-y-3 min-w-0 flex-1">
           <div className="flex items-center gap-3 flex-wrap">
-            <h1 className="text-2xl sm:text-3xl font-extrabold text-[var(--fg)] truncate">
+            <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-foreground truncate">
               {lead.name}
             </h1>
             <StageBadge stage={lead.stage} size="md" />
@@ -121,7 +121,7 @@ export function LeadHeader({ lead, onDeleted, className }: LeadHeaderProps) {
 
           {/* Subtitle details */}
           {(lead.company || lead.job_title) && (
-            <p className="text-xs sm:text-sm text-[var(--fg-muted)]">
+            <p className="text-xs sm:text-sm text-muted-foreground">
               {lead.job_title && <span>{lead.job_title}</span>}
               {lead.job_title && lead.company && <span> · </span>}
               {lead.company && <span>{lead.company}</span>}
@@ -203,16 +203,16 @@ export function LeadHeader({ lead, onDeleted, className }: LeadHeaderProps) {
               <Button
                 variant="outline"
                 size="sm"
-                className="size-9 p-0 rounded-full border-[var(--border)] text-[var(--fg-muted)] hover:text-[var(--fg)]"
+                className="size-9 p-0 rounded-full border-border text-muted-foreground hover:text-foreground"
               >
                 <MoreHorizontal className="size-4" />
                 <span className="sr-only">خيارات إضافية</span>
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-44">
+            <DropdownMenuContent align="end" className="w-44 border-border bg-card">
               <DropdownMenuItem
                 onClick={() => setIsDeleteDialogOpen(true)}
-                className="text-[var(--danger)] focus:text-[var(--danger)] focus:bg-[var(--danger)]/10 cursor-pointer"
+                className="text-destructive focus:text-destructive focus:bg-destructive/10 cursor-pointer"
               >
                 <Trash2 className="size-4 me-2" />
                 <span>{t('deleteLead')}</span>
@@ -224,12 +224,12 @@ export function LeadHeader({ lead, onDeleted, className }: LeadHeaderProps) {
 
       {/* Delete Confirmation Dialog */}
       <Dialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
-        <DialogContent className="sm:max-w-md">
+        <DialogContent className="sm:max-w-md border-border bg-card">
           <DialogHeader className="text-start">
-            <DialogTitle className="text-base font-bold text-[var(--fg)]">
+            <DialogTitle className="text-base font-bold text-foreground">
               {t('deleteConfirmTitle')}
             </DialogTitle>
-            <DialogDescription className="text-sm text-[var(--fg-muted)] mt-1.5">
+            <DialogDescription className="text-sm text-muted-foreground mt-1.5">
               {t('deleteConfirmDesc')}
             </DialogDescription>
           </DialogHeader>

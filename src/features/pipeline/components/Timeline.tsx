@@ -17,30 +17,30 @@ export function Timeline({ leadId, className }: TimelineProps) {
 
   return (
     <div
-      className={`rounded-[var(--radius-xl)] border border-[var(--border)] bg-[var(--surface)] p-5 md:p-6 ${
+      className={`rounded-2xl border border-border bg-card p-5 md:p-6 shadow-2xs ${
         className || ''
       }`}
     >
-      <div className="flex items-center gap-2 mb-6">
-        <div className="flex size-7 items-center justify-center rounded-md bg-[var(--surface-2)] text-[var(--fg)]">
+      <div className="flex items-center gap-2.5 pb-3.5 mb-6 border-b border-border">
+        <div className="size-8 rounded-full bg-primary/10 flex items-center justify-center text-primary">
           <History className="size-4" />
         </div>
-        <h3 className="text-base font-bold text-[var(--fg)]">
+        <h3 className="text-base font-extrabold tracking-tight text-foreground">
           {t('timeline.title')}
         </h3>
       </div>
 
       {isLoading ? (
-        <div className="flex items-center justify-center py-8 text-[var(--fg-muted)] gap-2">
-          <Loader2 className="size-5 animate-spin text-[var(--primary)]" />
-          <span className="text-sm">{t('common.loading')}</span>
+        <div className="flex items-center justify-center py-8 text-muted-foreground gap-2">
+          <Loader2 className="size-5 animate-spin text-primary" />
+          <span className="text-sm font-medium">{t('common.loading')}</span>
         </div>
       ) : !events || events.length === 0 ? (
-        <div className="text-center py-8 text-sm text-[var(--fg-muted)]">
+        <div className="text-center py-8 text-sm text-muted-foreground">
           {t('timeline.empty')}
         </div>
       ) : (
-        <div className="relative before:absolute before:top-3 before:bottom-3 before:start-[15px] before:w-[2px] before:bg-[var(--border)]">
+        <div className="relative before:absolute before:top-3 before:bottom-3 before:start-[15px] before:w-[2px] before:bg-border">
           {events.map((event, index) => (
             <TimelineItem
               key={event.id}

@@ -105,7 +105,7 @@ export function InstagramField({
 
   return (
     <div className={cn('flex flex-col gap-1.5', className)}>
-      <Label htmlFor={id} className="text-sm font-medium text-[var(--color-fg-primary)]">
+      <Label htmlFor={id} className="text-sm font-medium text-foreground">
         {t('instagram')}
       </Label>
 
@@ -124,9 +124,9 @@ export function InstagramField({
           className={cn(
             'text-start text-base sm:text-sm font-mono',
             displayError
-              ? 'border-[var(--color-error)] focus-visible:ring-[var(--color-error)]'
+              ? 'border-destructive focus-visible:ring-destructive'
               : isDuplicate
-                ? 'border-[var(--color-warning)] focus-visible:ring-[var(--color-warning)]'
+                ? 'border-amber-500/50 focus-visible:ring-amber-500'
                 : ''
           )}
           aria-invalid={Boolean(displayError || isDuplicate)}
@@ -143,7 +143,7 @@ export function InstagramField({
             href={instagramUrl(currentHandle)}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-[var(--radius-full)] text-xs font-mono bg-[var(--color-bg-secondary)] text-[var(--color-accent)] hover:underline border border-[var(--color-border-subtle)] transition-colors"
+            className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-mono bg-muted text-primary hover:underline border border-border transition-colors"
           >
             <bdi dir="ltr">@{currentHandle}</bdi>
             <ExternalLink className="size-3 shrink-0 ms-0.5" aria-hidden="true" />
@@ -156,16 +156,16 @@ export function InstagramField({
         <div
           id={`${id}-duplicate`}
           role="alert"
-          className="flex items-center gap-2 p-2 rounded-[var(--radius-md)] bg-[var(--color-warning-subtle)] border border-[var(--color-warning)] text-xs text-[var(--color-warning-fg)] mt-1 animate-in fade-in-50 duration-200"
+          className="flex items-center gap-2 p-2 rounded-md bg-amber-500/10 border border-amber-500/30 text-xs text-amber-400 mt-1 animate-in fade-in-50 duration-200"
         >
-          <AlertTriangle className="size-4 shrink-0 text-[var(--color-warning)]" />
+          <AlertTriangle className="size-4 shrink-0 text-amber-400" />
           <div className="flex flex-wrap items-center gap-1.5 flex-1 min-w-0">
             <span>{t('duplicateWarning')}</span>
-            <span className="font-semibold">{duplicate.name}</span>
+            <span className="font-semibold text-foreground">{duplicate.name}</span>
             <StageBadge stage={duplicate.stage} size="sm" />
             <Link
               href={`/leads/${duplicate.id}`}
-              className="font-medium underline ms-auto hover:text-[var(--color-fg-primary)]"
+              className="font-medium underline ms-auto hover:text-foreground"
             >
               {t('openLead')} ↗
             </Link>
@@ -178,7 +178,7 @@ export function InstagramField({
         <p
           id={`${id}-error`}
           role="alert"
-          className="text-xs text-[var(--color-error)] font-medium mt-0.5 animate-in fade-in-50"
+          className="text-xs text-destructive font-medium mt-0.5 animate-in fade-in-50"
         >
           {displayError}
         </p>

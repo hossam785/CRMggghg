@@ -113,8 +113,8 @@ export function StageTabs({
           className={cn(
             'snap-start shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs sm:text-sm font-medium border transition-all duration-150 select-none',
             isAllActive
-              ? 'bg-[var(--primary)] text-white border-[var(--primary)] shadow-xs'
-              : 'bg-[var(--surface)] text-[var(--fg-muted)] border-[var(--border)] hover:bg-[var(--surface-2)] hover:text-[var(--fg)]'
+              ? 'bg-primary text-primary-foreground border-primary shadow-xs'
+              : 'bg-card text-muted-foreground border-border hover:bg-muted hover:text-foreground'
           )}
         >
           <Layers className="size-3.5 shrink-0" aria-hidden="true" />
@@ -123,8 +123,8 @@ export function StageTabs({
             className={cn(
               'ms-1 px-1.5 py-0.5 rounded-full text-[11px] font-mono leading-none',
               isAllActive
-                ? 'bg-white/25 text-white'
-                : 'bg-[var(--surface-2)] text-[var(--fg-muted)]'
+                ? 'bg-primary-foreground/25 text-primary-foreground'
+                : 'bg-muted text-muted-foreground'
             )}
           >
             {numberFormatter.format(totalAll)}
@@ -148,8 +148,8 @@ export function StageTabs({
               className={cn(
                 'snap-start shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs sm:text-sm font-medium border transition-all duration-150 select-none',
                 isSelected
-                  ? 'bg-[var(--primary)] text-white border-[var(--primary)] shadow-xs'
-                  : 'bg-[var(--surface)] text-[var(--fg-muted)] border-[var(--border)] hover:bg-[var(--surface-2)] hover:text-[var(--fg)]'
+                  ? 'bg-primary text-primary-foreground border-primary shadow-xs'
+                  : 'bg-card text-muted-foreground border-border hover:bg-muted hover:text-foreground'
               )}
             >
               <Icon className="size-3.5 shrink-0" aria-hidden="true" />
@@ -158,8 +158,8 @@ export function StageTabs({
                 className={cn(
                   'ms-1 px-1.5 py-0.5 rounded-full text-[11px] font-mono leading-none',
                   isSelected
-                    ? 'bg-white/25 text-white'
-                    : 'bg-[var(--surface-2)] text-[var(--fg-muted)]'
+                    ? 'bg-primary-foreground/25 text-primary-foreground'
+                    : 'bg-muted text-muted-foreground'
                 )}
               >
                 {numberFormatter.format(count)}

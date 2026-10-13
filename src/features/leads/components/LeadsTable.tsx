@@ -66,27 +66,30 @@ export function LeadsTable({
   return (
     <div
       ref={containerRef}
+      role="grid"
+      aria-label={t('tableHeaders.lead')}
       className={cn(
-        'w-full border border-[var(--border)] rounded-[var(--radius-lg)] bg-[var(--surface)] overflow-hidden shadow-2xs',
+        'w-full border border-border rounded-2xl bg-card overflow-hidden shadow-2xs',
         className
       )}
     >
       {/* Sticky Table Header */}
       <div
         role="row"
-        className="sticky top-0 z-10 flex items-center h-11 px-4 sm:px-6 border-b border-[var(--border)] bg-[var(--surface-2)]/90 backdrop-blur-sm text-xs font-semibold text-[var(--fg-muted)] select-none"
+        className="sticky top-0 z-10 flex items-center h-11 px-4 sm:px-6 border-b border-border bg-muted/60 backdrop-blur-sm text-xs font-semibold text-muted-foreground select-none"
       >
-        <div className="flex-1 pe-4">{t('tableHeaders.lead')}</div>
-        <div className="w-36 shrink-0">{t('tableHeaders.stage')}</div>
-        <div className="w-48 shrink-0">{t('tableHeaders.industryAndCountry')}</div>
-        <div className="w-32 shrink-0">{t('tableHeaders.lastContact')}</div>
-        <div className="w-32 shrink-0">{t('tableHeaders.nextFollowUp')}</div>
-        <div className="w-32 shrink-0 text-center">{t('tableHeaders.quickAction')}</div>
-        <div className="w-10 shrink-0" />
+        <div role="columnheader" className="flex-1 pe-4">{t('tableHeaders.lead')}</div>
+        <div role="columnheader" className="w-36 shrink-0">{t('tableHeaders.stage')}</div>
+        <div role="columnheader" className="w-48 shrink-0">{t('tableHeaders.industryAndCountry')}</div>
+        <div role="columnheader" className="w-32 shrink-0">{t('tableHeaders.lastContact')}</div>
+        <div role="columnheader" className="w-32 shrink-0">{t('tableHeaders.nextFollowUp')}</div>
+        <div role="columnheader" className="w-32 shrink-0 text-center">{t('tableHeaders.quickAction')}</div>
+        <div role="columnheader" className="w-10 shrink-0" />
       </div>
 
       {/* Virtualized Rows Container */}
       <div
+        role="rowgroup"
         className="relative w-full"
         style={{
           height: `${virtualizer.getTotalSize()}px`,
@@ -121,8 +124,8 @@ export function LeadsTable({
 
       {/* Loading Next Page Spinner */}
       {isFetchingNextPage && (
-        <div className="flex items-center justify-center p-4 border-t border-[var(--border)] bg-[var(--surface-2)]/30 text-xs text-[var(--fg-muted)] gap-2">
-          <Loader2 className="size-4 animate-spin text-[var(--primary)]" />
+        <div className="flex items-center justify-center p-4 border-t border-border bg-muted/30 text-xs text-muted-foreground gap-2">
+          <Loader2 className="size-4 animate-spin text-primary" />
           <span>جاري تحميل المزيد من العملاء…</span>
         </div>
       )}

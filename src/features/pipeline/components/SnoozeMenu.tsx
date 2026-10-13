@@ -92,7 +92,7 @@ function SnoozeForm({
           variant="ghost"
           size="sm"
           onClick={() => setShowCustomInput(true)}
-          className="w-full text-xs text-[var(--fg-muted)] hover:text-[var(--fg)] mt-2"
+          className="w-full text-xs text-muted-foreground hover:text-foreground mt-2"
         >
           {t('dialogs.snooze.custom')}
         </Button>
@@ -144,7 +144,7 @@ export function SnoozeMenu({ open, onOpenChange, lead }: SnoozeMenuProps) {
       <ResponsiveDialogContent className="sm:max-w-md">
         <ResponsiveDialogHeader>
           <div className="flex items-center gap-2">
-            <div className="flex size-9 items-center justify-center rounded-full bg-[var(--primary)]/10 text-[var(--primary)]">
+            <div className="flex size-9 items-center justify-center rounded-full bg-primary/10 text-primary">
               <Moon className="size-5" />
             </div>
             <div>

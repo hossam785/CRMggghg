@@ -107,7 +107,7 @@ export function SearchInput({
   return (
     <div className={cn('relative flex items-center w-full min-w-0', className)}>
       <Search
-        className="pointer-events-none absolute start-3 top-1/2 -translate-y-1/2 size-4 text-[var(--fg-muted)] shrink-0"
+        className="pointer-events-none absolute start-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground shrink-0"
         aria-hidden="true"
       />
 
@@ -123,25 +123,25 @@ export function SearchInput({
         placeholder={t('searchPlaceholder')}
         aria-label={t('searchPlaceholder')}
         className={cn(
-          'w-full h-10 rounded-[var(--radius-md)] border border-[var(--border)]',
-          'bg-[var(--surface-2)] ps-9 pe-12 text-sm text-[var(--fg)]',
-          'placeholder:text-[var(--fg-muted)] focus:outline-none focus:border-[var(--primary)]',
-          'focus:ring-1 focus:ring-[var(--primary)] focus:bg-[var(--surface)]',
-          'transition-all duration-150 [appearance:textfield] [&::-webkit-search-cancel-button]:hidden'
+          'w-full h-10 rounded-full border border-border',
+          'bg-card ps-9 pe-12 text-sm text-foreground',
+          'placeholder:text-muted-foreground focus:outline-none focus:border-primary',
+          'focus:ring-2 focus:ring-primary/20 focus:bg-card',
+          'shadow-2xs transition-all duration-150 [appearance:textfield] [&::-webkit-search-cancel-button]:hidden'
         )}
       />
 
       <div className="absolute end-2.5 top-1/2 -translate-y-1/2 flex items-center gap-1">
         {showSpinner ? (
           <Loader2
-            className="size-4 animate-spin text-[var(--primary)] shrink-0"
+            className="size-4 animate-spin text-primary shrink-0"
             aria-label="Loading"
           />
         ) : localValue ? (
           <button
             type="button"
             onClick={handleClear}
-            className="p-1 rounded-[var(--radius-sm)] text-[var(--fg-muted)] hover:text-[var(--fg)] hover:bg-[var(--surface)] focus:outline-none focus:ring-1 focus:ring-[var(--focus)] transition-colors"
+            className="p-1 rounded-sm text-muted-foreground hover:text-foreground hover:bg-muted focus:outline-none focus:ring-1 focus:ring-primary transition-colors"
             title={t('clearSearch')}
             aria-label={t('clearSearch')}
           >
@@ -149,7 +149,7 @@ export function SearchInput({
           </button>
         ) : !isFocused ? (
           <kbd
-            className="hidden sm:inline-flex items-center px-1.5 py-0.5 text-[10px] font-mono font-medium rounded border border-[var(--border)] bg-[var(--surface)] text-[var(--fg-muted)] shadow-xs select-none"
+            className="hidden sm:inline-flex items-center px-1.5 py-0.5 text-[10px] font-mono font-medium rounded border border-border bg-muted/50 text-muted-foreground shadow-xs select-none"
             title={t('searchShortcutHint')}
           >
             /

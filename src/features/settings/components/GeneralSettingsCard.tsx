@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import { useTranslations, useLocale } from 'next-intl';
-import { Monitor, Sun, Moon, Globe, Clock, Check, ChevronsUpDown } from 'lucide-react';
+import { Moon, Globe, Clock, Check, ChevronsUpDown } from 'lucide-react';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import {
@@ -22,7 +22,6 @@ import { CountryCombobox } from '@/features/leads/components/fields/CountryCombo
 import { SaveIndicator, type SaveState } from '@/components/ui/save-indicator';
 import { useSettings, useUpdateSettings } from '../queries';
 import { useSetLocale } from '@/hooks/use-set-locale';
-import { setTheme, parseTheme, type Theme } from '@/lib/theme';
 import { cn } from '@/lib/utils';
 
 export function GeneralSettingsCard() {
@@ -36,19 +35,6 @@ export function GeneralSettingsCard() {
   const [countrySaveState, setCountrySaveState] = React.useState<SaveState>('idle');
   const [tzOpen, setTzOpen] = React.useState(false);
   const [tzSearch, setTzSearch] = React.useState('');
-
-  // Read current theme preference from cookie or fallback to system
-  const [activeTheme, setActiveTheme] = React.useState<Theme>(() => {
-    if (typeof document === 'undefined') return 'system';
-    const match = document.cookie.match(/(?:^|; )theme=([^;]*)/);
-    const val = match && match[1] ? decodeURIComponent(match[1]) : null;
-    return parseTheme(val);
-  });
-
-  const handleThemeChange = (theme: Theme) => {
-    setActiveTheme(theme);
-    setTheme(theme);
-  };
 
   const handleLanguageChange = (nextLocale: 'ar' | 'en') => {
     if (nextLocale === currentLocale) return;
@@ -167,55 +153,22 @@ export function GeneralSettingsCard() {
           </div>
         </div>
 
-        {/* Theme Selection */}
+        {/* Theme Status (Locked Dark Mode) */}
         <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between border-t border-border/40 pt-4">
           <div>
             <Label className="text-sm font-semibold text-foreground flex items-center gap-2">
-              <Sun className="size-4 text-primary" />
+              <Moon className="size-4 text-primary" />
               {t('theme')}
             </Label>
-            <p className="text-xs text-muted-foreground mt-0.5">{t('themeDesc')}</p>
+            <p className="text-xs text-muted-foreground mt-0.5">
+              تم تثبيت الوضع الداكن (Dark Obsidian) كمعيار قياسي فائق الأناقة لكافة شاشات المنظومة
+            </p>
           </div>
-          <div className="inline-flex rounded-lg border border-border p-1 bg-muted/40">
-            <button
-              type="button"
-              onClick={() => handleThemeChange('system')}
-              className={cn(
-                'inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-md transition-colors',
-                activeTheme === 'system'
-                  ? 'bg-background text-foreground shadow-sm'
-                  : 'text-muted-foreground hover:text-foreground'
-              )}
-            >
-              <Monitor className="size-3.5" />
-              <span>{t('themeSystem')}</span>
-            </button>
-            <button
-              type="button"
-              onClick={() => handleThemeChange('light')}
-              className={cn(
-                'inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-md transition-colors',
-                activeTheme === 'light'
-                  ? 'bg-background text-foreground shadow-sm'
-                  : 'text-muted-foreground hover:text-foreground'
-              )}
-            >
-              <Sun className="size-3.5" />
-              <span>{t('themeLight')}</span>
-            </button>
-            <button
-              type="button"
-              onClick={() => handleThemeChange('dark')}
-              className={cn(
-                'inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-md transition-colors',
-                activeTheme === 'dark'
-                  ? 'bg-background text-foreground shadow-sm'
-                  : 'text-muted-foreground hover:text-foreground'
-              )}
-            >
-              <Moon className="size-3.5" />
-              <span>{t('themeDark')}</span>
-            </button>
+          <div className="inline-flex items-center gap-2">
+            <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-primary/15 text-primary border border-primary/25 shadow-xs">
+              <Moon className="size-3.5 fill-primary/20" />
+              <span>الوضع الداكن · مفعّل دائماً</span>
+            </span>
           </div>
         </div>
 

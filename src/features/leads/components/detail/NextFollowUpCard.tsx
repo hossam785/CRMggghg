@@ -29,29 +29,33 @@ export function NextFollowUpCard({ lead, className }: NextFollowUpCardProps) {
   return (
     <div
       className={cn(
-        'p-5 sm:p-6 rounded-[var(--radius-xl)] bg-[var(--surface)] border border-[var(--border)] shadow-xs space-y-3',
+        'p-5 sm:p-6 rounded-2xl bg-card border border-border shadow-2xs space-y-4',
         className
       )}
     >
-      <div className="flex items-center gap-2 border-b border-[var(--border)] pb-3">
-        <Clock className="size-4 text-[var(--primary)]" />
-        <h2 className="text-base font-bold text-[var(--fg)]">
+      <div className="flex items-center gap-2.5 border-b border-border pb-3.5">
+        <div className="size-8 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+          <Clock className="size-4" />
+        </div>
+        <h2 className="text-base font-extrabold tracking-tight text-foreground">
           {t('nextFollowUpCardTitle')}
         </h2>
       </div>
 
       {lead.next_follow_up_on ? (
-        <div className="flex items-center gap-3 p-3.5 rounded-[var(--radius-lg)] bg-[var(--primary)]/10 text-[var(--primary)] border border-[var(--primary)]/20">
-          <Calendar className="size-5 shrink-0" />
+        <div className="flex items-center gap-3.5 p-4 rounded-xl bg-primary/10 border border-primary/20">
+          <div className="size-9 rounded-full bg-card shadow-2xs flex items-center justify-center shrink-0">
+            <Calendar className="size-4.5 text-primary" />
+          </div>
           <div className="flex flex-col">
-            <span className="text-xs text-[var(--fg-muted)]">موعد الاستحقاق:</span>
-            <span className="text-sm font-semibold text-[var(--fg)]">
-              {formattedDate} ({lead.next_follow_up_on})
+            <span className="text-xs font-medium text-muted-foreground">موعد الاستحقاق:</span>
+            <span className="text-sm font-bold text-foreground">
+              {formattedDate} <span className="text-xs font-mono font-normal text-muted-foreground">({lead.next_follow_up_on})</span>
             </span>
           </div>
         </div>
       ) : (
-        <p className="text-sm text-[var(--fg-muted)] py-2">
+        <p className="text-sm text-muted-foreground py-1">
           {t('noFollowUpScheduled')}
         </p>
       )}

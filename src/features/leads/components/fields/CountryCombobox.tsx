@@ -128,7 +128,7 @@ export function CountryCombobox({
 
   return (
     <div className={cn('flex flex-col gap-1.5', className)}>
-      <Label htmlFor={id} className="text-sm font-medium text-[var(--color-fg-primary)]">
+      <Label htmlFor={id} className="text-sm font-medium text-foreground">
         {t('country')}
       </Label>
 
@@ -143,8 +143,8 @@ export function CountryCombobox({
             disabled={disabled || isLoading}
             className={cn(
               'w-full justify-between font-normal text-start h-10 px-3',
-              error ? 'border-[var(--color-error)] focus-visible:ring-[var(--color-error)]' : '',
-              !selectedCountry && 'text-[var(--color-fg-muted)]'
+              error ? 'border-destructive focus-visible:ring-destructive' : '',
+              !selectedCountry && 'text-muted-foreground'
             )}
             aria-invalid={Boolean(error)}
             aria-describedby={error ? `${id}-error` : undefined}
@@ -155,7 +155,7 @@ export function CountryCombobox({
                   {getCountryFlag(selectedCountry.code)}
                 </span>
                 <span className="truncate">{getCountryName(selectedCountry)}</span>
-                <span className="text-xs text-[var(--color-fg-muted)] font-mono shrink-0 ms-1">
+                <span className="text-xs text-muted-foreground font-mono shrink-0 ms-1">
                   ({selectedCountry.code})
                 </span>
               </span>
@@ -193,7 +193,7 @@ export function CountryCombobox({
                         <span className="truncate">{getCountryName(country)}</span>
                       </div>
                       {selectedCountry?.code === country.code && (
-                        <Check className="size-4 shrink-0 text-[var(--color-accent)]" />
+                        <Check className="size-4 shrink-0 text-primary" />
                       )}
                     </CommandItem>
                   ))}
@@ -214,12 +214,12 @@ export function CountryCombobox({
                         {getCountryFlag(country.code)}
                       </span>
                       <span className="truncate">{getCountryName(country)}</span>
-                      <span className="text-xs text-[var(--color-fg-muted)] font-mono shrink-0 ms-1">
+                      <span className="text-xs text-muted-foreground font-mono shrink-0 ms-1">
                         ({country.code})
                       </span>
                     </div>
                     {selectedCountry?.code === country.code && (
-                      <Check className="size-4 shrink-0 text-[var(--color-accent)]" />
+                      <Check className="size-4 shrink-0 text-primary" />
                     )}
                   </CommandItem>
                 ))}
@@ -233,7 +233,7 @@ export function CountryCombobox({
         <p
           id={`${id}-error`}
           role="alert"
-          className="text-xs text-[var(--color-error)] font-medium mt-0.5 animate-in fade-in-50"
+          className="text-xs text-destructive font-medium mt-0.5 animate-in fade-in-50"
         >
           {error}
         </p>

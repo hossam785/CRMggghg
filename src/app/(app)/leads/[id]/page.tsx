@@ -35,21 +35,21 @@ export default function LeadDetailPage() {
     return (
       <div className="max-w-4xl mx-auto space-y-6 pb-20 px-4 sm:px-6">
         <div className="flex items-center justify-between">
-          <Skeleton className="h-9 w-24 rounded-md" />
+          <Skeleton className="h-9 w-24 rounded-full" />
         </div>
-        <div className="p-6 rounded-[var(--radius-xl)] border border-[var(--border)] bg-[var(--surface)] space-y-4">
-          <Skeleton className="h-8 w-48" />
-          <Skeleton className="h-4 w-32" />
+        <div className="p-6 rounded-2xl border border-border bg-card space-y-4 shadow-2xs">
+          <Skeleton className="h-8 w-48 rounded-lg" />
+          <Skeleton className="h-4 w-32 rounded-lg" />
           <div className="flex gap-2">
             <Skeleton className="h-6 w-28 rounded-full" />
             <Skeleton className="h-6 w-28 rounded-full" />
           </div>
         </div>
-        <div className="p-6 rounded-[var(--radius-xl)] border border-[var(--border)] bg-[var(--surface)] space-y-4">
-          <Skeleton className="h-6 w-32" />
+        <div className="p-6 rounded-2xl border border-border bg-card space-y-4 shadow-2xs">
+          <Skeleton className="h-6 w-32 rounded-lg" />
           <div className="grid grid-cols-2 gap-4">
-            <Skeleton className="h-10 w-full" />
-            <Skeleton className="h-10 w-full" />
+            <Skeleton className="h-10 w-full rounded-xl" />
+            <Skeleton className="h-10 w-full rounded-xl" />
           </div>
         </div>
       </div>
@@ -59,11 +59,16 @@ export default function LeadDetailPage() {
   if (isError || !lead) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[60vh] text-center p-6 space-y-4">
-        <h2 className="text-xl font-bold text-[var(--danger)]">العميل غير موجود</h2>
-        <p className="text-sm text-[var(--fg-muted)] max-w-sm">
+        <div className="size-14 rounded-full flex items-center justify-center bg-destructive/10 text-destructive">
+          <span className="text-2xl font-bold">!</span>
+        </div>
+        <h2 className="text-xl font-extrabold text-foreground">
+          العميل غير موجود
+        </h2>
+        <p className="text-xs sm:text-sm text-muted-foreground max-w-sm">
           قد يكون هذا العميل قد تم حذفه أو أن الرابط غير صحيح.
         </p>
-        <Button asChild variant="outline" size="sm">
+        <Button asChild variant="outline" size="sm" className="rounded-full h-9 px-4 border-border bg-card hover:bg-muted/40 text-foreground shadow-2xs">
           <Link href="/leads" className="gap-2">
             <BackIcon className="size-4" />
             <span>العودة لقائمة العملاء</span>
@@ -75,16 +80,16 @@ export default function LeadDetailPage() {
 
   return (
     <div className="max-w-4xl mx-auto space-y-6 pb-24 px-4 sm:px-6">
-      {/* Top Navigation Bar */}
-      <div className="flex items-center justify-between">
+      {/* Top Relate Navigation Bar with Pill Buttons */}
+      <div className="flex items-center justify-between pt-1">
         <Button
-          variant="ghost"
+          variant="outline"
           size="sm"
           onClick={() => router.push('/leads')}
-          className="gap-2 text-[var(--fg-muted)] hover:text-[var(--fg)] -ms-2"
+          className="rounded-full h-9 px-3.5 gap-2 border-border bg-card text-muted-foreground hover:text-foreground shadow-2xs transition-all"
         >
           <BackIcon className="size-4" />
-          <span>العودة للقائمة</span>
+          <span>العودة للعملاء</span>
         </Button>
         {leadExportSpec && <ExportButton spec={leadExportSpec} />}
       </div>

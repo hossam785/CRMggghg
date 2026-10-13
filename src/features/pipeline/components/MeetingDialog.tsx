@@ -133,7 +133,7 @@ export function MeetingDialog({ open, onOpenChange, lead }: MeetingDialogProps) 
       <ResponsiveDialogContent className="sm:max-w-md">
         <ResponsiveDialogHeader>
           <div className="flex items-center gap-2">
-            <div className="flex size-9 items-center justify-center rounded-full bg-[var(--primary)]/10 text-[var(--primary)]">
+            <div className="flex size-9 items-center justify-center rounded-full bg-primary/10 text-primary">
               <Calendar className="size-5" />
             </div>
             <div>

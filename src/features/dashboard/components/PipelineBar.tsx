@@ -31,24 +31,32 @@ export function PipelineBar({ pipeline, totalLeads }: PipelineBarProps) {
   }).filter((s) => s.count > 0);
 
   return (
-    <div className="rounded-2xl border border-border bg-card p-6 shadow-xs space-y-4">
-      <div className="flex items-center justify-between border-b border-border/60 pb-3">
-        <div className="flex items-center gap-2">
-          <Layers className="size-4 text-primary" />
-          <h3 className="text-sm font-bold text-foreground">
-            توزيع العملاء حسب مراحل المسار (Pipeline)
-          </h3>
+    <div className="rounded-2xl border border-border bg-card p-5 sm:p-6 shadow-xs space-y-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-border pb-3.5">
+        <div className="flex items-center gap-2.5">
+          <div className="size-8 rounded-xl bg-primary/10 text-primary flex items-center justify-center shrink-0">
+            <Layers className="size-4" />
+          </div>
+          <div>
+            <h3 className="text-sm font-semibold text-foreground tracking-tight">
+              توزيع خط المبيعات (Pipeline Health)
+            </h3>
+            <p className="text-[11px] text-muted-foreground">
+              نظرة فورية على تدفق العملاء عبر كافة مراحل المتابعة والإغلاق
+            </p>
+          </div>
         </div>
-        <span className="text-xs font-semibold text-muted-foreground tabular-nums">
+
+        <span className="rounded-full bg-muted/40 px-3 py-1 text-xs font-semibold text-muted-foreground border border-border font-mono">
           إجمالي المسار: {totalLeads.toLocaleString('ar-EG')} عميل
         </span>
       </div>
 
-      {/* Stacked Progress Bar */}
-      <div className="h-4 w-full rounded-full bg-muted/60 overflow-hidden flex shadow-inner">
+      {/* Stacked Progress Bar (Pill Container) */}
+      <div className="h-3.5 w-full rounded-full bg-muted/40 border border-border/60 overflow-hidden flex p-0.5 gap-0.5 shadow-inner">
         {totalLeads === 0 ? (
-          <div className="h-full w-full bg-muted text-muted-foreground/40 text-[10px] flex items-center justify-center font-bold">
-            لا توجد بيانات حالية
+          <div className="h-full w-full bg-muted/40 text-muted-foreground text-[10px] flex items-center justify-center font-medium">
+            لا توجد صفقات مسجلة في هذه الفترة
           </div>
         ) : (
           activeSegments.map((seg) => (
@@ -58,14 +66,14 @@ export function PipelineBar({ pipeline, totalLeads }: PipelineBarProps) {
               style={{ width: `${seg.pct}%` }}
               aria-label={`${seg.labelAr}: ${seg.count} عميل (${Math.round(seg.pct)}%)`}
               title={`${seg.labelAr}: ${seg.count} عميل (${Math.round(seg.pct)}%)`}
-              className={`h-full ${seg.bgClass} hover:opacity-85 transition-opacity relative group`}
+              className={`h-full ${seg.bgClass} hover:opacity-85 transition-opacity rounded-full`}
             />
           ))
         )}
       </div>
 
-      {/* Legend Grid */}
-      <div className="flex flex-wrap items-center gap-x-5 gap-y-2 pt-2 text-xs">
+      {/* Legend Grid with Relate Status Dots & Pills */}
+      <div className="flex flex-wrap items-center gap-2 pt-2 text-xs">
         {ORDERED_STAGES.map((stage) => {
           const count = pipeline[stage.key] || 0;
           const pct = totalLeads > 0 ? Math.round((count / totalLeads) * 100) : 0;
@@ -74,15 +82,17 @@ export function PipelineBar({ pipeline, totalLeads }: PipelineBarProps) {
             <Link
               key={stage.key}
               href={`/leads?stage=${stage.key}`}
-              className="inline-flex items-center gap-2 py-1 px-2 rounded-lg hover:bg-muted/60 transition-colors group"
+              className="inline-flex items-center gap-2 py-1 px-2.5 rounded-full border border-border bg-card hover:border-primary/40 hover:bg-muted/40 transition-all group"
             >
-              <span className={`size-2.5 rounded-full ${stage.bgClass} shrink-0`} />
+              <span className={`size-2 rounded-full ${stage.bgClass} shrink-0`} />
               <span className="font-medium text-muted-foreground group-hover:text-foreground">
                 {stage.labelAr}
               </span>
-              <span className="font-bold text-foreground tabular-nums text-[11px] bg-muted/80 px-1.5 py-0.5 rounded-md">
+              <span className="font-semibold text-foreground tabular-nums text-[11px] bg-muted/60 px-1.5 py-0.5 rounded-full border border-border/50">
                 {count.toLocaleString('ar-EG')}
-                {totalLeads > 0 && <span className="text-muted-foreground text-[10px] ms-1">({pct}%)</span>}
+                {totalLeads > 0 && (
+                  <span className="text-muted-foreground text-[10px] ms-1">({pct}%)</span>
+                )}
               </span>
             </Link>
           );

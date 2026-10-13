@@ -101,17 +101,17 @@ function ReminderForm({
     <form onSubmit={handleSubmit} className="space-y-4 py-2">
       {/* Preset Buttons */}
       <div className="space-y-1.5">
-        <Label className="text-xs text-[var(--fg-muted)]">
+        <Label className="text-xs text-muted-foreground">
           {t('dialogs.reminder.presets.custom')}
         </Label>
         <div className="grid grid-cols-3 gap-2">
           <button
             type="button"
             onClick={() => handleSelectPreset('tomorrow')}
-            className={`py-2 px-2.5 text-xs font-medium rounded-[var(--radius-md)] border text-center transition-all ${
+            className={`py-2 px-2.5 text-xs font-medium rounded-xl border text-center transition-all ${
               activePreset === 'tomorrow'
-                ? 'border-[var(--primary)] bg-[var(--primary)]/10 text-[var(--primary)]'
-                : 'border-[var(--border)] bg-[var(--surface)] text-[var(--fg)] hover:bg-[var(--surface-2)]'
+                ? 'border-primary bg-primary/10 text-primary'
+                : 'border-border bg-card text-foreground hover:bg-muted/40'
             }`}
           >
             {t('dialogs.reminder.presets.tomorrow')}
@@ -119,10 +119,10 @@ function ReminderForm({
           <button
             type="button"
             onClick={() => handleSelectPreset('in3Days')}
-            className={`py-2 px-2.5 text-xs font-medium rounded-[var(--radius-md)] border text-center transition-all ${
+            className={`py-2 px-2.5 text-xs font-medium rounded-xl border text-center transition-all ${
               activePreset === 'in3Days'
-                ? 'border-[var(--primary)] bg-[var(--primary)]/10 text-[var(--primary)]'
-                : 'border-[var(--border)] bg-[var(--surface)] text-[var(--fg)] hover:bg-[var(--surface-2)]'
+                ? 'border-primary bg-primary/10 text-primary'
+                : 'border-border bg-card text-foreground hover:bg-muted/40'
             }`}
           >
             {t('dialogs.reminder.presets.in3Days')}
@@ -130,10 +130,10 @@ function ReminderForm({
           <button
             type="button"
             onClick={() => handleSelectPreset('nextWeek')}
-            className={`py-2 px-2.5 text-xs font-medium rounded-[var(--radius-md)] border text-center transition-all ${
+            className={`py-2 px-2.5 text-xs font-medium rounded-xl border text-center transition-all ${
               activePreset === 'nextWeek'
-                ? 'border-[var(--primary)] bg-[var(--primary)]/10 text-[var(--primary)]'
-                : 'border-[var(--border)] bg-[var(--surface)] text-[var(--fg)] hover:bg-[var(--surface-2)]'
+                ? 'border-primary bg-primary/10 text-primary'
+                : 'border-border bg-card text-foreground hover:bg-muted/40'
             }`}
           >
             {t('dialogs.reminder.presets.nextWeek')}
@@ -163,7 +163,7 @@ function ReminderForm({
           <Label htmlFor="reminder-note">{t('dialogs.reminder.note')}</Label>
           <span
             className={`text-[11px] ${
-              charsLeft < 10 ? 'text-[var(--danger)] font-bold' : 'text-[var(--fg-muted)]'
+              charsLeft < 10 ? 'text-destructive font-bold' : 'text-muted-foreground'
             }`}
           >
             {t('dialogs.reminder.charsLeft', { count: charsLeft })}
@@ -210,7 +210,7 @@ export function ReminderDialog({ open, onOpenChange, lead }: ReminderDialogProps
       <ResponsiveDialogContent className="sm:max-w-md">
         <ResponsiveDialogHeader>
           <div className="flex items-center gap-2">
-            <div className="flex size-9 items-center justify-center rounded-full bg-[var(--primary)]/10 text-[var(--primary)]">
+            <div className="flex size-9 items-center justify-center rounded-full bg-primary/10 text-primary">
               <Bell className="size-5" />
             </div>
             <div>

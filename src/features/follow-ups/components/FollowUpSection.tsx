@@ -13,6 +13,7 @@ export interface FollowUpSectionProps {
   count: number;
   items: FollowUpQueueRow[];
   icon?: React.ComponentType<{ className?: string }>;
+  dotColor?: string;
   defaultOpen?: boolean;
   isCollapsible?: boolean;
   viewAllUrl?: string;
@@ -24,6 +25,7 @@ export function FollowUpSection({
   count,
   items,
   icon: Icon,
+  dotColor = 'bg-primary',
   defaultOpen = true,
   isCollapsible = false,
   viewAllUrl,
@@ -36,26 +38,38 @@ export function FollowUpSection({
 
   return (
     <div className="space-y-3">
-      {/* Section Header */}
-      <div className="flex items-center justify-between">
+      {/* Relate Section Header with 5px Status Dot */}
+      <div className="flex items-center justify-between px-1">
         <div
-          className={`flex items-center gap-2 select-none ${
+          className={`flex items-center gap-2.5 select-none ${
             isCollapsible ? 'cursor-pointer' : ''
           }`}
           onClick={() => {
             if (isCollapsible) setIsOpen(!isOpen);
           }}
         >
-          {Icon && <Icon className="size-4 text-[var(--fg-muted)] shrink-0" />}
-          <h2 className="text-sm font-bold text-[var(--fg)]">{title}</h2>
-          <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold bg-[var(--surface-2)] text-[var(--fg-muted)] border border-[var(--border)]">
+          {/* 5px Status Dot with soft glow */}
+          <span
+            className={`size-[6px] rounded-full shrink-0 ring-4 ring-muted/40 ${dotColor}`}
+            aria-hidden="true"
+          />
+          {Icon && <Icon className="size-4 text-muted-foreground shrink-0" />}
+          <h2 className="text-sm font-bold text-foreground">
+            {title}
+          </h2>
+          <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-mono font-semibold bg-muted/40 text-muted-foreground border border-border shadow-2xs">
             {count}
           </span>
         </div>
 
         <div className="flex items-center gap-2">
           {viewAllUrl && (
-            <Button asChild variant="ghost" size="sm" className="h-7 text-xs text-[var(--primary)] gap-1">
+            <Button
+              asChild
+              variant="ghost"
+              size="sm"
+              className="h-7 px-2.5 text-xs font-semibold rounded-full text-primary hover:bg-primary/10 gap-1"
+            >
               <Link href={viewAllUrl}>
                 <span>{viewAllText || t('viewAllWaiting', { count })}</span>
                 <ExternalLink className="size-3" />
@@ -68,7 +82,7 @@ export function FollowUpSection({
               type="button"
               variant="ghost"
               size="icon"
-              className="size-7"
+              className="size-7 rounded-full text-muted-foreground hover:text-foreground"
               onClick={() => setIsOpen(!isOpen)}
             >
               {isOpen ? <ChevronUp className="size-4" /> : <ChevronDown className="size-4" />}

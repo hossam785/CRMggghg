@@ -98,6 +98,9 @@ export const industriesApi = {
     label_en: string;
     sort_order?: number;
   }): Promise<Industry> {
+    if (isDemoMode()) {
+      return demoStore.createIndustry(payload);
+    }
     try {
       const baseSlug =
         payload.label_en
@@ -134,6 +137,9 @@ export const industriesApi = {
     id: number,
     patch: Partial<Pick<Industry, 'label_ar' | 'label_en' | 'is_active' | 'sort_order'>>
   ): Promise<Industry> {
+    if (isDemoMode()) {
+      return demoStore.updateIndustry(id, patch);
+    }
     try {
       const { data, error } = await supabase
         .from('industries')
@@ -155,6 +161,10 @@ export const industriesApi = {
   async reorderIndustries(
     orders: { id: number; sort_order: number }[]
   ): Promise<void> {
+    if (isDemoMode()) {
+      demoStore.reorderIndustries(orders);
+      return;
+    }
     try {
       await Promise.all(
         orders.map((item) =>
@@ -173,6 +183,9 @@ export const industriesApi = {
    * Checks if an industry is referenced by any leads.
    */
   async getReferencedCount(id: number): Promise<number> {
+    if (isDemoMode()) {
+      return demoStore.getIndustryReferencedCount(id);
+    }
     try {
       const { count, error } = await supabase
         .from('leads')
@@ -192,6 +205,9 @@ export const industriesApi = {
   async deleteIndustry(
     id: number
   ): Promise<{ success: boolean; referencedCount: number }> {
+    if (isDemoMode()) {
+      return demoStore.deleteIndustry(id);
+    }
     try {
       const count = await this.getReferencedCount(id);
       if (count > 0) {

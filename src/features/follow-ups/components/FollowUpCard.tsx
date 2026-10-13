@@ -124,60 +124,86 @@ export function FollowUpCard({ item, className }: FollowUpCardProps) {
     >
       <SwipeableRow onSwipeAction={handlePrimaryDone} disabled={bucket === 'meeting_today'}>
         <div
-          className={`flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 rounded-[var(--radius-lg)] border border-[var(--border)] bg-[var(--surface)] shadow-2xs hover:border-[var(--primary)]/30 transition-all ${
+          className={`flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4.5 rounded-2xl border border-border bg-card shadow-2xs hover:shadow-xs hover:border-primary/40 hover:-translate-y-0.5 transition-all duration-150 ${
             className || ''
           }`}
         >
-          {/* Left: Lead Identity & Badges */}
-          <div className="flex flex-col min-w-0 flex-1">
-            <div className="flex items-center gap-2 flex-wrap">
-              <button
-                type="button"
-                onClick={() => router.push(`/leads/${item.id}`)}
-                className="font-bold text-sm text-[var(--fg)] hover:text-[var(--primary)] hover:underline truncate text-start"
-              >
-                {item.name}
-              </button>
-
-              <StageBadge stage={item.stage} size="sm" />
-
-              {/* Overdue Badge */}
-              {item.days_overdue > 0 ? (
-                <span className="inline-flex items-center px-1.5 py-0.2 rounded-xs text-[10px] font-semibold bg-[var(--danger)]/10 text-[var(--danger)] border border-[var(--danger)]/20">
-                  {t('badges.overdueDays', { count: item.days_overdue })}
-                </span>
-              ) : (
-                <span className="inline-flex items-center px-1.5 py-0.2 rounded-xs text-[10px] font-medium bg-[var(--primary)]/10 text-[var(--primary)]">
-                  {t('badges.today')}
-                </span>
-              )}
+          {/* Left: Lead Identity, Avatar Badge & Status */}
+          <div className="flex items-start gap-3.5 min-w-0 flex-1">
+            {/* Account Avatar with Platform Indicator */}
+            <div className="relative shrink-0 mt-0.5">
+              <div className="size-10 rounded-full flex items-center justify-center bg-muted/40 text-foreground font-bold text-sm shadow-2xs">
+                {item.name.charAt(0)}
+              </div>
+              {item.instagram_handle ? (
+                <div
+                  className="absolute -bottom-1 -end-1 size-5 rounded-full flex items-center justify-center bg-gradient-to-tr from-[#f09433] via-[#dc2743] to-[#bc1888] text-white shadow-2xs ring-2 ring-card"
+                  title={`@${item.instagram_handle}`}
+                >
+                  <span className="text-[10px] font-bold">ig</span>
+                </div>
+              ) : item.whatsapp_e164 ? (
+                <div
+                  className="absolute -bottom-1 -end-1 size-5 rounded-full flex items-center justify-center bg-[#25D366] text-white shadow-2xs ring-2 ring-card"
+                  title={item.whatsapp_e164}
+                >
+                  <span className="text-[10px] font-bold">wa</span>
+                </div>
+              ) : null}
             </div>
 
-            {/* Note or handle and days since last contact */}
-            <div className="flex items-center gap-2 text-xs text-[var(--fg-muted)] mt-1 flex-wrap">
-              {item.instagram_handle && (
-                <span>@{item.instagram_handle}</span>
-              )}
-              {item.whatsapp_e164 && (
-                <bdi className="font-mono text-[11px]">{item.whatsapp_e164}</bdi>
-              )}
-              {daysSinceContact !== null && (
-                <>
-                  <span>•</span>
-                  <span>{t('badges.daysSinceLastContact', { days: daysSinceContact })}</span>
-                </>
+            <div className="flex flex-col min-w-0 flex-1">
+              <div className="flex items-center gap-2 flex-wrap">
+                <button
+                  type="button"
+                  onClick={() => router.push(`/leads/${item.id}`)}
+                  className="font-bold text-sm sm:text-base text-foreground hover:text-primary truncate text-start transition-colors"
+                >
+                  {item.name}
+                </button>
+
+                <StageBadge stage={item.stage} size="sm" />
+
+                {/* Overdue Status Pill */}
+                {item.days_overdue > 0 ? (
+                  <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-destructive/10 text-destructive border border-destructive/20 shadow-2xs">
+                    <span className="size-1.5 rounded-full bg-destructive animate-pulse" />
+                    <span>{t('badges.overdueDays', { count: item.days_overdue })}</span>
+                  </span>
+                ) : (
+                  <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-primary/10 text-primary border border-primary/20 shadow-2xs">
+                    <span className="size-1.5 rounded-full bg-primary" />
+                    <span>{t('badges.today')}</span>
+                  </span>
+                )}
+              </div>
+
+              {/* Handle & Days since last contact */}
+              <div className="flex items-center gap-2 text-xs text-muted-foreground mt-1 flex-wrap">
+                {item.instagram_handle && (
+                  <span className="font-mono">@{item.instagram_handle}</span>
+                )}
+                {item.whatsapp_e164 && (
+                  <bdi className="font-mono text-[11px]">{item.whatsapp_e164}</bdi>
+                )}
+                {daysSinceContact !== null && (
+                  <>
+                    <span>•</span>
+                    <span>{t('badges.daysSinceLastContact', { days: daysSinceContact })}</span>
+                  </>
+                )}
+              </div>
+
+              {/* Reminder note in Primary/10 Callout */}
+              {Boolean(item.reminder_note) && (
+                <p className="mt-2 text-xs text-foreground bg-primary/10 px-3 py-1.5 rounded-xl border border-primary/20 leading-relaxed">
+                  {item.reminder_note}
+                </p>
               )}
             </div>
-
-            {/* Reminder note if present */}
-            {Boolean(item.reminder_note) && (
-              <p className="mt-1.5 text-xs text-[var(--fg-muted)] bg-[var(--surface-2)]/60 px-2 py-1 rounded-sm border border-[var(--border)]/70">
-                {item.reminder_note}
-              </p>
-            )}
           </div>
 
-          {/* Right: Actions */}
+          {/* Right: Relate Pill Actions */}
           <div className="flex items-center gap-2 self-end sm:self-center shrink-0">
             <OpenDmButton
               instagramHandle={item.instagram_handle}
@@ -202,7 +228,7 @@ export function FollowUpCard({ item, className }: FollowUpCardProps) {
                       payload: { reason: 'no_reply' },
                     });
                   }}
-                  className="h-8 text-xs text-[var(--danger)] hover:bg-[var(--danger)]/10 border-[var(--danger)]/30"
+                  className="h-9 px-3 rounded-full text-xs font-semibold text-destructive hover:bg-destructive/10 border border-destructive/30"
                 >
                   <XCircle className="size-3.5 me-1" />
                   <span>{t('actions.lostNoReply')}</span>
@@ -221,7 +247,7 @@ export function FollowUpCard({ item, className }: FollowUpCardProps) {
                       payload: { after_days: 30 },
                     });
                   }}
-                  className="h-8 text-xs"
+                  className="h-9 px-3 rounded-full text-xs font-semibold"
                 >
                   <RotateCcw className="size-3.5 me-1" />
                   <span>{t('actions.retryIn30Days')}</span>
@@ -234,19 +260,19 @@ export function FollowUpCard({ item, className }: FollowUpCardProps) {
                     type="button"
                     variant="primary"
                     size="sm"
-                    className="h-8 gap-1"
+                    className="h-9 px-4 rounded-full gap-1 bg-primary text-primary-foreground hover:bg-primary/90 shadow-2xs text-xs font-semibold"
                     disabled={leadAction.isPending}
                   >
                     <span>{t('actions.meetingAction')}</span>
                   </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
+                <DropdownMenuContent align="end" className="border-border bg-card rounded-xl p-1 text-xs">
                   <DropdownMenuItem
                     onClick={() => {
                       setIsExiting(true);
                       leadAction.mutate({ lead: leadFields, action: 'send_proposal' });
                     }}
-                    className="cursor-pointer"
+                    className="cursor-pointer rounded-lg"
                   >
                     <span>{locale === 'ar' ? 'إرسال عرض' : 'Send proposal'}</span>
                   </DropdownMenuItem>
@@ -255,13 +281,13 @@ export function FollowUpCard({ item, className }: FollowUpCardProps) {
                       setIsExiting(true);
                       leadAction.mutate({ lead: leadFields, action: 'mark_won' });
                     }}
-                    className="cursor-pointer font-semibold text-[var(--primary)]"
+                    className="cursor-pointer font-semibold text-primary rounded-lg"
                   >
                     <span>{locale === 'ar' ? 'تم الاتفاق (فوز)' : 'Mark as won'}</span>
                   </DropdownMenuItem>
                   <DropdownMenuItem
                     onClick={() => setLostOpen(true)}
-                    className="cursor-pointer text-[var(--danger)]"
+                    className="cursor-pointer text-destructive rounded-lg"
                   >
                     <span>{locale === 'ar' ? 'تسجيل كخسارة' : 'Mark as lost'}</span>
                   </DropdownMenuItem>
@@ -275,9 +301,9 @@ export function FollowUpCard({ item, className }: FollowUpCardProps) {
                 loading={leadAction.isPending}
                 disabled={leadAction.isPending}
                 onClick={handlePrimaryDone}
-                className={`h-8 gap-1.5 transition-all ${
+                className={`h-9 px-4 rounded-full gap-1.5 transition-all bg-primary text-primary-foreground hover:bg-primary/90 shadow-2xs text-xs sm:text-sm font-semibold ${
                   highlightDone
-                    ? 'ring-4 ring-[var(--primary)]/40 scale-105 shadow-md animate-pulse'
+                    ? 'ring-4 ring-primary/40 scale-105 shadow-md animate-pulse'
                     : ''
                 }`}
               >
@@ -295,16 +321,16 @@ export function FollowUpCard({ item, className }: FollowUpCardProps) {
             {/* Overflow ⋯ Menu */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="icon" className="size-8 text-[var(--fg-muted)]">
+                <Button variant="ghost" size="icon" className="size-8 rounded-full text-muted-foreground hover:text-foreground">
                   <MoreHorizontal className="size-4" />
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-44">
+              <DropdownMenuContent align="end" className="w-44 border-border bg-card rounded-xl p-1 text-xs">
                 <DropdownMenuItem
                   onClick={() => router.push(`/leads/${item.id}`)}
-                  className="gap-2 cursor-pointer"
+                  className="gap-2 cursor-pointer rounded-lg"
                 >
-                  <ExternalLink className="size-4" />
+                  <ExternalLink className="size-3.5" />
                   <span>{locale === 'ar' ? 'فتح الملف' : 'Open lead'}</span>
                 </DropdownMenuItem>
 
@@ -313,17 +339,17 @@ export function FollowUpCard({ item, className }: FollowUpCardProps) {
                     setIsExiting(true);
                     leadAction.mutate({ lead: leadFields, action: 'reply_received' });
                   }}
-                  className="gap-2 cursor-pointer"
+                  className="gap-2 cursor-pointer rounded-lg"
                 >
-                  <MessageCircle className="size-4" />
+                  <MessageCircle className="size-3.5" />
                   <span>{t('actions.replyReceived')}</span>
                 </DropdownMenuItem>
 
                 <DropdownMenuItem
                   onClick={() => setSnoozeOpen(true)}
-                  className="gap-2 cursor-pointer"
+                  className="gap-2 cursor-pointer rounded-lg"
                 >
-                  <Moon className="size-4" />
+                  <Moon className="size-3.5" />
                   <span>{t('actions.snooze')}</span>
                 </DropdownMenuItem>
 
@@ -331,9 +357,9 @@ export function FollowUpCard({ item, className }: FollowUpCardProps) {
 
                 <DropdownMenuItem
                   onClick={() => setLostOpen(true)}
-                  className="gap-2 cursor-pointer text-[var(--danger)] focus:text-[var(--danger)]"
+                  className="gap-2 cursor-pointer text-destructive focus:text-destructive focus:bg-destructive/10 rounded-lg"
                 >
-                  <XCircle className="size-4" />
+                  <XCircle className="size-3.5" />
                   <span>{locale === 'ar' ? 'تسجيل كخسارة' : 'Mark as lost'}</span>
                 </DropdownMenuItem>
               </DropdownMenuContent>

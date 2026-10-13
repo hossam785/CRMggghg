@@ -59,10 +59,10 @@ export function SortSelect({
       <Select value={value} onValueChange={handleSelect}>
         <SelectTrigger
           aria-label={t('sortLabel')}
-          className="h-10 text-xs sm:text-sm font-medium bg-[var(--surface-2)] border-[var(--border)] text-[var(--fg)] hover:bg-[var(--surface)] px-3 min-w-[130px] sm:min-w-[145px]"
+          className="h-10 text-xs sm:text-sm font-medium bg-card border border-border rounded-full text-foreground hover:bg-muted/40 px-3.5 min-w-[130px] sm:min-w-[145px] shadow-2xs transition-all"
         >
           <div className="flex items-center gap-1.5 truncate">
-            <ArrowUpDown className="size-3.5 text-[var(--fg-muted)] shrink-0" />
+            <ArrowUpDown className="size-3.5 text-muted-foreground shrink-0" />
             <SelectValue />
           </div>
         </SelectTrigger>

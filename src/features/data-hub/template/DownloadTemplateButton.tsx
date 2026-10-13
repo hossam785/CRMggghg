@@ -53,12 +53,15 @@ export function DownloadTemplateButton({
       size={size}
       onClick={handleDownload}
       disabled={isGenerating}
-      className={cn('gap-1.5', className)}
+      className={cn(
+        'rounded-full font-bold gap-2 shadow-2xs transition-all',
+        className
+      )}
     >
       {isGenerating ? (
-        <Loader2 className="size-3.5 animate-spin" />
+        <Loader2 className="size-4 animate-spin" />
       ) : (
-        <FileSpreadsheet className="size-3.5" />
+        <FileSpreadsheet className="size-4" />
       )}
       <span>{isGenerating ? t('generatingTemplate') : t('downloadTemplate')}</span>
     </Button>

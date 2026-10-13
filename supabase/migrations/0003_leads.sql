@@ -17,6 +17,14 @@ create type public.lead_stage as enum (
 
 create type public.tri_state as enum ('yes', 'no', 'unknown');
 
+create type public.lost_reason as enum (
+  'not_interested',
+  'no_reply',
+  'budget',
+  'timing',
+  'other'
+);
+
 -- 2. Industries Table
 create table public.industries (
   id          smallint generated always as identity primary key,
@@ -72,7 +80,7 @@ create table public.leads (
   proposal_sent_at   timestamptz,
   won_at             timestamptz,
   lost_at            timestamptz,
-  lost_reason        text check (lost_reason in ('not_interested', 'no_reply', 'budget', 'timing', 'other')),
+  lost_reason        public.lost_reason,
 
   -- System Metadata
   import_job_id      uuid,

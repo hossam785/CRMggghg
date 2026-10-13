@@ -58,23 +58,25 @@ export default function ImportsHistoryPage() {
   };
 
   return (
-    <div className="container max-w-5xl mx-auto py-8 px-4 space-y-6">
-      <div className="flex items-center justify-between border-b border-border pb-5">
+    <div className="max-w-5xl mx-auto py-8 px-4 sm:px-6 space-y-6">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-border pb-5">
         <div className="space-y-1">
           <div className="flex items-center gap-2 text-xs font-semibold text-muted-foreground">
-            <Link href="/data" className="hover:underline">
+            <Link href="/data" className="hover:text-primary transition-colors">
               مركز البيانات
             </Link>
             <span>/</span>
             <span>سجل عمليات الاستيراد</span>
           </div>
-          <h1 className="text-xl font-black text-foreground">سجل استيراد الملفات</h1>
-          <p className="text-xs text-muted-foreground">
+          <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-foreground">
+            سجل استيراد الملفات
+          </h1>
+          <p className="text-xs sm:text-sm text-muted-foreground">
             جميع الملفات التي تم استيرادها سابقًا مع إمكانية مراجعة التقارير أو التراجع عنها خلال 7 أيام.
           </p>
         </div>
 
-        <Button asChild size="sm" className="font-bold">
+        <Button asChild size="sm" className="rounded-full bg-primary hover:bg-primary/90 text-primary-foreground font-bold shadow-2xs self-start sm:self-center">
           <Link href="/data/import">
             <FileUp className="size-4 me-1.5" />
             استيراد ملف جديد
@@ -88,19 +90,19 @@ export default function ImportsHistoryPage() {
           <p className="text-xs text-muted-foreground">جارِ تحميل سجل الاستيراد…</p>
         </div>
       ) : jobs.length === 0 ? (
-        <div className="p-12 text-center rounded-2xl border border-dashed border-border bg-card space-y-3">
-          <FileSpreadsheet className="size-10 text-muted-foreground/40 mx-auto" />
+        <div className="p-12 text-center rounded-2xl border border-dashed border-border bg-card space-y-3 shadow-2xs">
+          <FileSpreadsheet className="size-10 text-muted-foreground mx-auto" />
           <h3 className="text-sm font-bold text-foreground">لا توجد عمليات استيراد سابقة</h3>
           <p className="text-xs text-muted-foreground max-w-sm mx-auto">
             يمكنك استيراد جهات الاتصال من ملفات Excel و CSV وسيقوم النظام بتسجيلها هنا تلقائيًا.
           </p>
-          <Button asChild size="sm" variant="outline">
+          <Button asChild size="sm" variant="outline" className="rounded-full border-border font-medium">
             <Link href="/data/import">بدء أول استيراد</Link>
           </Button>
         </div>
       ) : (
-        <div className="rounded-2xl border border-border bg-card overflow-hidden">
-          <div className="divide-y divide-border">
+        <div className="rounded-2xl border border-border bg-card overflow-hidden shadow-2xs">
+          <div className="divide-y divide-border/60">
             {jobs.map((job) => {
               const eligibleRollback = isEligibleForRollback(job);
               const isRollingBackThis = rollingBackId === job.id;
@@ -108,27 +110,27 @@ export default function ImportsHistoryPage() {
               return (
                 <div
                   key={job.id}
-                  className="p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:bg-accent/20 transition-colors"
+                  className="p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:bg-muted/40 transition-colors"
                 >
-                  <div className="space-y-1">
-                    <div className="flex items-center gap-2">
+                  <div className="space-y-1.5">
+                    <div className="flex items-center gap-2 flex-wrap">
                       <span className="text-sm font-bold text-foreground">
                         {job.file_name || 'ملف بيانات'}
                       </span>
                       {job.status === 'done' && (
-                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/10 text-emerald-600">
+                        <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/10 text-emerald-400">
                           <CheckCircle2 className="size-3" />
                           <span>مكتمل</span>
                         </span>
                       )}
                       {job.status === 'review' && (
-                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-500/10 text-amber-600">
+                        <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-500/10 text-amber-400">
                           <Clock className="size-3" />
                           <span>بانتظار الاعتماد</span>
                         </span>
                       )}
                       {job.status === 'rolled_back' && (
-                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-muted text-muted-foreground">
+                        <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-muted text-muted-foreground">
                           <RotateCcw className="size-3" />
                           <span>تم التراجع</span>
                         </span>
@@ -151,7 +153,7 @@ export default function ImportsHistoryPage() {
                   </div>
 
                   <div className="flex items-center gap-2">
-                    <Button asChild variant="outline" size="sm">
+                    <Button asChild variant="outline" size="sm" className="rounded-full border-border font-medium">
                       <Link href={`/data/imports/${job.id}`}>
                         <ExternalLink className="size-3.5 me-1.5" />
                         عرض التقرير
@@ -164,7 +166,7 @@ export default function ImportsHistoryPage() {
                         size="sm"
                         disabled={isRollingBackThis}
                         onClick={() => handleRollback(job.id)}
-                        className="text-destructive hover:bg-destructive/10 text-xs"
+                        className="rounded-full text-destructive hover:bg-destructive/10 text-xs"
                       >
                         <RotateCcw className="size-3.5 me-1.5" />
                         {isRollingBackThis ? 'جارِ التراجع…' : 'تراجع (Rollback)'}

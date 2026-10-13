@@ -8,7 +8,7 @@ declare
   v_encrypted_pw text;
 begin
   -- Generate bcrypt hash for Admin@123456
-  v_encrypted_pw := crypt('Admin@123456', gen_salt('bf'));
+  v_encrypted_pw := extensions.crypt('Admin@123456', extensions.gen_salt('bf'));
 
   -- Insert default user if not exists
   if not exists (select 1 from auth.users where id = v_user_id or email = 'admin@scopecrm.com') then

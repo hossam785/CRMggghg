@@ -111,7 +111,7 @@ export function ActionBar({ lead, className }: ActionBarProps) {
     <>
       {/* Action Bar Container */}
       <div
-        className={`fixed inset-x-0 bottom-0 z-30 flex items-center justify-between gap-3 border-t border-[var(--border)] bg-[var(--surface)]/95 p-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))] shadow-lg backdrop-blur md:static md:z-auto md:border md:rounded-[var(--radius-xl)] md:p-4 md:shadow-none md:backdrop-blur-none ${
+        className={`fixed inset-x-0 bottom-0 z-30 flex items-center justify-between gap-3 border-t border-border bg-card/95 p-3.5 pb-[calc(0.75rem+env(safe-area-inset-bottom))] shadow-lg backdrop-blur-md md:static md:z-auto md:border md:rounded-2xl md:p-4 md:shadow-2xs md:backdrop-blur-none ${
           className || ''
         }`}
       >

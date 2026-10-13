@@ -223,7 +223,7 @@ begin
       stage = 'lost',
       stage_changed_at = now(),
       lost_at = now(),
-      lost_reason = p_payload->>'reason',
+      lost_reason = (p_payload->>'reason')::public.lost_reason,
       next_follow_up_on = null,
       reminder_note = null
     where id = v.id returning * into v;
@@ -346,7 +346,7 @@ begin
       lost_at = case when v_target_stage = 'lost' then coalesce(lost_at, now()) else null end,
       lost_reason = case
                       when v_target_stage = 'lost'
-                      then coalesce(nullif(p_payload->>'reason', ''), lost_reason, 'other')
+                      then coalesce(nullif(p_payload->>'reason', '')::public.lost_reason, lost_reason, 'other'::public.lost_reason)
                       else null
                     end
     where id = v.id returning * into v;
@@ -404,7 +404,7 @@ begin
     proposal_sent_at  = (e.prev_state->>'proposal_sent_at')::timestamptz,
     won_at            = (e.prev_state->>'won_at')::timestamptz,
     lost_at           = (e.prev_state->>'lost_at')::timestamptz,
-    lost_reason       = e.prev_state->>'lost_reason'
+    lost_reason       = (e.prev_state->>'lost_reason')::public.lost_reason
   where l.id = e.lead_id
   returning l.* into v;
 

@@ -32,18 +32,25 @@ export function RangePicker({ currentRange }: RangePickerProps) {
   };
 
   return (
-    <div className="inline-flex items-center p-1 rounded-2xl bg-muted/60 border border-border/80 shadow-xs">
+    <div
+      role="tablist"
+      aria-label="الفترة الزمنية للوحة المؤشرات"
+      className="inline-flex items-center p-1 rounded-full bg-muted/40 border border-border shadow-xs"
+    >
       {RANGES.map((r) => {
         const isActive = currentRange === r.key;
         return (
           <button
             key={r.key}
+            role="tab"
+            aria-selected={isActive}
+            tabIndex={isActive ? 0 : -1}
             type="button"
             onClick={() => handleSelect(r.key)}
-            className={`px-3 py-1.5 text-xs font-bold rounded-xl transition-all duration-150 ${
+            className={`px-3.5 py-1 text-xs font-semibold rounded-full transition-all duration-150 cursor-pointer ${
               isActive
-                ? 'bg-background text-foreground shadow-xs'
-                : 'text-muted-foreground hover:text-foreground hover:bg-background/40'
+                ? 'bg-card text-primary shadow-xs border border-primary/20'
+                : 'text-muted-foreground hover:text-foreground hover:bg-card/40'
             }`}
           >
             {r.labelAr}

@@ -13,6 +13,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Tooltip, TooltipTrigger, TooltipContent } from '@/components/ui/tooltip';
 import { Kbd } from '@/components/ui/kbd';
+import { cn } from '@/lib/utils';
 import {
   secondaryActionsFor,
   ACTIONS,
@@ -58,7 +59,12 @@ export function SecondaryActions({
         size="md"
         disabled={leadAction.isPending}
         onClick={() => onActionTrigger(actionKey)}
-        className="gap-1.5"
+        className={cn(
+          'rounded-full gap-1.5 h-9 font-medium shadow-2xs transition-all',
+          meta.variant === 'danger'
+            ? 'bg-destructive text-destructive-foreground hover:bg-destructive/90'
+            : 'border-border bg-card hover:bg-muted/40 text-foreground'
+        )}
       >
         <Icon className="size-4 shrink-0" />
         <span className="hidden sm:inline">{label}</span>
@@ -91,13 +97,13 @@ export function SecondaryActions({
             variant="outline"
             size="md"
             disabled={leadAction.isPending}
-            className="px-2.5"
+            className="rounded-full size-9 p-0 border-border bg-card hover:bg-muted/40 text-muted-foreground hover:text-foreground shadow-2xs"
             aria-label={t('a11y.openMenu')}
           >
             <MoreHorizontal className="size-4" />
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent align="end" className="w-48">
+        <DropdownMenuContent align="end" className="w-48 rounded-xl border-border bg-card p-1.5 shadow-lg">
           {hasOverflow && (
             <>
               {overflowActions.map((actionKey) => {
@@ -111,7 +117,7 @@ export function SecondaryActions({
                     key={actionKey}
                     onClick={() => onActionTrigger(actionKey)}
                     className={`gap-2 cursor-pointer ${
-                      isDanger ? 'text-[var(--danger)] focus:text-[var(--danger)]' : ''
+                      isDanger ? 'text-destructive focus:text-destructive focus:bg-destructive/10' : ''
                     }`}
                   >
                     <Icon className="size-4 shrink-0" />
@@ -127,7 +133,7 @@ export function SecondaryActions({
           {Boolean(lead.reminder_note) && (
             <DropdownMenuItem
               onClick={() => onActionTrigger('clear_reminder')}
-              className="gap-2 cursor-pointer text-[var(--fg-muted)]"
+              className="gap-2 cursor-pointer text-muted-foreground"
             >
               {React.createElement(ACTIONS.clear_reminder.icon, {
                 className: 'size-4 shrink-0',

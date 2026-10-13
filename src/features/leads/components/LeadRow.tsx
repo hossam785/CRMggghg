@@ -180,8 +180,8 @@ export function LeadRow({
         }
       }}
       className={cn(
-        'group flex items-center h-14 px-4 sm:px-6 border-b border-[var(--border)] cursor-pointer select-none transition-colors duration-100',
-        'hover:bg-[var(--surface-2)]/70 focus:bg-[var(--surface-2)] focus:outline-none',
+        'group flex items-center h-14 px-4 sm:px-6 border-b border-border/80 cursor-pointer select-none transition-colors duration-100',
+        'hover:bg-muted/40 focus:bg-muted/50 focus:outline-none',
         className
       )}
     >
@@ -189,7 +189,7 @@ export function LeadRow({
       <div className="flex items-center gap-3 min-w-0 flex-1">
         <div className="flex flex-col min-w-0">
           <div className="flex items-center gap-2">
-            <span className="font-medium text-sm text-[var(--fg)] truncate">
+            <span className="font-medium text-sm text-foreground truncate">
               <Highlight text={lead.name} query={searchQuery} />
             </span>
 
@@ -197,7 +197,7 @@ export function LeadRow({
             {lead.missing_fields && lead.missing_fields.length > 0 && (
               <span
                 title={locale === 'ar' ? `بيانات ناقصة: ${lead.missing_fields.join(', ')}` : `Missing: ${lead.missing_fields.join(', ')}`}
-                className="inline-flex items-center gap-0.5 px-1.5 py-0.2 rounded-xs text-[10px] font-medium bg-[var(--warning)]/15 text-[var(--warning-fg,#b45309)] border border-[var(--warning)]/30 shrink-0"
+                className="inline-flex items-center gap-0.5 px-1.5 py-0.2 rounded-xs text-[10px] font-medium bg-amber-500/10 text-amber-400 border border-amber-500/20 shrink-0"
               >
                 <AlertTriangle className="size-2.5" />
                 <span>
@@ -209,13 +209,13 @@ export function LeadRow({
 
           <div className="flex items-center gap-2 mt-0.5">
             {lead.instagram_handle && (
-              <bdi className="font-mono text-xs text-[var(--fg-muted)] dir-ltr truncate">
+              <bdi className="font-mono text-xs text-muted-foreground dir-ltr truncate">
                 @{lead.instagram_handle}
               </bdi>
             )}
 
             {lead.company && (
-              <span className="text-xs text-[var(--fg-muted)] truncate max-w-[120px]">
+              <span className="text-xs text-muted-foreground truncate max-w-[120px]">
                 · {lead.company}
               </span>
             )}
@@ -229,7 +229,7 @@ export function LeadRow({
                   rel="noopener noreferrer"
                   onClick={(e) => e.stopPropagation()}
                   title={t('openProfile')}
-                  className="p-1 rounded text-[var(--fg-muted)] hover:text-pink-600 hover:bg-[var(--surface)] transition-colors"
+                  className="p-1 rounded text-muted-foreground hover:text-pink-400 hover:bg-muted transition-colors"
                 >
                   <Instagram className="size-3.5" />
                 </a>
@@ -241,7 +241,7 @@ export function LeadRow({
                   rel="noopener noreferrer"
                   onClick={(e) => e.stopPropagation()}
                   title={t('openChat')}
-                  className="p-1 rounded text-[var(--fg-muted)] hover:text-emerald-600 hover:bg-[var(--surface)] transition-colors"
+                  className="p-1 rounded text-muted-foreground hover:text-emerald-400 hover:bg-muted transition-colors"
                 >
                   <MessageCircle className="size-3.5" />
                 </a>
@@ -257,7 +257,7 @@ export function LeadRow({
       </div>
 
       {/* Col 3: Industry & Country */}
-      <div className="w-48 shrink-0 flex items-center gap-1.5 text-xs text-[var(--fg-muted)] truncate pe-2">
+      <div className="w-48 shrink-0 flex items-center gap-1.5 text-xs text-muted-foreground truncate pe-2">
         {lead.country_code && (
           <span className="shrink-0" title={countryName}>
             {getCountryFlag(lead.country_code)}
@@ -268,12 +268,12 @@ export function LeadRow({
 
       {/* Col 4: Last Contact */}
       <div
-        className="w-32 shrink-0 flex flex-col text-xs text-[var(--fg-muted)]"
+        className="w-32 shrink-0 flex flex-col text-xs text-muted-foreground"
         title={contactFull}
       >
-        <span className="font-medium text-[var(--fg)] truncate">{contactRelative}</span>
+        <span className="font-medium text-foreground truncate">{contactRelative}</span>
         {lead.follow_ups_sent > 0 && (
-          <span className="text-[10px] text-[var(--fg-muted)]">
+          <span className="text-[10px] text-muted-foreground">
             {locale === 'ar' ? `${lead.follow_ups_sent} متابعات` : `${lead.follow_ups_sent} follow-ups`}
           </span>
         )}
@@ -285,16 +285,16 @@ export function LeadRow({
           <span
             className={cn(
               'font-medium text-xs',
-              nextFollowUpInfo.isOverdue && 'text-[var(--danger)] font-semibold',
-              nextFollowUpInfo.isToday && 'text-[var(--primary)] font-semibold',
-              !nextFollowUpInfo.isOverdue && !nextFollowUpInfo.isToday && 'text-[var(--fg)]'
+              nextFollowUpInfo.isOverdue && 'text-red-400 font-semibold',
+              nextFollowUpInfo.isToday && 'text-primary font-semibold',
+              !nextFollowUpInfo.isOverdue && !nextFollowUpInfo.isToday && 'text-foreground'
             )}
             title={lead.next_follow_up_on || undefined}
           >
             {nextFollowUpInfo.text}
           </span>
         ) : (
-          <span className="text-[var(--fg-muted)]">—</span>
+          <span className="text-muted-foreground">—</span>
         )}
       </div>
 
@@ -316,7 +316,7 @@ export function LeadRow({
             <Button
               variant="ghost"
               size="icon"
-              className="size-8 text-[var(--fg-muted)] hover:text-[var(--fg)]"
+              className="size-8 text-muted-foreground hover:text-foreground"
             >
               <MoreHorizontal className="size-4" />
               <span className="sr-only">{t('moreOptions')}</span>
@@ -328,7 +328,7 @@ export function LeadRow({
                 e.stopPropagation();
                 setIsDeleteDialogOpen(true);
               }}
-              className="text-[var(--danger)] focus:text-[var(--danger)] focus:bg-[var(--danger)]/10 cursor-pointer"
+              className="text-destructive focus:text-destructive focus:bg-destructive/10 cursor-pointer"
             >
               <Trash2 className="size-4 me-2" />
               <span>{t('deleteLead')}</span>
@@ -341,10 +341,10 @@ export function LeadRow({
       <Dialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
         <DialogContent className="sm:max-w-md" onClick={(e) => e.stopPropagation()}>
           <DialogHeader className="text-start">
-            <DialogTitle className="text-base font-bold text-[var(--fg)]">
+            <DialogTitle className="text-base font-bold text-foreground">
               {t('deleteConfirmTitle')}
             </DialogTitle>
-            <DialogDescription className="text-sm text-[var(--fg-muted)] mt-1.5">
+            <DialogDescription className="text-sm text-muted-foreground mt-1.5">
               {t('deleteConfirmDesc')}
             </DialogDescription>
           </DialogHeader>

@@ -57,11 +57,13 @@ function BackupScheduleForm({ settings, onRefetch }: FormProps) {
   });
 
   return (
-    <div className="rounded-2xl border border-border bg-card p-6 shadow-sm space-y-6">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-border/60 pb-4">
+    <div className="rounded-2xl border border-border bg-card p-6 shadow-2xs space-y-6">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-border pb-4">
         <div className="space-y-1">
-          <h2 className="text-base font-bold text-foreground flex items-center gap-2">
-            <Clock className="size-5 text-primary" />
+          <h2 className="text-base font-extrabold tracking-tight text-foreground flex items-center gap-2.5">
+            <div className="size-8 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+              <Clock className="size-4" />
+            </div>
             <span>جدولة النسخ الاحتياطي التلقائي</span>
           </h2>
           <p className="text-xs text-muted-foreground">
@@ -70,7 +72,7 @@ function BackupScheduleForm({ settings, onRefetch }: FormProps) {
         </div>
 
         {settings?.next_run_at && frequency !== 'off' && (
-          <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-primary/10 text-primary text-xs font-bold border border-primary/20">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-primary/10 text-primary text-xs font-bold border border-primary/20">
             <Calendar className="size-3.5" />
             <span>
               النسخة القادمة: {new Date(settings.next_run_at).toLocaleString('ar-EG')}
@@ -82,11 +84,11 @@ function BackupScheduleForm({ settings, onRefetch }: FormProps) {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-xs">
         {/* Frequency */}
         <div>
-          <label className="font-semibold text-foreground block mb-1.5">التكرار</label>
+          <label className="font-bold text-foreground block mb-1.5">التكرار</label>
           <select
             value={frequency}
             onChange={(e) => setFrequency(e.target.value as BackupSettingsRow['frequency'])}
-            className="w-full rounded-xl border border-border bg-background p-2.5 font-medium"
+            className="w-full rounded-xl border border-border bg-muted/20 p-2.5 font-medium text-foreground"
           >
             <option value="weekly">أسبوعيًا (موصى به)</option>
             <option value="biweekly">كل أسبوعين</option>
@@ -229,7 +231,7 @@ function BackupScheduleForm({ settings, onRefetch }: FormProps) {
           size="sm"
           onClick={() => saveMutation.mutate()}
           disabled={saveMutation.isPending}
-          className="font-bold px-5"
+          className="rounded-full bg-primary hover:bg-primary/90 text-primary-foreground font-bold shadow-2xs px-5"
         >
           {saveMutation.isPending && <Loader2 className="size-4 animate-spin me-1.5" />}
           حفظ إعدادات الجدولة
@@ -256,7 +258,7 @@ export function BackupScheduleCard() {
 
   if (isLoading) {
     return (
-      <div className="rounded-2xl border border-border bg-card p-6 flex items-center justify-center py-12 text-muted-foreground text-xs gap-2">
+      <div className="rounded-2xl border border-border bg-card p-6 shadow-2xs flex items-center justify-center py-12 text-muted-foreground text-xs gap-2">
         <Loader2 className="size-4 animate-spin text-primary" />
         <span>جارِ تحميل إعدادات الجدولة…</span>
       </div>

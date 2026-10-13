@@ -177,21 +177,21 @@ export function ActiveFilterChips({
 
   return (
     <div className={cn('flex flex-wrap items-center gap-1.5 py-1', className)}>
-      <span className="text-xs text-[var(--fg-muted)] me-1 select-none">
+      <span className="text-xs text-muted-foreground me-1 select-none">
         {t('activeFilters')}:
       </span>
 
       {chips.map((chip) => (
         <span
           key={chip.id}
-          className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-[var(--surface-2)] text-[var(--fg)] border border-[var(--border)] shadow-2xs"
+          className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-muted text-foreground border border-border shadow-2xs"
         >
           <span>{chip.label}</span>
           <button
             type="button"
             onClick={chip.onRemove}
             aria-label={`Remove filter ${chip.label}`}
-            className="p-0.5 rounded-full hover:bg-[var(--surface)] text-[var(--fg-muted)] hover:text-[var(--danger)] focus:outline-none transition-colors"
+            className="p-0.5 rounded-full hover:bg-card text-muted-foreground hover:text-destructive focus:outline-none transition-colors"
           >
             <X className="size-3" />
           </button>
@@ -201,7 +201,7 @@ export function ActiveFilterChips({
       <button
         type="button"
         onClick={onClearAll}
-        className="inline-flex items-center gap-1 px-2 py-1 text-xs text-[var(--fg-muted)] hover:text-[var(--danger)] hover:underline focus:outline-none transition-colors select-none"
+        className="inline-flex items-center gap-1 px-2 py-1 text-xs text-muted-foreground hover:text-destructive hover:underline focus:outline-none transition-colors select-none"
       >
         <RotateCcw className="size-3" />
         <span>{t('clearAllFilters')}</span>

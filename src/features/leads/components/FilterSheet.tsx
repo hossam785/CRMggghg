@@ -158,13 +158,13 @@ export function FilterSheet({
         )}
       >
         {/* Header */}
-        <div className="flex items-center justify-between border-b border-[var(--border)] px-5 py-4 shrink-0">
+        <div className="flex items-center justify-between border-b border-border px-5 py-4 shrink-0">
           <SheetHeader className="text-start space-y-0.5">
-            <SheetTitle className="flex items-center gap-2 text-base font-semibold text-[var(--fg)]">
-              <SlidersHorizontal className="size-4 text-[var(--primary)] shrink-0" />
+            <SheetTitle className="flex items-center gap-2 text-base font-semibold text-foreground">
+              <SlidersHorizontal className="size-4 text-primary shrink-0" />
               <span>{t('filtersTitle')}</span>
             </SheetTitle>
-            <SheetDescription className="text-xs text-[var(--fg-muted)]">
+            <SheetDescription className="text-xs text-muted-foreground">
               {t('activeFilters')}
             </SheetDescription>
           </SheetHeader>
@@ -174,7 +174,7 @@ export function FilterSheet({
             variant="ghost"
             size="sm"
             onClick={handleReset}
-            className="text-xs text-[var(--fg-muted)] hover:text-[var(--danger)] h-8 px-2 gap-1"
+            className="text-xs text-muted-foreground hover:text-destructive h-8 px-2 gap-1"
           >
             <RotateCcw className="size-3.5" />
             <span>{t('resetFilters')}</span>
@@ -185,8 +185,8 @@ export function FilterSheet({
         <div className="flex-1 overflow-y-auto px-5 py-4 space-y-6">
           {/* 1. Industries */}
           <div className="space-y-2.5">
-            <Label className="flex items-center gap-1.5 text-xs font-semibold text-[var(--fg)]">
-              <Briefcase className="size-3.5 text-[var(--fg-muted)]" />
+            <Label className="flex items-center gap-1.5 text-xs font-semibold text-foreground">
+              <Briefcase className="size-3.5 text-muted-foreground" />
               <span>{t('industry')}</span>
             </Label>
             <div className="flex flex-wrap gap-1.5">
@@ -207,8 +207,8 @@ export function FilterSheet({
                     className={cn(
                       'inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium border transition-colors',
                       isSelected
-                        ? 'bg-[var(--primary)] text-white border-[var(--primary)]'
-                        : 'bg-[var(--surface-2)] text-[var(--fg-muted)] border-[var(--border)] hover:bg-[var(--surface)] hover:text-[var(--fg)]'
+                        ? 'bg-primary text-primary-foreground border-primary'
+                        : 'bg-muted text-muted-foreground border-border hover:bg-muted/80 hover:text-foreground'
                     )}
                   >
                     {isSelected && <Check className="size-3" />}
@@ -221,8 +221,8 @@ export function FilterSheet({
 
           {/* 2. Countries */}
           <div className="space-y-2.5">
-            <Label className="flex items-center gap-1.5 text-xs font-semibold text-[var(--fg)]">
-              <Globe className="size-3.5 text-[var(--fg-muted)]" />
+            <Label className="flex items-center gap-1.5 text-xs font-semibold text-foreground">
+              <Globe className="size-3.5 text-muted-foreground" />
               <span>{t('country')}</span>
             </Label>
 
@@ -235,7 +235,7 @@ export function FilterSheet({
                   return (
                     <span
                       key={code}
-                      className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs bg-[var(--primary)]/10 text-[var(--primary)] border border-[var(--primary)]/20"
+                      className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs bg-primary/10 text-primary border border-primary/20"
                     >
                       <span>{getCountryFlag(code)}</span>
                       <span>{name}</span>
@@ -245,7 +245,7 @@ export function FilterSheet({
                           const next = activeState.countries?.filter((c) => c !== code) || [];
                           handleUpdate({ countries: next.length > 0 ? next : undefined });
                         }}
-                        className="p-0.5 hover:text-[var(--danger)]"
+                        className="p-0.5 hover:text-destructive"
                       >
                         <X className="size-3" />
                       </button>
@@ -257,17 +257,17 @@ export function FilterSheet({
 
             {/* Search Input for countries */}
             <div className="relative">
-              <Search className="absolute start-2.5 top-1/2 -translate-y-1/2 size-3.5 text-[var(--fg-muted)] pointer-events-none" />
+              <Search className="absolute start-2.5 top-1/2 -translate-y-1/2 size-3.5 text-muted-foreground pointer-events-none" />
               <input
                 type="text"
                 value={countrySearch}
                 onChange={(e) => setCountrySearch(e.target.value)}
                 placeholder={t('searchCountry')}
-                className="w-full h-8 text-xs rounded-[var(--radius-sm)] border border-[var(--border)] bg-[var(--surface-2)] ps-8 pe-3 text-[var(--fg)] focus:outline-none focus:border-[var(--primary)]"
+                className="w-full h-8 text-xs rounded-md border border-border bg-muted ps-8 pe-3 text-foreground focus:outline-none focus:border-primary"
               />
             </div>
 
-            <div className="max-h-36 overflow-y-auto rounded-[var(--radius-sm)] border border-[var(--border)] p-1 space-y-0.5">
+            <div className="max-h-36 overflow-y-auto rounded-md border border-border p-1 space-y-0.5">
               {filteredCountries.map((c) => {
                 const isSelected = activeState.countries?.includes(c.code);
                 const name = locale === 'ar' ? c.name_ar : c.name_en;
@@ -285,15 +285,15 @@ export function FilterSheet({
                     className={cn(
                       'w-full flex items-center justify-between px-2 py-1 rounded text-xs transition-colors text-start',
                       isSelected
-                        ? 'bg-[var(--primary)]/15 text-[var(--primary)] font-medium'
-                        : 'hover:bg-[var(--surface-2)] text-[var(--fg)]'
+                        ? 'bg-primary/15 text-primary font-medium'
+                        : 'hover:bg-muted/80 text-foreground'
                     )}
                   >
                     <span className="flex items-center gap-1.5">
                       <span>{getCountryFlag(c.code)}</span>
                       <span>{name}</span>
                     </span>
-                    {isSelected && <Check className="size-3 text-[var(--primary)]" />}
+                    {isSelected && <Check className="size-3 text-primary" />}
                   </button>
                 );
               })}
@@ -302,8 +302,8 @@ export function FilterSheet({
 
           {/* 3. Status & Contact (Due, WhatsApp) */}
           <div className="space-y-2.5">
-            <Label className="flex items-center gap-1.5 text-xs font-semibold text-[var(--fg)]">
-              <PhoneCall className="size-3.5 text-[var(--fg-muted)]" />
+            <Label className="flex items-center gap-1.5 text-xs font-semibold text-foreground">
+              <PhoneCall className="size-3.5 text-muted-foreground" />
               <span>{t('statusAndContact')}</span>
             </Label>
             <div className="grid grid-cols-2 gap-2">
@@ -311,10 +311,10 @@ export function FilterSheet({
                 type="button"
                 onClick={() => handleUpdate({ due: activeState.due ? undefined : true })}
                 className={cn(
-                  'flex items-center justify-between p-2.5 rounded-[var(--radius-md)] border text-xs font-medium transition-colors text-start',
+                  'flex items-center justify-between p-2.5 rounded-lg border text-xs font-medium transition-colors text-start',
                   activeState.due
-                    ? 'border-[var(--warning)] bg-[var(--warning)]/10 text-[var(--warning-fg,#b45309)]'
-                    : 'border-[var(--border)] bg-[var(--surface-2)] text-[var(--fg-muted)] hover:text-[var(--fg)]'
+                    ? 'border-amber-500/50 bg-amber-500/10 text-amber-400'
+                    : 'border-border bg-muted text-muted-foreground hover:text-foreground'
                 )}
               >
                 <span>{t('filterDue')}</span>
@@ -327,10 +327,10 @@ export function FilterSheet({
                   handleUpdate({ has_whatsapp: activeState.has_whatsapp ? undefined : true })
                 }
                 className={cn(
-                  'flex items-center justify-between p-2.5 rounded-[var(--radius-md)] border text-xs font-medium transition-colors text-start',
+                  'flex items-center justify-between p-2.5 rounded-lg border text-xs font-medium transition-colors text-start',
                   activeState.has_whatsapp
-                    ? 'border-[var(--success)] bg-[var(--success)]/10 text-[var(--success-fg,#15803d)]'
-                    : 'border-[var(--border)] bg-[var(--surface-2)] text-[var(--fg-muted)] hover:text-[var(--fg)]'
+                    ? 'border-emerald-500/50 bg-emerald-500/10 text-emerald-400'
+                    : 'border-border bg-muted text-muted-foreground hover:text-foreground'
                 )}
               >
                 <span>{t('filterHasWhatsapp')}</span>
@@ -341,14 +341,14 @@ export function FilterSheet({
 
           {/* 4. Qualification Toggles */}
           <div className="space-y-3">
-            <Label className="flex items-center gap-1.5 text-xs font-semibold text-[var(--fg)]">
-              <Sparkles className="size-3.5 text-[var(--fg-muted)]" />
+            <Label className="flex items-center gap-1.5 text-xs font-semibold text-foreground">
+              <Sparkles className="size-3.5 text-muted-foreground" />
               <span>{t('qualificationSection')}</span>
             </Label>
 
             {/* Has Content */}
             <div className="space-y-1">
-              <span className="text-[11px] text-[var(--fg-muted)]">{t('hasContent')}</span>
+              <span className="text-[11px] text-muted-foreground">{t('hasContent')}</span>
               <div className="grid grid-cols-3 gap-1">
                 {(['all', 'yes', 'no'] as const).map((opt) => {
                   const isSelected =
@@ -369,8 +369,8 @@ export function FilterSheet({
                       className={cn(
                         'py-1 text-xs rounded font-medium border text-center transition-colors',
                         isSelected
-                          ? 'bg-[var(--primary)] text-white border-[var(--primary)]'
-                          : 'bg-[var(--surface-2)] border-[var(--border)] text-[var(--fg-muted)] hover:text-[var(--fg)]'
+                          ? 'bg-primary text-primary-foreground border-primary'
+                          : 'bg-muted border-border text-muted-foreground hover:text-foreground'
                       )}
                     >
                       {opt === 'all' ? t('allTime') : opt === 'yes' ? 'نعم' : 'لا'}
@@ -382,7 +382,7 @@ export function FilterSheet({
 
             {/* Appears in Content */}
             <div className="space-y-1">
-              <span className="text-[11px] text-[var(--fg-muted)]">{t('appearsInContent')}</span>
+              <span className="text-[11px] text-muted-foreground">{t('appearsInContent')}</span>
               <div className="grid grid-cols-3 gap-1">
                 {(['all', 'yes', 'no'] as const).map((opt) => {
                   const isSelected =
@@ -403,8 +403,8 @@ export function FilterSheet({
                       className={cn(
                         'py-1 text-xs rounded font-medium border text-center transition-colors',
                         isSelected
-                          ? 'bg-[var(--primary)] text-white border-[var(--primary)]'
-                          : 'bg-[var(--surface-2)] border-[var(--border)] text-[var(--fg-muted)] hover:text-[var(--fg)]'
+                          ? 'bg-primary text-primary-foreground border-primary'
+                          : 'bg-muted border-border text-muted-foreground hover:text-foreground'
                       )}
                     >
                       {opt === 'all' ? t('allTime') : opt === 'yes' ? 'نعم' : 'لا'}
@@ -416,7 +416,7 @@ export function FilterSheet({
 
             {/* Has Videographer */}
             <div className="space-y-1">
-              <span className="text-[11px] text-[var(--fg-muted)]">{t('hasVideographer')}</span>
+              <span className="text-[11px] text-muted-foreground">{t('hasVideographer')}</span>
               <div className="grid grid-cols-4 gap-1">
                 {(['all', 'yes', 'no', 'unknown'] as const).map((opt) => {
                   const isSelected =
@@ -435,8 +435,8 @@ export function FilterSheet({
                       className={cn(
                         'py-1 text-xs rounded font-medium border text-center transition-colors',
                         isSelected
-                          ? 'bg-[var(--primary)] text-white border-[var(--primary)]'
-                          : 'bg-[var(--surface-2)] border-[var(--border)] text-[var(--fg-muted)] hover:text-[var(--fg)]'
+                          ? 'bg-primary text-primary-foreground border-primary'
+                          : 'bg-muted border-border text-muted-foreground hover:text-foreground'
                       )}
                     >
                       {opt === 'all'
@@ -455,8 +455,8 @@ export function FilterSheet({
 
           {/* 5. Missing Data */}
           <div className="space-y-2.5">
-            <Label className="flex items-center gap-1.5 text-xs font-semibold text-[var(--fg)]">
-              <AlertCircle className="size-3.5 text-[var(--fg-muted)]" />
+            <Label className="flex items-center gap-1.5 text-xs font-semibold text-foreground">
+              <AlertCircle className="size-3.5 text-muted-foreground" />
               <span>{t('filterMissing')}</span>
             </Label>
             <div className="flex flex-wrap gap-1.5">
@@ -482,8 +482,8 @@ export function FilterSheet({
                     className={cn(
                       'inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium border transition-colors',
                       isSelected
-                        ? 'bg-[var(--warning)] text-amber-950 border-[var(--warning)] font-semibold'
-                        : 'bg-[var(--surface-2)] text-[var(--fg-muted)] border-[var(--border)] hover:bg-[var(--surface)] hover:text-[var(--fg)]'
+                        ? 'bg-amber-500/20 text-amber-400 border-amber-500/40 font-semibold'
+                        : 'bg-muted text-muted-foreground border-border hover:bg-muted/80 hover:text-foreground'
                     )}
                   >
                     {isSelected && <Check className="size-3" />}
@@ -496,36 +496,36 @@ export function FilterSheet({
 
           {/* 6. Created Date Range */}
           <div className="space-y-2.5">
-            <Label className="flex items-center gap-1.5 text-xs font-semibold text-[var(--fg)]">
-              <Calendar className="size-3.5 text-[var(--fg-muted)]" />
+            <Label className="flex items-center gap-1.5 text-xs font-semibold text-foreground">
+              <Calendar className="size-3.5 text-muted-foreground" />
               <span>{t('createdDate')}</span>
             </Label>
             <div className="grid grid-cols-4 gap-1 mb-2">
               <button
                 type="button"
                 onClick={() => handleQuickDate('today')}
-                className="py-1 text-xs rounded border border-[var(--border)] bg-[var(--surface-2)] text-[var(--fg-muted)] hover:text-[var(--fg)]"
+                className="py-1 text-xs rounded border border-border bg-muted text-muted-foreground hover:text-foreground"
               >
                 {t('today')}
               </button>
               <button
                 type="button"
                 onClick={() => handleQuickDate('7days')}
-                className="py-1 text-xs rounded border border-[var(--border)] bg-[var(--surface-2)] text-[var(--fg-muted)] hover:text-[var(--fg)]"
+                className="py-1 text-xs rounded border border-border bg-muted text-muted-foreground hover:text-foreground"
               >
                 {t('last7Days')}
               </button>
               <button
                 type="button"
                 onClick={() => handleQuickDate('month')}
-                className="py-1 text-xs rounded border border-[var(--border)] bg-[var(--surface-2)] text-[var(--fg-muted)] hover:text-[var(--fg)]"
+                className="py-1 text-xs rounded border border-border bg-muted text-muted-foreground hover:text-foreground"
               >
                 {t('thisMonth')}
               </button>
               <button
                 type="button"
                 onClick={() => handleQuickDate('all')}
-                className="py-1 text-xs rounded border border-[var(--border)] bg-[var(--surface-2)] text-[var(--fg-muted)] hover:text-[var(--fg)]"
+                className="py-1 text-xs rounded border border-border bg-muted text-muted-foreground hover:text-foreground"
               >
                 {t('allTime')}
               </button>
@@ -533,25 +533,25 @@ export function FilterSheet({
 
             <div className="grid grid-cols-2 gap-2">
               <div className="space-y-1">
-                <span className="text-[11px] text-[var(--fg-muted)]">{t('from')}</span>
+                <span className="text-[11px] text-muted-foreground">{t('from')}</span>
                 <input
                   type="date"
                   value={activeState.created_from || ''}
                   onChange={(e) =>
                     handleUpdate({ created_from: e.target.value || undefined })
                   }
-                  className="w-full h-8 text-xs rounded border border-[var(--border)] bg-[var(--surface-2)] px-2 text-[var(--fg)]"
+                  className="w-full h-8 text-xs rounded border border-border bg-muted px-2 text-foreground"
                 />
               </div>
               <div className="space-y-1">
-                <span className="text-[11px] text-[var(--fg-muted)]">{t('to')}</span>
+                <span className="text-[11px] text-muted-foreground">{t('to')}</span>
                 <input
                   type="date"
                   value={activeState.created_to || ''}
                   onChange={(e) =>
                     handleUpdate({ created_to: e.target.value || undefined })
                   }
-                  className="w-full h-8 text-xs rounded border border-[var(--border)] bg-[var(--surface-2)] px-2 text-[var(--fg)]"
+                  className="w-full h-8 text-xs rounded border border-border bg-muted px-2 text-foreground"
                 />
               </div>
             </div>
@@ -560,7 +560,7 @@ export function FilterSheet({
 
         {/* Footer (Mobile Apply Button) */}
         {!isDesktop && (
-          <SheetFooter className="border-t border-[var(--border)] p-4 bg-[var(--surface)] shrink-0 sm:flex-col">
+          <SheetFooter className="border-t border-border p-4 bg-card shrink-0 sm:flex-col">
             <Button
               type="button"
               onClick={handleMobileApply}

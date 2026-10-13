@@ -45,7 +45,7 @@ export function OpenDmButton({
       asChild
       variant="outline"
       size="sm"
-      className={`h-8 gap-1.5 font-medium ${className || ''}`}
+      className={`h-9 px-3.5 rounded-full border border-border bg-card hover:bg-muted/40 text-foreground text-xs font-semibold shadow-2xs gap-1.5 transition-all ${className || ''}`}
       onClick={handleClick}
     >
       <a href={url} target="_blank" rel="noopener noreferrer">

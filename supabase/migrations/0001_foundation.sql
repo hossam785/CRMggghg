@@ -1,6 +1,7 @@
 -- Migration: 0001_foundation.sql
 -- Foundation migration: extensions, set_updated_at(), settings, backup_settings, and handle_new_user stub
 
+create extension if not exists pgcrypto with schema extensions;
 create extension if not exists pg_trgm  with schema extensions;
 create extension if not exists unaccent with schema extensions;
 create extension if not exists pg_cron;              -- schema cron

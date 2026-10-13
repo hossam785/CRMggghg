@@ -45,21 +45,23 @@ export default function BackupsPage() {
   }, [downloadId, supabase]);
 
   return (
-    <div className="container max-w-5xl mx-auto py-8 px-4 space-y-8">
+    <div className="max-w-5xl mx-auto py-8 px-4 sm:px-6 space-y-8">
       {/* Header */}
-      <div className="space-y-1 border-b border-border pb-5">
+      <div className="space-y-1.5 border-b border-border pb-5">
         <div className="flex items-center gap-2 text-xs font-semibold text-muted-foreground">
-          <Link href="/data" className="hover:underline">
+          <Link href="/data" className="hover:text-primary transition-colors">
             مركز البيانات
           </Link>
           <span>/</span>
           <span>النسخ الاحتياطي والاسترجاع</span>
         </div>
-        <h1 className="text-xl font-black text-foreground flex items-center gap-2.5">
-          <ShieldCheck className="size-6 text-primary" />
+        <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-foreground flex items-center gap-2.5">
+          <div className="size-9 rounded-full bg-emerald-500/10 text-emerald-500 flex items-center justify-center shrink-0">
+            <ShieldCheck className="size-5" />
+          </div>
           <span>النسخ الاحتياطي التلقائي والأرشيف</span>
         </h1>
-        <p className="text-xs text-muted-foreground">
+        <p className="text-xs sm:text-sm text-muted-foreground">
           حماية وتشفير قاعدة بيانات العملاء بجدولة دورية، وتنزيل الأرشيفات، واسترجاع البيانات بضغطة واحدة.
         </p>
       </div>

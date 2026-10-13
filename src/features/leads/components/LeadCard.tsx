@@ -180,7 +180,7 @@ export function LeadCard({
         }
       }}
       className={cn(
-        'group flex flex-col p-4 rounded-[var(--radius-lg)] border border-[var(--border)] bg-[var(--surface)] select-none transition-all shadow-2xs hover:border-[var(--primary)]/40 hover:shadow-xs active:bg-[var(--surface-2)] cursor-pointer',
+        'group flex flex-col p-4 rounded-xl border border-border bg-card select-none transition-all shadow-2xs hover:border-primary/40 hover:shadow-xs active:bg-muted/40 cursor-pointer',
         className
       )}
     >
@@ -188,13 +188,13 @@ export function LeadCard({
       <div className="flex items-start justify-between gap-2">
         <div className="flex flex-col min-w-0">
           <div className="flex items-center gap-1.5 flex-wrap">
-            <span className="font-semibold text-base text-[var(--fg)] truncate">
+            <span className="font-semibold text-base text-foreground truncate">
               <Highlight text={lead.name} query={searchQuery} />
             </span>
 
             {lead.missing_fields && lead.missing_fields.length > 0 && (
               <span
-                className="inline-flex items-center gap-0.5 px-1.5 py-0.2 rounded-xs text-[10px] font-medium bg-[var(--warning)]/15 text-[var(--warning-fg,#b45309)] border border-[var(--warning)]/30 shrink-0"
+                className="inline-flex items-center gap-0.5 px-1.5 py-0.2 rounded-xs text-[10px] font-medium bg-amber-500/10 text-amber-400 border border-amber-500/20 shrink-0"
                 title={locale === 'ar' ? `بيانات ناقصة: ${lead.missing_fields.join(', ')}` : `Missing: ${lead.missing_fields.join(', ')}`}
               >
                 <AlertTriangle className="size-2.5" />
@@ -206,7 +206,7 @@ export function LeadCard({
           </div>
 
           {lead.company && (
-            <span className="text-xs text-[var(--fg-muted)] truncate mt-0.5">
+            <span className="text-xs text-muted-foreground truncate mt-0.5">
               {lead.company}
             </span>
           )}
@@ -222,7 +222,7 @@ export function LeadCard({
               <Button
                 variant="ghost"
                 size="icon"
-                className="size-7 p-0 text-[var(--fg-muted)] hover:text-[var(--fg)]"
+                className="size-7 p-0 text-muted-foreground hover:text-foreground"
               >
                 <MoreHorizontal className="size-4" />
                 <span className="sr-only">{t('moreOptions')}</span>
@@ -234,7 +234,7 @@ export function LeadCard({
                   e.stopPropagation();
                   setIsDeleteDialogOpen(true);
                 }}
-                className="text-[var(--danger)] focus:text-[var(--danger)] focus:bg-[var(--danger)]/10 cursor-pointer"
+                className="text-destructive focus:text-destructive focus:bg-destructive/10 cursor-pointer"
               >
                 <Trash2 className="size-4 me-2" />
                 <span>{t('deleteLead')}</span>
@@ -245,7 +245,7 @@ export function LeadCard({
       </div>
 
       {/* Middle Row: Handle & Contact links */}
-      <div className="flex items-center gap-3 mt-2 text-xs text-[var(--fg-muted)] flex-wrap">
+      <div className="flex items-center gap-3 mt-2 text-xs text-muted-foreground flex-wrap">
         {lead.instagram_handle && (
           <a
             href={instagramUrl(lead.instagram_handle)}
@@ -253,9 +253,9 @@ export function LeadCard({
             rel="noopener noreferrer"
             onClick={(e) => e.stopPropagation()}
             title={t('openProfile')}
-            className="inline-flex items-center gap-1 font-mono text-xs text-[var(--fg)] hover:text-pink-600 bg-[var(--surface-2)] px-2 py-0.5 rounded-sm transition-colors dir-ltr"
+            className="inline-flex items-center gap-1 font-mono text-xs text-foreground hover:text-pink-400 bg-muted px-2 py-0.5 rounded-sm transition-colors dir-ltr"
           >
-            <Instagram className="size-3 text-pink-600 shrink-0" />
+            <Instagram className="size-3 text-pink-400 shrink-0" />
             <bdi>@{lead.instagram_handle}</bdi>
           </a>
         )}
@@ -267,33 +267,33 @@ export function LeadCard({
             rel="noopener noreferrer"
             onClick={(e) => e.stopPropagation()}
             title={t('openChat')}
-            className="inline-flex items-center gap-1 font-mono text-xs text-[var(--fg)] hover:text-emerald-600 bg-[var(--surface-2)] px-2 py-0.5 rounded-sm transition-colors dir-ltr"
+            className="inline-flex items-center gap-1 font-mono text-xs text-foreground hover:text-emerald-400 bg-muted px-2 py-0.5 rounded-sm transition-colors dir-ltr"
           >
-            <MessageCircle className="size-3 text-emerald-600 shrink-0" />
+            <MessageCircle className="size-3 text-emerald-400 shrink-0" />
             <bdi>{lead.whatsapp_e164}</bdi>
           </a>
         )}
       </div>
 
       {/* Bottom Meta & Quick Action */}
-      <div className="flex items-center justify-between gap-2 pt-2.5 mt-2.5 border-t border-[var(--border)]">
-        <div className="flex flex-col min-w-0 text-xs text-[var(--fg-muted)]">
+      <div className="flex items-center justify-between gap-2 pt-2.5 mt-2.5 border-t border-border">
+        <div className="flex flex-col min-w-0 text-xs text-muted-foreground">
           <div className="flex items-center gap-1.5 truncate">
             {lead.country_code && (
               <span title={countryName}>{getCountryFlag(lead.country_code)}</span>
             )}
             {industryLabel && <span className="truncate">{industryLabel}</span>}
           </div>
-          <div className="flex items-center gap-1.5 text-[11px] text-[var(--fg-muted)] mt-0.5" title={contactFull}>
+          <div className="flex items-center gap-1.5 text-[11px] text-muted-foreground mt-0.5" title={contactFull}>
             <span>{contactRelative}</span>
             {nextFollowUpInfo && (
               <>
                 <span>•</span>
                 <span
                   className={cn(
-                    nextFollowUpInfo.isOverdue && 'text-[var(--danger)] font-semibold',
-                    nextFollowUpInfo.isToday && 'text-[var(--primary)] font-semibold',
-                    !nextFollowUpInfo.isOverdue && !nextFollowUpInfo.isToday && 'text-[var(--fg-muted)]'
+                    nextFollowUpInfo.isOverdue && 'text-red-400 font-semibold',
+                    nextFollowUpInfo.isToday && 'text-primary font-semibold',
+                    !nextFollowUpInfo.isOverdue && !nextFollowUpInfo.isToday && 'text-muted-foreground'
                   )}
                   title={lead.next_follow_up_on || undefined}
                 >
@@ -313,10 +313,10 @@ export function LeadCard({
       <Dialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
         <DialogContent className="sm:max-w-md" onClick={(e) => e.stopPropagation()}>
           <DialogHeader className="text-start">
-            <DialogTitle className="text-base font-bold text-[var(--fg)]">
+            <DialogTitle className="text-base font-bold text-foreground">
               {t('deleteConfirmTitle')}
             </DialogTitle>
-            <DialogDescription className="text-sm text-[var(--fg-muted)] mt-1.5">
+            <DialogDescription className="text-sm text-muted-foreground mt-1.5">
               {t('deleteConfirmDesc')}
             </DialogDescription>
           </DialogHeader>

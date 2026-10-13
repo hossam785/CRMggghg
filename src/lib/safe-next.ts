@@ -35,6 +35,17 @@ export function safeNext(next: string | null | undefined): string {
     return '/';
   }
 
+  // Must NOT redirect to login itself or auth callback to prevent endless loops
+  if (
+    trimmed === '/login' ||
+    trimmed.startsWith('/login?') ||
+    trimmed === '/auth/callback' ||
+    trimmed.startsWith('/auth/callback?') ||
+    trimmed.startsWith('/api/')
+  ) {
+    return '/';
+  }
+
   // If there's a colon, ensure it's not a protocol injection (e.g. /http:// or /javascript:)
   if (trimmed.includes(':')) {
     try {
@@ -42,7 +53,16 @@ export function safeNext(next: string | null | undefined): string {
       if (parsed.origin !== 'http://localhost') {
         return '/';
       }
-      return `${parsed.pathname}${parsed.search}${parsed.hash}`;
+      const candidate = `${parsed.pathname}${parsed.search}${parsed.hash}`;
+      if (
+        candidate === '/login' ||
+        candidate.startsWith('/login?') ||
+        candidate.startsWith('/auth/callback') ||
+        candidate.startsWith('/api/')
+      ) {
+        return '/';
+      }
+      return candidate;
     } catch {
       return '/';
     }

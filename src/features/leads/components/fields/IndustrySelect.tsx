@@ -66,7 +66,7 @@ export function IndustrySelect({
   return (
     <div className={cn('flex flex-col gap-2', className)}>
       <div className="flex flex-col gap-1.5">
-        <Label htmlFor={id} className="text-sm font-medium text-[var(--color-fg-primary)]">
+        <Label htmlFor={id} className="text-sm font-medium text-foreground">
           {t('industry')}
         </Label>
 
@@ -78,7 +78,7 @@ export function IndustrySelect({
           <SelectTrigger
             id={id}
             className={cn(
-              industryError ? 'border-[var(--color-error)] focus:ring-[var(--color-error)]' : ''
+              industryError ? 'border-destructive focus:ring-destructive' : ''
             )}
             aria-invalid={Boolean(industryError)}
             aria-describedby={industryError ? `${id}-error` : undefined}
@@ -98,7 +98,7 @@ export function IndustrySelect({
           <p
             id={`${id}-error`}
             role="alert"
-            className="text-xs text-[var(--color-error)] font-medium mt-0.5 animate-in fade-in-50"
+            className="text-xs text-destructive font-medium mt-0.5 animate-in fade-in-50"
           >
             {industryError}
           </p>
@@ -107,10 +107,10 @@ export function IndustrySelect({
 
       {/* If "Other" is chosen, reveal required "Specify Industry" input */}
       {isOtherSelected && (
-        <div className="flex flex-col gap-1.5 ps-3 border-s-2 border-[var(--color-accent)] animate-in fade-in-50 duration-200">
+        <div className="flex flex-col gap-1.5 ps-3 border-s-2 border-primary animate-in fade-in-50 duration-200">
           <Label
             htmlFor={`${id}-other`}
-            className="text-xs font-medium text-[var(--color-fg-secondary)]"
+            className="text-xs font-medium text-muted-foreground"
           >
             {t('industryOther')} *
           </Label>
@@ -123,7 +123,7 @@ export function IndustrySelect({
             placeholder={t('industryOther')}
             maxLength={80}
             className={cn(
-              otherError ? 'border-[var(--color-error)] focus-visible:ring-[var(--color-error)]' : ''
+              otherError ? 'border-destructive focus-visible:ring-destructive' : ''
             )}
             aria-invalid={Boolean(otherError)}
             aria-describedby={otherError ? `${id}-other-error` : undefined}
@@ -132,7 +132,7 @@ export function IndustrySelect({
             <p
               id={`${id}-other-error`}
               role="alert"
-              className="text-xs text-[var(--color-error)] font-medium mt-0.5 animate-in fade-in-50"
+              className="text-xs text-destructive font-medium mt-0.5 animate-in fade-in-50"
             >
               {otherError}
             </p>

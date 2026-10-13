@@ -55,21 +55,26 @@ export function createDashboardExportSpec(
       current: stats.cur.replied,
       previous: stats.prev.replied,
       delta: repliesDelta.formatted,
-      note: totalOutreachCur > 0 ? `معدل الرد ${Math.round((stats.cur.replied / totalOutreachCur) * 100)}%` : '—',
+      note: totalOutreachCur > 0 ? `معدل الرد ${Math.round((stats.cur.replied / totalOutreachCur) * 100)}%` : 'لا توجد رسائل مرسلة',
     },
     {
       metric: 'اجتماعات محجوزة',
       current: stats.cur.meetings,
       previous: stats.prev.meetings,
       delta: meetingsDelta.formatted,
-      note: 'اجتماعات المبيعات المتفق عليها',
+      note: stats.cur.meetings > 0 ? 'اجتماعات المبيعات المتفق عليها' : 'لا توجد اجتماعات في هذه الفترة',
     },
     {
       metric: 'صفقات ناجحة (Won)',
       current: stats.cur.won,
       previous: stats.prev.won,
       delta: wonDelta.formatted,
-      note: stats.cur.meetings > 0 ? `نسبة التحويل ${Math.round((stats.cur.won / stats.cur.meetings) * 100)}%` : '—',
+      note:
+        stats.cur.meetings > 0
+          ? `نسبة التحويل ${Math.round((stats.cur.won / stats.cur.meetings) * 100)}%`
+          : stats.cur.won > 0
+          ? `${stats.cur.won} صفقة ناجحة بدون اجتماع`
+          : 'لا توجد صفقات مغلقة',
     },
   ];
 

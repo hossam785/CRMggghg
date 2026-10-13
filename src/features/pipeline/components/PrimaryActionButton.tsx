@@ -5,6 +5,7 @@ import { useTranslations } from 'next-intl';
 import { Button, type ButtonProps } from '@/components/ui/button';
 import { Tooltip, TooltipTrigger, TooltipContent } from '@/components/ui/tooltip';
 import { Kbd } from '@/components/ui/kbd';
+import { cn } from '@/lib/utils';
 import {
   primaryActionFor,
   ACTIONS,
@@ -58,7 +59,12 @@ export function PrimaryActionButton({
       disabled={leadAction.isPending}
       loading={leadAction.isPending}
       onClick={handleClick}
-      className={className}
+      className={cn(
+        'rounded-full font-bold shadow-2xs gap-2 transition-all',
+        buttonVariant === 'primary' &&
+          'bg-primary hover:bg-primary/90 text-primary-foreground shadow-2xs',
+        className
+      )}
     >
       <Icon className={size === 'lg' ? 'size-5' : 'size-4'} />
       <span>{t(labelKey as Parameters<typeof t>[0])}</span>

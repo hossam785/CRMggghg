@@ -52,7 +52,7 @@ export function LostReasonDialog({ open, onOpenChange, lead }: LostReasonDialogP
       <ResponsiveDialogContent className="sm:max-w-md">
         <ResponsiveDialogHeader>
           <div className="flex items-center gap-2">
-            <div className="flex size-9 items-center justify-center rounded-full bg-[var(--danger)]/10 text-[var(--danger)]">
+            <div className="flex size-9 items-center justify-center rounded-full bg-destructive/10 text-destructive">
               <XCircle className="size-5" />
             </div>
             <div>
@@ -71,9 +71,9 @@ export function LostReasonDialog({ open, onOpenChange, lead }: LostReasonDialogP
               type="button"
               disabled={leadAction.isPending}
               onClick={() => handleSelectReason(key)}
-              className="flex items-center gap-3 p-3 rounded-[var(--radius-md)] border border-[var(--border)] bg-[var(--surface)] hover:bg-[var(--surface-2)] hover:border-[var(--danger)]/40 text-start text-sm font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--focus)] disabled:opacity-50 active:scale-[0.98]"
+              className="flex items-center gap-3 p-3 rounded-xl border border-border bg-card hover:bg-muted/40 hover:border-destructive/40 text-start text-sm font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary disabled:opacity-50 active:scale-[0.98]"
             >
-              <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-[var(--surface-2)] text-[var(--fg-muted)]">
+              <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-muted/40 text-muted-foreground">
                 <Icon className="size-4" />
               </span>
               <span className="flex-1 truncate">{t(`dialogs.lostReason.reasons.${key}`)}</span>

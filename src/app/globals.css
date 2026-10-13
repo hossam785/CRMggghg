@@ -15,6 +15,23 @@
   --color-danger: var(--danger);
   --color-focus: var(--focus);
 
+  /* Relate Design Tokens */
+  --color-snow-canvas: var(--color-snow-canvas);
+  --color-lavender-wash: var(--color-lavender-wash);
+  --color-surface-card: var(--color-surface-card);
+  --color-midnight-ink: var(--color-midnight-ink);
+  --color-graphite-body: var(--color-graphite-body);
+  --color-slate-caption: var(--color-slate-caption);
+  --color-ash-helper: var(--color-ash-helper);
+  --color-stone-divider: var(--color-stone-divider);
+  --color-fog-surface: var(--color-fog-surface);
+  --color-royal-signal: var(--color-royal-signal);
+  --color-cobalt-glow: var(--color-cobalt-glow);
+  --color-mint-win: var(--color-mint-win);
+  --color-coral-lost: var(--color-coral-lost);
+  --color-amber-pending: var(--color-amber-pending);
+  --color-azure-focus: var(--color-azure-focus);
+
   /* Pipeline Stage Color Pairs */
   --color-stage-new-bg: var(--stage-new-bg);
   --color-stage-new-fg: var(--stage-new-fg);

@@ -39,68 +39,68 @@ const EVENT_ICONS: Record<
 > = {
   created: {
     icon: UserPlus,
-    bgClass: 'bg-[var(--stage-new-bg)]',
-    fgClass: 'text-[var(--stage-new-fg)]',
+    bgClass: 'bg-blue-500/10',
+    fgClass: 'text-blue-500',
   },
   message_sent: {
     icon: Send,
-    bgClass: 'bg-[var(--stage-message_sent-bg)]',
-    fgClass: 'text-[var(--stage-message_sent-fg)]',
+    bgClass: 'bg-sky-500/10',
+    fgClass: 'text-sky-500',
   },
   follow_up_sent: {
     icon: Clock,
-    bgClass: 'bg-[var(--stage-follow_up_1-bg)]',
-    fgClass: 'text-[var(--stage-follow_up_1-fg)]',
+    bgClass: 'bg-amber-500/10',
+    fgClass: 'text-amber-500',
   },
   reply_received: {
     icon: MessageCircle,
-    bgClass: 'bg-[var(--stage-replied-bg)]',
-    fgClass: 'text-[var(--stage-replied-fg)]',
+    bgClass: 'bg-purple-500/10',
+    fgClass: 'text-purple-500',
   },
   meeting_booked: {
     icon: Calendar,
-    bgClass: 'bg-[var(--stage-meeting_booked-bg)]',
-    fgClass: 'text-[var(--stage-meeting_booked-fg)]',
+    bgClass: 'bg-indigo-500/10',
+    fgClass: 'text-indigo-500',
   },
   proposal_sent: {
     icon: FileText,
-    bgClass: 'bg-[var(--stage-proposal_sent-bg)]',
-    fgClass: 'text-[var(--stage-proposal_sent-fg)]',
+    bgClass: 'bg-teal-500/10',
+    fgClass: 'text-teal-500',
   },
   won: {
     icon: Trophy,
-    bgClass: 'bg-[var(--stage-won-bg)]',
-    fgClass: 'text-[var(--stage-won-fg)]',
+    bgClass: 'bg-emerald-500/10',
+    fgClass: 'text-emerald-500',
   },
   lost: {
     icon: XCircle,
-    bgClass: 'bg-[var(--stage-lost-bg)]',
-    fgClass: 'text-[var(--stage-lost-fg)]',
+    bgClass: 'bg-destructive/10',
+    fgClass: 'text-destructive',
   },
   stage_set: {
     icon: SlidersHorizontal,
-    bgClass: 'bg-[var(--surface-2)]',
-    fgClass: 'text-[var(--fg)]',
+    bgClass: 'bg-muted/40',
+    fgClass: 'text-foreground',
   },
   reopened: {
     icon: RotateCcw,
-    bgClass: 'bg-[var(--surface-2)]',
-    fgClass: 'text-[var(--fg)]',
+    bgClass: 'bg-muted/40',
+    fgClass: 'text-foreground',
   },
   reminder_set: {
     icon: Bell,
-    bgClass: 'bg-[var(--primary)]/10',
-    fgClass: 'text-[var(--primary)]',
+    bgClass: 'bg-primary/10',
+    fgClass: 'text-primary',
   },
   snoozed: {
     icon: Moon,
-    bgClass: 'bg-[var(--primary)]/10',
-    fgClass: 'text-[var(--primary)]',
+    bgClass: 'bg-primary/10',
+    fgClass: 'text-primary',
   },
   restarted: {
     icon: RefreshCw,
-    bgClass: 'bg-[var(--surface-2)]',
-    fgClass: 'text-[var(--fg)]',
+    bgClass: 'bg-muted/40',
+    fgClass: 'text-foreground',
   },
 };
 
@@ -231,8 +231,8 @@ export function TimelineItem({ event, isLatest }: TimelineItemProps) {
     <div className="relative flex items-start gap-3 pb-6 group">
       {/* Event Icon Node */}
       <div
-        className={`relative z-10 flex size-8 shrink-0 items-center justify-center rounded-full border border-[var(--border)] shadow-xs ${
-          isUndone ? 'bg-[var(--surface-2)] text-[var(--fg-muted)]' : `${config.bgClass} ${config.fgClass}`
+        className={`relative z-10 flex size-8 shrink-0 items-center justify-center rounded-full border border-border shadow-2xs ${
+          isUndone ? 'bg-muted/40 text-muted-foreground' : `${config.bgClass} ${config.fgClass}`
         }`}
       >
         <Icon className="size-4" />
@@ -245,15 +245,15 @@ export function TimelineItem({ event, isLatest }: TimelineItemProps) {
             <span
               className={`text-sm font-medium ${
                 isUndone
-                  ? 'line-through text-[var(--fg-muted)]'
-                  : 'text-[var(--fg)]'
+                  ? 'line-through text-muted-foreground'
+                  : 'text-foreground'
               }`}
             >
               {renderDescription()}
             </span>
 
             {isUndone && (
-              <span className="inline-flex items-center px-1.5 py-0.2 text-[10px] font-medium rounded-full bg-[var(--surface-2)] text-[var(--fg-muted)] border border-[var(--border)]">
+              <span className="inline-flex items-center px-2 py-0.5 text-[10px] font-medium rounded-full bg-muted/40 text-muted-foreground border border-border">
                 {t('timeline.undone')}
               </span>
             )}
@@ -264,7 +264,7 @@ export function TimelineItem({ event, isLatest }: TimelineItemProps) {
               <TooltipTrigger asChild>
                 <time
                   dateTime={event.occurred_at}
-                  className="text-xs text-[var(--fg-muted)] hover:text-[var(--fg)] transition-colors cursor-default"
+                  className="text-xs text-muted-foreground hover:text-foreground transition-colors cursor-default"
                 >
                   {relativeTime}
                 </time>
@@ -282,7 +282,7 @@ export function TimelineItem({ event, isLatest }: TimelineItemProps) {
                 loading={undo.isPending}
                 disabled={undo.isPending}
                 onClick={() => undo.mutate(event.id)}
-                className="h-7 px-2 text-xs gap-1 border-[var(--border)] hover:bg-[var(--surface-2)]"
+                className="rounded-full h-7 px-2.5 text-xs gap-1 border-border bg-card hover:bg-muted/40 text-foreground shadow-2xs"
               >
                 <Undo2 className="size-3" />
                 <span>{t('timeline.undo')}</span>
@@ -293,7 +293,7 @@ export function TimelineItem({ event, isLatest }: TimelineItemProps) {
 
         {/* Note if reminder or notes present */}
         {Boolean(meta.note) && typeof meta.note === 'string' && (
-          <p className="mt-1 text-xs text-[var(--fg-muted)] bg-[var(--surface-2)]/50 p-2 rounded-[var(--radius-sm)] border border-[var(--border)]/60">
+          <p className="mt-1.5 text-xs text-muted-foreground bg-muted/40 p-2.5 rounded-xl border border-border">
             {meta.note}
           </p>
         )}

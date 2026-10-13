@@ -7,7 +7,6 @@ import type { Database } from '@/types/database';
 
 const PUBLIC_EXACT_PATHS = [
   '/login',
-  '/reset-password',
   '/manifest.webmanifest',
   '/sw.js',
 ];
@@ -88,16 +87,23 @@ export async function proxy(req: NextRequest) {
   // 2) Unauthenticated user accessing private route → redirect to /login
   if (!user && !isPublic) {
     const loginUrl = new URL('/login', req.url);
-    const target = `${pathname}${req.nextUrl.search}`;
-    loginUrl.searchParams.set('next', target);
-    return NextResponse.redirect(loginUrl);
+    const candidateTarget = `${pathname}${req.nextUrl.search}`;
+    const safeTarget = safeNext(candidateTarget);
+    if (safeTarget !== '/') {
+      loginUrl.searchParams.set('next', safeTarget);
+    }
+    const redirectRes = NextResponse.redirect(loginUrl);
+    redirectRes.headers.set('Cache-Control', 'no-store, max-age=0, must-revalidate');
+    return redirectRes;
   }
 
   // 3) Authenticated user visiting /login → redirect to next or /
   if (user && pathname === '/login') {
     const rawNext = req.nextUrl.searchParams.get('next');
     const safeTarget = safeNext(rawNext);
-    return NextResponse.redirect(new URL(safeTarget, req.url));
+    const redirectRes = NextResponse.redirect(new URL(safeTarget, req.url));
+    redirectRes.headers.set('Cache-Control', 'no-store, max-age=0, must-revalidate');
+    return redirectRes;
   }
 
   // 4) Set Content-Security-Policy header

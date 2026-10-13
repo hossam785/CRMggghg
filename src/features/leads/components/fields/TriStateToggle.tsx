@@ -49,10 +49,10 @@ export function TriStateToggle(props: ToggleFieldProps) {
     return (
       <div className={cn('flex flex-col gap-1.5', className)}>
         <div className="flex items-center justify-between">
-          <Label htmlFor={id} className="text-sm font-medium text-[var(--color-fg-primary)]">
+          <Label htmlFor={id} className="text-sm font-medium text-foreground">
             {label}
           </Label>
-          {hint && <span className="text-xs text-[var(--color-fg-muted)]">{hint}</span>}
+          {hint && <span className="text-xs text-muted-foreground">{hint}</span>}
         </div>
 
         <SegmentedControl
@@ -84,10 +84,10 @@ export function TriStateToggle(props: ToggleFieldProps) {
   return (
     <div className={cn('flex flex-col gap-1.5', className)}>
       <div className="flex items-center justify-between">
-        <Label htmlFor={id} className="text-sm font-medium text-[var(--color-fg-primary)]">
+        <Label htmlFor={id} className="text-sm font-medium text-foreground">
           {label}
         </Label>
-        {hint && <span className="text-xs text-[var(--color-fg-muted)]">{hint}</span>}
+        {hint && <span className="text-xs text-muted-foreground">{hint}</span>}
       </div>
 
       <SegmentedControl

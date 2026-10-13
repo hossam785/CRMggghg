@@ -15,9 +15,9 @@ export function LeadsSkeleton({ count = 8, className }: LeadsSkeletonProps) {
   return (
     <div className={cn('w-full', className)}>
       {/* Desktop Table Skeleton (md+) */}
-      <div className="hidden md:block border border-[var(--border)] rounded-[var(--radius-lg)] bg-[var(--surface)] overflow-hidden">
+      <div className="hidden md:block border border-border rounded-xl bg-card overflow-hidden">
         {/* Table Header */}
-        <div className="flex items-center h-11 px-6 border-b border-[var(--border)] bg-[var(--surface-2)]/60">
+        <div className="flex items-center h-11 px-6 border-b border-border bg-muted/60">
           <Skeleton className="h-4 w-28 me-auto" />
           <Skeleton className="h-4 w-20 shrink-0 me-12" />
           <Skeleton className="h-4 w-24 shrink-0 me-12" />
@@ -26,7 +26,7 @@ export function LeadsSkeleton({ count = 8, className }: LeadsSkeletonProps) {
         </div>
 
         {/* 8 Rows */}
-        <div className="divide-y divide-[var(--border)]">
+        <div className="divide-y divide-border">
           {items.map((_, i) => (
             <div key={i} className="flex items-center h-14 px-6">
               {/* Col 1 */}
@@ -66,7 +66,7 @@ export function LeadsSkeleton({ count = 8, className }: LeadsSkeletonProps) {
         {items.map((_, i) => (
           <div
             key={i}
-            className="p-4 rounded-[var(--radius-lg)] border border-[var(--border)] bg-[var(--surface)] space-y-3"
+            className="p-4 rounded-xl border border-border bg-card space-y-3"
           >
             <div className="flex items-start justify-between">
               <div className="space-y-1.5">
@@ -81,7 +81,7 @@ export function LeadsSkeleton({ count = 8, className }: LeadsSkeletonProps) {
               <Skeleton className="h-6 w-28 rounded-sm" />
             </div>
 
-            <div className="flex items-center justify-between pt-2 border-t border-[var(--border)]">
+            <div className="flex items-center justify-between pt-2 border-t border-border">
               <Skeleton className="h-3 w-24" />
               <Skeleton className="h-3 w-16" />
             </div>

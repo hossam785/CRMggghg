@@ -6,6 +6,7 @@ import { useTranslations } from 'next-intl';
 import { Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { LeadsToolbar } from '@/features/leads/components/LeadsToolbar';
+import { KanbanBoard } from '@/features/leads/components/KanbanBoard';
 import { LeadsTable } from '@/features/leads/components/LeadsTable';
 import { LeadsCardList } from '@/features/leads/components/LeadsCardList';
 import { LeadsSkeleton } from '@/features/leads/components/LeadsSkeleton';
@@ -25,6 +26,11 @@ export default function LeadsPage() {
   const t = useTranslations('leads');
   const { openCreateLead } = useLeadModal();
   const { filters, rawState, setFilters, resetFilters } = useLeadFilters();
+
+  // Relate View Mode State (Kanban Board vs Dense Table)
+  const [viewMode, setViewMode] = React.useState<'kanban' | 'table'>('kanban');
+  const [platformFilter, setPlatformFilter] = React.useState<'all' | 'instagram' | 'whatsapp'>('all');
+  const [priorityFilter, setPriorityFilter] = React.useState<'all' | 'high' | 'medium' | 'normal'>('all');
 
   const leadsExportSpec = React.useMemo(
     () =>
@@ -73,9 +79,11 @@ export default function LeadsPage() {
         (filters.has_videographer && filters.has_videographer !== 'unknown') ||
         filters.missing ||
         filters.created_from ||
-        filters.created_to
+        filters.created_to ||
+        platformFilter !== 'all' ||
+        priorityFilter !== 'all'
     );
-  }, [filters]);
+  }, [filters, platformFilter, priorityFilter]);
 
   const handleLeadClick = (id: string) => {
     router.push(`/leads/${id}`);
@@ -87,9 +95,15 @@ export default function LeadsPage() {
 
   return (
     <div className="w-full pb-16 space-y-4">
-      {/* Sticky Leads Toolbar with Action Button */}
+      {/* Sticky Leads Toolbar with Relate View Switcher and Action Buttons */}
       <LeadsToolbar
         isFetching={isFetching}
+        viewMode={viewMode}
+        onViewModeChange={setViewMode}
+        platformFilter={platformFilter}
+        onPlatformFilterChange={setPlatformFilter}
+        priorityFilter={priorityFilter}
+        onPriorityFilterChange={setPriorityFilter}
         actionsSlot={
           <div className="flex items-center gap-2">
             <ExportButton spec={leadsExportSpec} />
@@ -97,7 +111,7 @@ export default function LeadsPage() {
               type="button"
               size="sm"
               onClick={openCreateLead}
-              className="hidden sm:inline-flex items-center gap-1.5 h-10 px-3.5"
+              className="hidden sm:inline-flex items-center gap-1.5 h-10 px-4 rounded-full bg-primary text-primary-foreground hover:bg-primary/90 shadow-2xs transition-all font-semibold"
             >
               <Plus className="size-4" />
               <span>{t('createLeadTitle')}</span>
@@ -126,14 +140,31 @@ export default function LeadsPage() {
                 searchQuery={rawState.q || ''}
                 hasActiveFilters={hasActiveFilters}
                 onClearSearch={() => void setFilters({ q: '' })}
-                onClearFilters={resetFilters}
+                onClearFilters={() => {
+                  resetFilters();
+                  setPlatformFilter('all');
+                  setPriorityFilter('all');
+                }}
                 onSelectSuggestion={handleSelectSuggestion}
               />
             ) : (
               <LeadsEmpty type="no-data" onAddLead={openCreateLead} />
             )}
           </div>
+        ) : viewMode === 'kanban' ? (
+          /* 1. Relate Kanban Pipeline Board View */
+          <KanbanBoard
+            leads={allLeads}
+            industries={industries}
+            countries={countries}
+            searchQuery={rawState.q || ''}
+            selectedStages={rawState.stages}
+            priorityFilter={priorityFilter}
+            platformFilter={platformFilter}
+            onLeadClick={handleLeadClick}
+          />
         ) : (
+          /* 2. Dense Table View */
           <>
             {/* Desktop Table (≥md) */}
             <div className="hidden md:block px-4 sm:px-6">

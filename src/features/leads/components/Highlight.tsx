@@ -129,7 +129,7 @@ export function Highlight({
       <mark
         key={`match-${range.start}`}
         className={cn(
-          'bg-[var(--primary)]/20 text-[var(--fg)] font-semibold rounded-xs px-0.5 select-text',
+          'bg-primary/20 text-foreground font-semibold rounded-xs px-0.5 select-text',
           highlightClassName
         )}
       >

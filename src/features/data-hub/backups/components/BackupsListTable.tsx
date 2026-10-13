@@ -117,13 +117,15 @@ export function BackupsListTable() {
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h3 className="text-base font-bold text-foreground flex items-center gap-2">
-            <HardDrive className="size-4 text-primary" />
+          <h3 className="text-base sm:text-lg font-extrabold tracking-tight text-foreground flex items-center gap-2.5">
+            <div className="size-8 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+              <HardDrive className="size-4" />
+            </div>
             <span>أرشيف النسخ الاحتياطية المحفوظة</span>
           </h3>
-          <p className="text-xs text-muted-foreground mt-0.5">
+          <p className="text-xs text-muted-foreground mt-1">
             يمكنك تحميل أي نسخة أو استرجاع بياناتك منها بأمان
           </p>
         </div>
@@ -132,14 +134,14 @@ export function BackupsListTable() {
           size="sm"
           onClick={handleBackupNow}
           disabled={isGenerating}
-          className="font-bold shadow-sm"
+          className="rounded-full bg-primary hover:bg-primary/90 text-primary-foreground font-bold shadow-2xs self-start sm:self-center"
         >
           {isGenerating ? <Loader2 className="size-4 animate-spin me-1.5" /> : <Shield className="size-4 me-1.5" />}
           إنشاء نسخة احتياطية الآن
         </Button>
       </div>
 
-      <div className="rounded-2xl border border-border bg-card overflow-hidden">
+      <div className="rounded-2xl border border-border bg-card overflow-hidden shadow-2xs">
         {isLoading ? (
           <div className="p-12 text-center text-xs text-muted-foreground">
             <Loader2 className="size-6 animate-spin text-primary mx-auto mb-2" />
@@ -147,30 +149,30 @@ export function BackupsListTable() {
           </div>
         ) : backups.length === 0 ? (
           <div className="p-12 text-center text-muted-foreground space-y-2">
-            <HardDrive className="size-8 text-muted-foreground/40 mx-auto" />
-            <div className="text-xs font-semibold text-foreground">لا توجد نسخ احتياطية محفوظة حتى الآن</div>
+            <HardDrive className="size-8 text-muted-foreground/50 mx-auto" />
+            <div className="text-xs font-bold text-foreground">لا توجد نسخ احتياطية محفوظة حتى الآن</div>
             <p className="text-[11px] text-muted-foreground">اضغط على زر &quot;إنشاء نسخة احتياطية الآن&quot; للبدء</p>
           </div>
         ) : (
-          <div className="divide-y divide-border">
+          <div className="divide-y divide-border/60">
             {backups.map((b) => (
               <div
                 key={b.id}
-                className="p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:bg-accent/20 transition-colors"
+                className="p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:bg-muted/20 transition-colors"
               >
                 <div className="space-y-1">
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2 flex-wrap">
                     <span className="text-sm font-bold text-foreground">
                       {new Date(b.created_at).toLocaleString('ar-EG')}
                     </span>
-                    <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-muted text-muted-foreground">
+                    <span className="text-[10px] font-semibold px-2.5 py-0.5 rounded-full bg-muted text-muted-foreground">
                       {getKindLabel(b.kind)}
                     </span>
-                    <span className="text-[10px] font-mono uppercase px-1.5 py-0.5 rounded bg-primary/10 text-primary font-bold">
+                    <span className="text-[10px] font-mono uppercase px-2 py-0.5 rounded-full bg-primary/10 text-primary font-bold">
                       {b.format}
                     </span>
                     {b.downloaded_at && (
-                      <span className="inline-flex items-center gap-1 text-[10px] font-semibold text-emerald-600">
+                      <span className="inline-flex items-center gap-1 text-[10px] font-semibold text-emerald-400">
                         <CheckCircle2 className="size-3" />
                         <span>تم التنزيل</span>
                       </span>
@@ -180,7 +182,7 @@ export function BackupsListTable() {
                   <div className="text-xs text-muted-foreground flex flex-wrap items-center gap-3">
                     <span>الحجم: {formatSize(b.size_bytes)}</span>
                     {b.checksum && (
-                      <span className="font-mono text-[10px] text-muted-foreground/70">
+                      <span className="font-mono text-[10px] text-muted-foreground/80">
                         SHA: {b.checksum.slice(0, 8)}…
                       </span>
                     )}
@@ -192,7 +194,7 @@ export function BackupsListTable() {
                     variant="outline"
                     size="sm"
                     onClick={() => handleDownload(b)}
-                    className="h-8 text-xs font-semibold"
+                    className="rounded-full h-8 text-xs font-semibold border-border shadow-2xs"
                   >
                     <Download className="size-3.5 me-1.5" />
                     تحميل
@@ -202,7 +204,7 @@ export function BackupsListTable() {
                     variant="outline"
                     size="sm"
                     onClick={() => setRestoringBackup(b)}
-                    className="h-8 text-xs font-semibold text-primary hover:bg-primary/10"
+                    className="rounded-full h-8 text-xs font-semibold border-border text-primary hover:bg-primary/10 shadow-2xs"
                   >
                     <RotateCcw className="size-3.5 me-1.5" />
                     استرجاع
@@ -213,7 +215,7 @@ export function BackupsListTable() {
                       variant="ghost"
                       size="icon"
                       onClick={() => handleDelete(b)}
-                      className="size-8 text-destructive hover:bg-destructive/10"
+                      className="rounded-full size-8 text-destructive hover:bg-destructive/10"
                       title="حذف هذه النسخة"
                     >
                       <Trash2 className="size-3.5" />

@@ -17,46 +17,58 @@ export function DataHubExportsCard() {
   const trashSpec = React.useMemo(() => createTrashExportSpec(), []);
 
   return (
-    <div className="rounded-2xl border border-border bg-card p-6 shadow-sm space-y-4">
-      <div className="border-b border-border/60 pb-3">
-        <h2 className="text-lg font-bold text-foreground flex items-center gap-2">
-          <FileSpreadsheet className="size-5 text-primary" />
-          <span>{t('quickExportsTitle')}</span>
-        </h2>
-        <p className="text-xs text-muted-foreground mt-0.5">
-          {t('quickExportsDesc')}
-        </p>
+    <div className="rounded-2xl border border-border bg-card p-6 shadow-2xs space-y-5">
+      <div className="border-b border-border pb-3.5 flex items-center justify-between">
+        <div>
+          <h2 className="text-base sm:text-lg font-extrabold tracking-tight text-foreground flex items-center gap-2.5">
+            <div className="size-8 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+              <FileSpreadsheet className="size-4" />
+            </div>
+            <span>{t('quickExportsTitle')}</span>
+          </h2>
+          <p className="text-xs text-muted-foreground mt-1">
+            {t('quickExportsDesc')}
+          </p>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 pt-1">
-        <div className="flex items-center justify-between p-3.5 rounded-xl border border-border bg-background">
+        <div className="flex items-center justify-between p-3.5 rounded-xl border border-border bg-muted/20 hover:bg-muted/40 transition-all">
           <div className="flex items-center gap-2.5">
-            <Users className="size-4 text-primary" />
-            <span className="text-xs font-semibold text-foreground">{t('allLeads')}</span>
+            <div className="size-7 rounded-full bg-blue-500/10 text-primary flex items-center justify-center">
+              <Users className="size-3.5" />
+            </div>
+            <span className="text-xs font-bold text-foreground">{t('allLeads')}</span>
           </div>
           <ExportButton spec={leadsSpec} size="sm" />
         </div>
 
-        <div className="flex items-center justify-between p-3.5 rounded-xl border border-border bg-background">
+        <div className="flex items-center justify-between p-3.5 rounded-xl border border-border bg-muted/20 hover:bg-muted/40 transition-all">
           <div className="flex items-center gap-2.5">
-            <Clock className="size-4 text-amber-500" />
-            <span className="text-xs font-semibold text-foreground">{t('followUpQueue')}</span>
+            <div className="size-7 rounded-full bg-amber-500/10 text-amber-500 flex items-center justify-center">
+              <Clock className="size-3.5" />
+            </div>
+            <span className="text-xs font-bold text-foreground">{t('followUpQueue')}</span>
           </div>
           <ExportButton spec={followUpsSpec} size="sm" />
         </div>
 
-        <div className="flex items-center justify-between p-3.5 rounded-xl border border-border bg-background">
+        <div className="flex items-center justify-between p-3.5 rounded-xl border border-border bg-muted/20 hover:bg-muted/40 transition-all">
           <div className="flex items-center gap-2.5">
-            <Briefcase className="size-4 text-emerald-500" />
-            <span className="text-xs font-semibold text-foreground">{t('businessIndustries')}</span>
+            <div className="size-7 rounded-full bg-emerald-500/10 text-emerald-500 flex items-center justify-center">
+              <Briefcase className="size-3.5" />
+            </div>
+            <span className="text-xs font-bold text-foreground">{t('businessIndustries')}</span>
           </div>
           <ExportButton spec={industriesSpec} size="sm" />
         </div>
 
-        <div className="flex items-center justify-between p-3.5 rounded-xl border border-border bg-background">
+        <div className="flex items-center justify-between p-3.5 rounded-xl border border-border bg-muted/20 hover:bg-muted/40 transition-all">
           <div className="flex items-center gap-2.5">
-            <Trash2 className="size-4 text-destructive" />
-            <span className="text-xs font-semibold text-foreground">{t('trashRecords')}</span>
+            <div className="size-7 rounded-full bg-red-500/10 text-red-500 flex items-center justify-center">
+              <Trash2 className="size-3.5" />
+            </div>
+            <span className="text-xs font-bold text-foreground">{t('trashRecords')}</span>
           </div>
           <ExportButton spec={trashSpec} size="sm" />
         </div>

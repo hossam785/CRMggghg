@@ -6,11 +6,14 @@ import type { RawDashboardStats } from '@/features/dashboard/types';
 
 export function isDemoMode(): boolean {
   if (typeof window === 'undefined') return false;
-  return (
+  if (process.env.NEXT_PUBLIC_DEMO_MODE === 'true') return true;
+
+  const isPlaceholderUrl =
+    !env.NEXT_PUBLIC_SUPABASE_URL ||
     env.NEXT_PUBLIC_SUPABASE_URL.includes('example.supabase.co') ||
-    window.location.hostname === 'localhost' ||
-    window.location.hostname === '127.0.0.1'
-  );
+    env.NEXT_PUBLIC_SUPABASE_URL.includes('mock.supabase.co');
+
+  return isPlaceholderUrl;
 }
 
 export const DEMO_INDUSTRIES: Industry[] = [
@@ -253,6 +256,70 @@ class DemoStore {
     return DEMO_INDUSTRIES;
   }
 
+  saveIndustries(industries: Industry[]) {
+    if (typeof window === 'undefined') return;
+    try {
+      localStorage.setItem(STORAGE_KEY_INDUSTRIES, JSON.stringify(industries));
+    } catch {}
+  }
+
+  createIndustry(payload: { label_ar: string; label_en: string; sort_order?: number }): Industry {
+    const list = [...this.getIndustries()];
+    const newId = Math.max(0, ...list.map((i) => i.id)) + 1;
+    const baseSlug = payload.label_en.toLowerCase().trim().replace(/[^a-z0-9]+/g, '_') || 'ind';
+    const newInd: Industry = {
+      id: newId,
+      owner_id: '00000000-0000-0000-0000-000000000001',
+      key: `${baseSlug}_${newId}`,
+      label_ar: payload.label_ar.trim(),
+      label_en: payload.label_en.trim(),
+      sort_order: payload.sort_order ?? (list.length + 1) * 10,
+      is_active: true,
+      is_other: false,
+    };
+    list.push(newInd);
+    this.saveIndustries(list);
+    return newInd;
+  }
+
+  updateIndustry(id: number, patch: Partial<Industry>): Industry {
+    const list = [...this.getIndustries()];
+    const idx = list.findIndex((i) => i.id === id);
+    const existing = list[idx];
+    if (!existing) throw new Error('Industry not found');
+    const updated: Industry = { ...existing, ...patch };
+    list[idx] = updated;
+    this.saveIndustries(list);
+    return updated;
+  }
+
+  reorderIndustries(orders: { id: number; sort_order: number }[]): void {
+    const list = [...this.getIndustries()];
+    const orderMap = new Map(orders.map((o) => [o.id, o.sort_order]));
+    list.forEach((item) => {
+      if (orderMap.has(item.id)) {
+        item.sort_order = orderMap.get(item.id)!;
+      }
+    });
+    list.sort((a, b) => a.sort_order - b.sort_order);
+    this.saveIndustries(list);
+  }
+
+  getIndustryReferencedCount(id: number): number {
+    const leads = this.getLeadsRaw().filter((l) => !l.deleted_at);
+    return leads.filter((l) => l.industry_id === id).length;
+  }
+
+  deleteIndustry(id: number): { success: boolean; referencedCount: number } {
+    const count = this.getIndustryReferencedCount(id);
+    if (count > 0) {
+      return { success: false, referencedCount: count };
+    }
+    const list = this.getIndustries().filter((i) => i.id !== id);
+    this.saveIndustries(list);
+    return { success: true, referencedCount: 0 };
+  }
+
   getCountries() {
     return DEMO_COUNTRIES;
   }
@@ -435,21 +502,44 @@ class DemoStore {
 
     switch (args.action) {
       case 'mark_contacted':
+      case 'send_message':
         newStage = 'message_sent';
         lastContactedAt = new Date().toISOString();
         followUpsSent = (followUpsSent || 0) + 1;
         break;
+      case 'send_follow_up':
+        if (lead.stage === 'message_sent') newStage = 'follow_up_1';
+        else if (lead.stage === 'follow_up_1') newStage = 'follow_up_2';
+        else if (lead.stage === 'follow_up_2') newStage = 'follow_up_3';
+        lastContactedAt = new Date().toISOString();
+        followUpsSent = (followUpsSent || 0) + 1;
+        break;
       case 'qualify':
+      case 'reply_received':
         newStage = 'replied';
+        break;
+      case 'book_meeting':
+        newStage = 'meeting_booked';
         break;
       case 'send_proposal':
         newStage = 'proposal_sent';
         break;
       case 'win':
+      case 'mark_won':
         newStage = 'won';
         break;
       case 'lose':
+      case 'mark_lost':
         newStage = 'lost';
+        break;
+      case 'reopen':
+      case 'restart':
+        newStage = 'new';
+        break;
+      case 'set_stage':
+        if (args.payload?.to_stage) {
+          newStage = args.payload.to_stage as LeadStage;
+        }
         break;
     }
 
